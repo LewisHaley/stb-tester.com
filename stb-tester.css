@@ -1,0 +1,43 @@
+/* Start with a blank slate */
+html, body, div, h1, h2, p, ul { margin: 0; padding: 0; border: 0; }
+
+
+/* === Layout === */
+
+#header,
+#footer         { text-align: center; }
+#header,
+#content,
+#footer         { margin: 1em auto; max-width: 400px; }
+
+@media (min-width: 700px) {
+  body          { background: #fff url("stb-tester-350px.svg") top left no-repeat; }
+  #header,
+  #content,
+  #footer       { margin: 1em 0 1em 300px; width: 400px; }
+}
+@media (max-width: 699px) {
+  body          { background: #fff url("stb-tester-160px.svg") top left no-repeat; }
+}
+@media (max-width: 560px) {
+  #header       { margin-left: 100px; }
+  #header h1    { padding-left: 60px; text-align: left; }
+}
+
+
+/* === Typography === */
+
+body            { font-family: Verdana, Arial, sans-serif;
+                  font-size: 12pt; line-height: 1.5; }
+
+h1, h2          { font-family: georgia, "times new roman", serif; }
+h1              { font-size: 36pt; line-height: 1; margin-bottom: 0.5em; }
+h2              { font-size: 14pt; line-height: 1.28; margin: 1.28em 0 0; }
+
+p               { margin: 0 0 1.5em; }
+a               { color: #00007f; }
+
+#header p       { font-style: italic; }
+
+#footer         { font-size: 10pt; margin-top: 3.6em; color: #777; }
+#footer a       { color: #777; }
