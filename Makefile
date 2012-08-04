@@ -20,7 +20,7 @@ release-notes.html: release-notes.rst docutils-html4css1.css stbt.css
 
 # Requires a little manual intervention: `cd` to stb-tester and `git checkout`
 # the most recent tag, so that version is "0.x" instead of "0.x-n-abcdefgh".
-stb-tester/VERSION: stb-tester
+stb-tester/VERSION: | stb-tester
 	$(MAKE) -C stb-tester stbt
 
 stb-tester/README.rst: stb-tester
