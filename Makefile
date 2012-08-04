@@ -1,5 +1,7 @@
 description := A video-capture record/playback testing system
 
+all: stbt.html release-notes.html
+
 stbt.html: stb-tester/README.rst stb-tester/VERSION docutils-html4css1.css stbt.css
 	cat $< |\
 	sed -e "s/@VERSION@/$$(cat stb-tester/VERSION)/" \
@@ -10,6 +12,11 @@ stbt.html: stb-tester/README.rst stb-tester/VERSION docutils-html4css1.css stbt.
 	    --title='stbt(1): $(description) -- man page' |\
 	sed -e 's,<a class="reference external" href="file:/">file:/</a>,file:/,' \
 	> $@
+
+release-notes.html: release-notes.rst docutils-html4css1.css stbt.css
+	rst2html --stylesheet=docutils-html4css1.css,stbt.css \
+	    --initial-header-level=2 $< > $@
+
 
 # Requires a little manual intervention: `cd` to stb-tester and `git checkout`
 # the most recent tag, so that version is "0.x" instead of "0.x-n-abcdefgh".
@@ -25,4 +32,4 @@ stb-tester:
 	@exit 1
 
 clean:
-	rm -f stbt.html
+	rm -f stbt.html release-notes.html
