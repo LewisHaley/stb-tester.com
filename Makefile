@@ -1,6 +1,11 @@
 description := A video-capture record/playback testing system
 
-all: stbt.html release-notes.html introduction.html
+all: index.html stbt.html release-notes.html introduction.html
+
+index.html: index.html.in release-notes.rst
+	cat $< |\
+	sed -e "s/@VERSION@/$$(cat stb-tester/VERSION)/" \
+	> $@
 
 stbt.html: stb-tester/README.rst stb-tester/VERSION docutils-html4css1.css stbt.css
 	cat $< |\
@@ -50,4 +55,4 @@ stb-tester:
 	@exit 1
 
 clean:
-	rm -f stbt.html release-notes.html introduction.html
+	rm -f index.html stbt.html release-notes.html introduction.html
