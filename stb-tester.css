@@ -54,6 +54,8 @@ a               { color: #007; }
 sup             { line-height: 0; }
 
 #header p       { font-style: italic; }
+#header #about,
+#header #about a { color: #777; }
 
 #footer         { font-size: 10pt; color: #777; }
 #footer p       { margin: 0; }

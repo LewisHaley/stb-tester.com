@@ -12,6 +12,10 @@
 
 <div id="header">
   <h1>Introducing stb-tester</h1>
+  <p id="about">
+    By <a href="http://david.rothlis.net">David Röthlisberger</a>.
+    Last updated @UPDATED@.
+  </p>
 </div>
 
 <div id="content">

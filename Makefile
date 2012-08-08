@@ -25,7 +25,13 @@ introduction.html: introduction.rst
 	cat $< |\
 	sed -n -e '$(rst_markers) p' |\
 	sed -e '/reStructuredText content/ d' |\
-	rst2html --template=<(sed -e '$(rst_markers) d' $<) \
+	rst2html \
+	    --template=<( \
+	        cat $< |\
+	        sed -e '$(rst_markers) d' \
+	            -e "s/@UPDATED@/$$( \
+	                git log -n1 --format=format:'%cD' $< |\
+	                awk '{print $$2, $$3, $$4}')/") \
 	    --initial-header-level=2 --footnote-references=superscript \
 	> $@
 
