@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Introducing stb-tester: A video-capture record/playback testing system</title>
+  <link href="stb-tester.css" media="all" rel="stylesheet" type="text/css" />
+</head>
+
+<!-- Copyright 2012 David Röthlisberger <david@rothlis.net>. All rights reserved. -->
+
+<body id="introduction">
+
+<div id="header">
+  <h1>Introducing stb-tester</h1>
+  <p id="about">
+    By <a href="http://david.rothlis.net">David Röthlisberger</a>.
+    Last updated 8 Aug 2012.
+  </p>
+</div>
+
+<div id="content">
+
+<p><a class="reference external" href="http://stb-tester.com">stb-tester</a> is an open-source system for automated testing of set-top boxes
+and similar devices.</p>
+<p>stb-tester is a collection of small<a class="footnote-reference" href="#small" id="id1"><sup>1</sup></a> command-line tools:</p>
+<p><strong>stbt record</strong> will record a test case by listening for remote-control
+keypresses, taking screenshots from the set-top box as it goes. You then
+(manually) crop the screenshots to the region of interest, and (optionally)
+edit the generated test script, which will look something like this:</p>
+<pre class="literal-block">
+press(&quot;MENU&quot;)
+wait_for_match(&quot;Guide.png&quot;)
+press(&quot;RIGHT&quot;)
+wait_for_match(&quot;Settings.png&quot;)
+</pre>
+<p><strong>stbt run</strong> will play back the given test script, returning an exit status of
+success or failure for easy integration with your test reporting system.</p>
+<p>Watch us record and play back a test script in XXX minutes:</p>
+<img alt="video-introduction.png" class="video" src="video-introduction.png" style="width: 800px; height: 477px;" />
+<div class="section" id="modularity">
+<h2>Modularity</h2>
+<p>stb-tester is written on top of <a class="reference external" href="http://gstreamer.freedesktop.org">GStreamer</a>, a library of media-handling
+components.</p>
+<p>We use video-capture hardware with video-for-linux drivers, using GStreamer's
+<cite>v4l2src</cite> source element. You could equally use the <cite>ximagesrc</cite> GStreamer
+element to grab video from an X11 window running a VM, or the <cite>tcpclientsrc</cite>
+element to receive video streamed over the network (perhaps from a custom
+framebuffer source element<a class="footnote-reference" href="#fbsrc" id="id2"><sup>2</sup></a> installed on the system under test).</p>
+<p>Even the TV signal into the set-top box can be controlled via the GStreamer
+pipeline: We are writing a <a class="reference external" href="https://github.com/wmanley/gst-dektec">GStreamer element for DekTec DVB modulators</a>.</p>
+<p>stb-tester's image matching is handled by a GStreamer <cite>templatematch</cite> element
+that is a thin wrapper around the <a class="reference external" href="http://opencv.willowgarage.com">OpenCV</a> computer vision library.</p>
+<p>stb-tester's image matching isn't quite real-time: on our hardware it manages
+5-6 frames per second. stb-tester uses a GStreamer <cite>queue</cite> element that can be
+configured to drop frames so that the test runs in real time, or to queue up
+every single frame when the test demands it (e.g. for measuring animation
+smoothness<a class="footnote-reference" href="#animation" id="id3"><sup>3</sup></a>).</p>
+<p>To control the set-top box stb-tester supports hardware infra-red emitters via
+<a class="reference external" href="http://www.lirc.org">LIRC</a> (Linux Infrared Remote Control). We have also written a custom
+TCP-based &quot;virtual remote&quot; for controlling set-top boxes instrumented with the
+corresponding listener<a class="footnote-reference" href="#virtualremote" id="id4"><sup>4</sup></a>.</p>
+</div>
+<div class="section" id="the-test-scripts-are-plain-python">
+<h2>The test scripts are plain python</h2>
+<p>In the video you saw us replace successive calls to <cite>press</cite> with the
+convenience function <cite>press_until_match</cite>. You can provide your own such
+functions — it's just python!</p>
+<p>Keeping separate copies of the same asset (like the <cite>Guide.png</cite> template in our
+example) for each test script is a maintenance nightmare: You don't want to
+re-record all your tests each time the UI team tweaks the graphics! So pull out
+the common steps into a separate python module, and rewrite the script to:</p>
+<pre class="literal-block">
+import preconditions
+preconditions.network_settings_screen()
+...
+</pre>
+<p><cite>stbt run</cite> will search for the template image in the directory that contains
+the file calling <cite>wait_for_match</cite>, so you can keep all common assets alongside
+your <cite>preconditions</cite> module.</p>
+<p>Do you want to trigger a power failure from your test scripts? Buy a
+network-controlled power supply and write a python library wrapping its HTTP
+API. (We have plans to do just that.)</p>
+</div>
+<div class="section" id="take-control-of-your-test-infrastructure">
+<h2>Take control of your test infrastructure</h2>
+<p>The interface to <em>stbt run</em> is very simple and Unixy: Run it as a sub-process
+from your own test scheduler<a class="footnote-reference" href="#scheduler" id="id5"><sup>5</sup></a>, then collect the exit status and
+logs to be processed by your own reporting infrastructure.</p>
+<p>Your integration test team can run their test scripts as black box tests, using
+video-capture devices and infra-red emitters.</p>
+<p>Your UI team can run (a subset of?) the very same tests, with zero hardware
+costs, against a VM running the set-top box software: Use a GStreamer X11
+source element for video input, and a TCP-based &quot;virtual remote&quot; to drive the
+set-top box VM. This is quite a powerful tool to have on every developer's
+desk!</p>
+<p>Or integrate stb-tester with your build system to run regression tests on every
+commit. Even before your release has reached the test team, it has passed a
+very high bar!</p>
+<p>stb-tester was initially developed at <a class="reference external" href="http://www.youview.com">YouView TV</a>, and is released under the
+<a class="reference external" href="http://www.gnu.org/licenses/lgpl-2.1.html">LGPL</a>. Learn more at <a class="reference external" href="http://stb-tester.com">http://stb-tester.com</a>.</p>
+<div class="footnotes container">
+<table class="docutils footnote" frame="void" id="small" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>As of release 0.3: 700 lines of python code, and a GStreamer
+plugin totalling 500 lines of C code. stb-tester is essentially an
+integration exercise: <a class="reference external" href="http://gstreamer.freedesktop.org">GStreamer</a>, <a class="reference external" href="http://opencv.willowgarage.com">OpenCV</a>, <a class="reference external" href="http://www.lirc.org">LIRC</a> and Video4Linux do
+all the work.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="fbsrc" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2">[2]</a></td><td>GStreamer already has a <a class="reference external" href="http://directfb.org">DirectFB</a> sink element; we have plans
+to write a DirectFB source.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="animation" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id3">[3]</a></td><td>We haven't implemented the infrastructure for test scripts to
+easily measure animation smoothness, just yet.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="virtualremote" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id4">[4]</a></td><td>We haven't open-sourced our virtual remote, but plan to
+do so after re-writing it to use the <a class="reference external" href="http://www.lirc.org">LIRC</a> protocol.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="scheduler" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id5">[5]</a></td><td>&quot;Test scheduler&quot; sounds fancy but you'd hope it's just a
+simple shell script.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+</div>
+
+<div id="footer">
+<p>This article copyright © 2012 <a href="http://david.rothlis.net">David
+Röthlisberger</a>.</p>
+</div>
+
+</body>
+</html>
