@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>stbt(1): A video-capture record/playback testing system -- man page</title>
+  <link href="stb-tester.css" media="all" rel="stylesheet" type="text/css" />
+</head>
+
+<body id="stbt">
+
+<!-- stbt(1) man page -->
+
+<div id="header">
+%(body_pre_docinfo)s
+</div>
+
+<div id="content">
+
+%(docinfo)s
+%(body)s
+
+</div>
+
+</body>
+</html>

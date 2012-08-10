@@ -1,6 +1,22 @@
-========================
-stb-tester release notes
-========================
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>stb-tester release notes</title>
+  <link href="stb-tester.css" media="all" rel="stylesheet" type="text/css" />
+</head>
+
+<body id="release-notes">
+
+<div id="header">
+  <h1>stb-tester release notes</h1>
+</div>
+
+<div id="content">
+
+%(body)s
+
+<!-- Begin reStructuredText content -->
 
 ..
   `cd stb-tester && git tag -l` to list the tags;
@@ -49,3 +65,9 @@ a dist tarball.
 -----------------------------
 
 21 June 2012.
+
+<!-- End reStructuredText content -->
+
+</div>
+</body>
+</html>

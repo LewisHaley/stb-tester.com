@@ -21,23 +21,19 @@ index.html: index.html.in release-notes.rst
 	sed -e "s/@VERSION@/$$(cat stb-tester/VERSION)/" \
 	> $@
 
-stbt.html: stb-tester/README.rst stb-tester/VERSION docutils-html4css1.css stbt.css
-	cat $< |\
+stbt.html: stb-tester/README.rst stb-tester/VERSION stbt.html.template
+	cat stb-tester/README.rst |\
 	sed -e "s/@VERSION@/$$(cat stb-tester/VERSION)/" \
 	    -e "/^:Manual section:/ d" \
 	    -e "/^:Manual group:/ d" \
 	    -e "s/Copyright (C)/Copyright ©/" |\
-	rst2html --stylesheet=docutils-html4css1.css,stbt.css \
+	rst2html --template=stbt.html.template --initial-header-level=2 \
 	    --title='stbt(1): $(description) -- man page' |\
 	sed -e 's,<a class="reference external" href="file:/">file:/</a>,file:/,' \
 	> $@
 
-release-notes.html: release-notes.rst docutils-html4css1.css stbt.css
-	rst2html --stylesheet=docutils-html4css1.css,stbt.css \
-	    --initial-header-level=2 $< > $@
-
 rst_markers := /Begin reStructuredText content/,/End reStructuredText content/
-introduction.html: introduction.rst
+introduction.html release-notes.html: %.html: %.rst
 	@[ -n "$$BASH_VERSINFO" ] && [ "$$BASH_VERSINFO" -ge 4 ] || { \
 	    echo "ERROR: Requires bash version 4." >&2; \
 	    echo "Use 'make SHELL=/path/to/bash'" >&2; exit 1; }
