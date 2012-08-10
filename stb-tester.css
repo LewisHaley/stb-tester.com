@@ -44,10 +44,10 @@ body            { font-family: Verdana, Arial, sans-serif;
 
 h1, h2          { font-family: georgia, "times new roman", serif; }
 h1              { font-size: 36pt; line-height: 1; margin-bottom: 0.5em; }
-h2              { font-size: 14pt; line-height: 1.28; margin: 1.28em 0; }
+h2              { font-size: 14pt; line-height: 1.286; margin: 1.286em 0; }
 p               { margin: 1.5em 0; }
 
-#index h2       { margin: 1.28em 0 0; }
+#index h2       { margin-bottom: 0; }
 #index p        { margin: 0 0 1.5em; }
 
 a               { color: #007; }
