@@ -48,6 +48,7 @@ introduction.html release-notes.html: %.html: %.rst
 	                git log -n1 --format=format:'%cD' $< |\
 	                awk '{print $$2, $$3, $$4}')/") \
 	    --initial-header-level=2 --footnote-references=superscript \
+	    --strip-comments \
 	> $@
 
 
