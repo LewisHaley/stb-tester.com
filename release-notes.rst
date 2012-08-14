@@ -34,6 +34,32 @@
   `cd stb-tester && git tag -l` to list the tags;
   `git show $tag` to see the date and the annotated tag message.
 
+0.4 Adds gstreamer plugin, improved templatematch, motion detection
+-------------------------------------------------------------------
+
+14 August 2012.
+
+New "libgst-stb-tester.so" gstreamer plugin with stbt-templatematch
+(copied from gst-plugins-bad and improved) and stbt-motiondetect
+elements.
+
+stbt scripts can use "wait_for_motion" to assert that video is playing.
+"wait_for_motion" takes an optional "mask" parameter (a black-and-white
+image where white pixels indicate the regions to check for motion).
+
+The improved templatematch is more robust in the presence of noise, and
+can detect small but significant changes against large template images.
+
+Other changes since 0.3:
+
+* Bash-completion script for stbt.
+* stbt no longer reads configuration from $PWD/stbt.conf.
+* extra/jenkins-stbt-run is a shell script that illustrates how to use
+  Jenkins (a continuous-integration system with a web interface) to
+  schedule stbt tests and report on their results. See commit message
+  d5e7983 for instructions.
+
+
 0.3 Fixes `stbt run` freezing on loss of input video.
 -----------------------------------------------------
 
