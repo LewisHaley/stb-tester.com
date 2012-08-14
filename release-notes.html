@@ -26,6 +26,27 @@
 
 <div id="content">
 
+<div class="section" id="adds-gstreamer-plugin-improved-templatematch-motion-detection">
+<h2>0.4 Adds gstreamer plugin, improved templatematch, motion detection</h2>
+<p>14 August 2012.</p>
+<p>New &quot;libgst-stb-tester.so&quot; gstreamer plugin with stbt-templatematch
+(copied from gst-plugins-bad and improved) and stbt-motiondetect
+elements.</p>
+<p>stbt scripts can use &quot;wait_for_motion&quot; to assert that video is playing.
+&quot;wait_for_motion&quot; takes an optional &quot;mask&quot; parameter (a black-and-white
+image where white pixels indicate the regions to check for motion).</p>
+<p>The improved templatematch is more robust in the presence of noise, and
+can detect small but significant changes against large template images.</p>
+<p>Other changes since 0.3:</p>
+<ul class="simple">
+<li>Bash-completion script for stbt.</li>
+<li>stbt no longer reads configuration from $PWD/stbt.conf.</li>
+<li>extra/jenkins-stbt-run is a shell script that illustrates how to use
+Jenkins (a continuous-integration system with a web interface) to
+schedule stbt tests and report on their results. See commit message
+d5e7983 for instructions.</li>
+</ul>
+</div>
 <div class="section" id="fixes-stbt-run-freezing-on-loss-of-input-video">
 <h2>0.3 Fixes <cite>stbt run</cite> freezing on loss of input video.</h2>
 <p>24 July 2012.</p>

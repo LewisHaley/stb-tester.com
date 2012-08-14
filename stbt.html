@@ -24,7 +24,7 @@
 
 <div id="header">
 <h1 class="title">stbt</h1>
-<h2 class="subtitle" id="a-record-playback-testing-system-for-set-top-boxes">A record + playback testing system for set-top boxes</h2>
+<h2 class="subtitle" id="a-video-capture-record-playback-system-for-automated-testing-of-set-top-boxes">A video-capture record/playback system for automated testing of set-top boxes</h2>
 </div>
 
 <div id="content">
@@ -34,11 +34,12 @@
 <col class="docinfo-content" />
 <tbody valign="top">
 <tr><th class="docinfo-name">Copyright:</th>
-<td>Copyright © 2012 YouView TV Ltd.</td></tr>
-<tr class="field"><th class="docinfo-name">License:</th><td class="field-body">LGPL v2.1 or any later version (see LICENSE file for details)</td>
+<td>Copyright © 2012 YouView TV Ltd. and others</td></tr>
+<tr class="field"><th class="docinfo-name">License:</th><td class="field-body">LGPL v2.1 or (at your option) any later version (see LICENSE file in
+the source distribution for details)</td>
 </tr>
 <tr><th class="docinfo-name">Version:</th>
-<td>0.3</td></tr>
+<td>0.4</td></tr>
 </tbody>
 </table>
 <div class="section" id="synopsis">
@@ -99,7 +100,7 @@ videotestsrc's pattern property (see <cite>gst-inspect videotestsrc</cite>).</dd
 <tr><td>&nbsp;</td><td><p class="first">A gstreamer pipeline providing a video stream to use as video output from the
 set-top box under test.  For the Hauppauge HD PVR use:</p>
 <pre class="last literal-block">
-v4l2src device=/dev/video0 ! mpegtsdemux ! video/x-h264 ! decodebin
+v4l2src device=/dev/video0 ! mpegtsdemux ! video/x-h264 ! decodebin2
 </pre>
 </td></tr>
 <tr><td class="option-group" colspan="2">
@@ -144,14 +145,13 @@ input.</dd>
 </div>
 <div class="section" id="configuration">
 <h2>CONFIGURATION</h2>
-<p>All parameters that can be passed to the stbt tools can now also be specified in
-configuration files.  Configuration is searched for in (latter taking precedence
-over earlier):</p>
+<p>All parameters that can be passed to the stbt tools can also be specified in
+configuration files. Configuration is searched for in the following files (with
+later files taking precedence):</p>
 <ol class="arabic simple">
 <li>/etc/stbt/stbt.conf</li>
 <li>~/.config/stbt/stbt.conf</li>
 <li>$STBT_CONFIG_FILE</li>
-<li>$PWD/stbt.conf</li>
 </ol>
 <p>These files are simple ini files with the form:</p>
 <pre class="literal-block">
@@ -222,31 +222,16 @@ simultaneously with at least 1 frame per second per set-top box.
 </div>
 <div class="section" id="software-requirements">
 <h2>SOFTWARE REQUIREMENTS</h2>
-<ul>
-<li><p class="first">A Unixy operating system (we have only tested on Linux; gstreamer and OpenCV
-allegedly work on BSD, Mac OS X, and possibly Windows with MingW/MSys; but
-building gst-plugins-bad, below, can be tricky).</p>
-</li>
-<li><p class="first">Drivers for any required hardware components</p>
-</li>
-<li><p class="first">gstreamer 0.10 (multimedia framework) + gst-plugins-base + gst-plugins-good.</p>
-</li>
-<li><p class="first">python (we have tested with 2.6 and 2.7) + pygst + pygtk2 (+ nose for the
-self-tests).</p>
-</li>
-<li><p class="first">OpenCV (image processing library) version &gt;= 2.0.0 and &lt;= 2.3.1
-(the version restrictions are imposed by gst-plugins-bad).</p>
-</li>
-<li><p class="first">gst-plugins-bad (for the gstreamer wrappers around OpenCV)
-built from source from the head of the 0.10 branch, with the patches from
-<a class="reference external" href="https://bugzilla.gnome.org/show_bug.cgi?id=678485">https://bugzilla.gnome.org/show_bug.cgi?id=678485</a>
-(until such time as the patches are accepted upstream).</p>
-<p>A github repo with the same patches applied is available at
-<a class="reference external" href="https://github.com/drothlis/gst-plugins-bad">https://github.com/drothlis/gst-plugins-bad</a> (branch templatematch-fixes).</p>
-</li>
-<li><p class="first">For the Hauppauge video capture device you'll need the gstreamer-ffmpeg
-package (e.g. from the rpmfusion-free repository) for H.264 decoding.</p>
-</li>
+<ul class="simple">
+<li>A Unixy operating system (we have only tested on Linux; gstreamer and OpenCV
+allegedly work on BSD, Mac OS X, and possibly Windows with MingW/MSys).</li>
+<li>Drivers for any required hardware components</li>
+<li>gstreamer 0.10 (multimedia framework) + gst-plugins-base + gst-plugins-good.</li>
+<li>python (we have tested with 2.6 and 2.7) + pygst + pygtk2 (+ nose for the
+self-tests).</li>
+<li>OpenCV (image processing library) version &gt;= 2.0.0.</li>
+<li>For the Hauppauge video capture device you'll need the gstreamer-ffmpeg
+package (e.g. from the rpmfusion-free repository) for H.264 decoding.</li>
 </ul>
 </div>
 <div class="section" id="installing-from-source">
@@ -258,7 +243,7 @@ package (e.g. from the rpmfusion-free repository) for H.264 decoding.</p>
 <h2>SETUP TIPS</h2>
 <p>Use &quot;gst-inspect templatematch&quot; to check that gstreamer can find the
 templatematch element. You may need to set GST_PLUGIN_PATH to point
-where you installed gst-plugins-bad.</p>
+where you installed libgst-stb-tester.so.</p>
 <p>Run tests/run-tests.sh to verify that your gstreamer + OpenCV installation is
 working correctly.</p>
 <p>If you plan to use real infrared emitters/receivers, use lirc's irsend(1) and
@@ -280,6 +265,9 @@ wait_for_match(&quot;filename.png&quot;, timeout_secs=10, certainty=0.99)
 
 press_until_match(&quot;KEY NAME&quot;, &quot;filename.png&quot;,
                   interval_secs=3, max_presses=10, certainty=0.99)
+
+wait_for_motion(mask=None, # Filename of mask image
+                timeout_secs=10, consecutive_frames=10)
 </pre>
 </div>
 <div class="section" id="test-script-best-practices">
@@ -300,6 +288,7 @@ for more robust tests).</li>
 <div class="section" id="see-also">
 <h2>SEE ALSO</h2>
 <ul class="simple">
+<li><a class="reference external" href="http://stb-tester.com/">http://stb-tester.com/</a></li>
 <li><a class="reference external" href="http://github.com/drothlis/stb-tester">http://github.com/drothlis/stb-tester</a></li>
 </ul>
 </div>
@@ -308,6 +297,14 @@ for more robust tests).</li>
 <ul class="simple">
 <li>Will Manley &lt;<a class="reference external" href="mailto:will&#64;williammanley.net">will&#64;williammanley.net</a>&gt;</li>
 <li>David Rothlisberger &lt;<a class="reference external" href="mailto:david&#64;rothlis.net">david&#64;rothlis.net</a>&gt;</li>
+<li>Hubert Lacote &lt;<a class="reference external" href="mailto:hubert.lacote&#64;gmail.com">hubert.lacote&#64;gmail.com</a>&gt;</li>
+</ul>
+<p>Original templatematch GStreamer element written by:</p>
+<ul class="simple">
+<li>Thomas Vander Stichele &lt;<a class="reference external" href="mailto:thomas&#64;apestaart.org">thomas&#64;apestaart.org</a>&gt;</li>
+<li>Ronald S. Bultje &lt;<a class="reference external" href="mailto:rbultje&#64;ronald.bitfreak.net">rbultje&#64;ronald.bitfreak.net</a>&gt;</li>
+<li>Michael Sheldon &lt;<a class="reference external" href="mailto:mike&#64;mikeasoft.com">mike&#64;mikeasoft.com</a>&gt;</li>
+<li>Noam Lewis &lt;<a class="reference external" href="mailto:jones.noamle&#64;gmail.com">jones.noamle&#64;gmail.com</a>&gt;</li>
 </ul>
 </div>
 
