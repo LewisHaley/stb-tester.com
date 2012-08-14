@@ -67,3 +67,5 @@ stb-tester:
 
 clean:
 	rm -f index.html stbt.html release-notes.html introduction.html
+
+.DELETE_ON_ERROR:
