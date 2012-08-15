@@ -34,6 +34,15 @@
   `cd stb-tester && git tag -l` to list the tags;
   `git show $tag` to see the date and the annotated tag message.
 
+0.5 `make install` installs stbt{-run,-record,.py} into $libexecdir
+-------------------------------------------------------------------
+
+14 August 2012.
+
+The only difference from 0.4 is this change to install locations,
+for the benefit of packagers.
+
+
 0.4 Adds gstreamer plugin, improved templatematch, motion detection
 -------------------------------------------------------------------
 
