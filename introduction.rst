@@ -47,19 +47,21 @@ keypresses, taking screenshots from the set-top box as it goes. You then
 edit the generated test script, which will look something like this::
 
     press("MENU")
-    wait_for_match("Guide.png")
+    wait_for_match("Menu.png")
     press("RIGHT")
     wait_for_match("Settings.png")
 
 **stbt run** will play back the given test script, returning an exit status of
 success or failure for easy integration with your test reporting system.
 
-Watch us record and play back a test script in XXX minutes:
+Watch us record and play back a test script in 3 minutes:
 
-.. image:: video-introduction.png
-   :class: video
-   :width: 800
-   :height: 477
+.. raw:: html
+
+    <iframe
+    src="http://player.vimeo.com/video/47773636?title=0&byline=0&portrait=0"
+    width="640" height="480" frameborder="0"
+    webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
 
 
 Modularity
@@ -99,13 +101,13 @@ In the video you saw us replace successive calls to `press` with the
 convenience function `press_until_match`. You can provide your own such
 functions — it's just python!
 
-Keeping separate copies of the same asset (like the `Guide.png` template in our
-example) for each test script is a maintenance nightmare: You don't want to
-re-record all your tests each time the UI team tweaks the graphics! So pull out
-the common steps into a separate python module, and rewrite the script to::
+Keeping separate copies of the same asset for each test script is a maintenance
+nightmare: You don't want to re-record all your tests each time the UI team
+tweaks the graphics! So pull out the common steps into a separate python
+module, and rewrite the script to::
 
     import preconditions
-    preconditions.network_settings_screen()
+    preconditions.settings_screen()
     ...
 
 `stbt run` will search for the template image in the directory that contains
@@ -178,6 +180,7 @@ stb-tester was initially developed at `YouView TV`_, and is released under the
 <div id="footer">
 <p>This article copyright © 2012 <a href="http://david.rothlis.net">David
 Röthlisberger</a>.</p>
+<p>BBC iPlayer is copyright © 2012 BBC.</p>
 </div>
 
 </body>

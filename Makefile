@@ -4,7 +4,7 @@ all: index.html stbt.html release-notes.html introduction.html
 
 deploy: index.html stbt.html release-notes.html introduction.html \
   stb-tester.css stb-tester-350px.svg stb-tester-160px.svg \
-  video-introduction.png video-introduction-thumbnail.png
+  video-introduction-thumbnail.jpg
 	mkdir static
 	cp $^ static
 	trap 'rm -rf static' EXIT; \

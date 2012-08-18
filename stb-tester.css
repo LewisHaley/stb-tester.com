@@ -32,7 +32,7 @@ html, body, div, h1, h2, h3, p, ul { margin: 0; padding: 0; border: 0; }
 .figure         { float: right; }
 #index .figure  { margin-top: -18pt; }
 
-#introduction .video { margin-left: -100px; }
+#introduction iframe { margin-left: -20px; }
 
 .footnotes      { margin: 3.6em 0; }
 
