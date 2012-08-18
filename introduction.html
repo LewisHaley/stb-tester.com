@@ -26,7 +26,7 @@
   <h1>Introducing stb-tester</h1>
   <p id="about">
     By <a href="http://david.rothlis.net">David Röthlisberger</a>.
-    Last updated 13 Aug 2012.
+    Last updated 18 Aug 2012.
   </p>
 </div>
 
@@ -41,15 +41,17 @@ keypresses, taking screenshots from the set-top box as it goes. You then
 edit the generated test script, which will look something like this:</p>
 <pre class="literal-block">
 press(&quot;MENU&quot;)
-wait_for_match(&quot;Guide.png&quot;)
+wait_for_match(&quot;Menu.png&quot;)
 press(&quot;RIGHT&quot;)
 wait_for_match(&quot;Settings.png&quot;)
 </pre>
 <p><strong>stbt run</strong> will play back the given test script, returning an exit status of
 success or failure for easy integration with your test reporting system.</p>
-<p>Watch us record and play back a test script in XXX minutes:</p>
-<img alt="video-introduction.png" class="video" src="video-introduction.png" style="width: 800px; height: 477px;" />
-<div class="section" id="modularity">
+<p>Watch us record and play back a test script in 3 minutes:</p>
+<iframe
+src="http://player.vimeo.com/video/47773636?title=0&byline=0&portrait=0"
+width="640" height="480" frameborder="0"
+webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe><div class="section" id="modularity">
 <h2>Modularity</h2>
 <p>stb-tester is written on top of <a class="reference external" href="http://gstreamer.freedesktop.org">GStreamer</a>, a library of media-handling
 components.</p>
@@ -77,13 +79,13 @@ corresponding listener<a class="footnote-reference" href="#virtualremote" id="id
 <p>In the video you saw us replace successive calls to <cite>press</cite> with the
 convenience function <cite>press_until_match</cite>. You can provide your own such
 functions — it's just python!</p>
-<p>Keeping separate copies of the same asset (like the <cite>Guide.png</cite> template in our
-example) for each test script is a maintenance nightmare: You don't want to
-re-record all your tests each time the UI team tweaks the graphics! So pull out
-the common steps into a separate python module, and rewrite the script to:</p>
+<p>Keeping separate copies of the same asset for each test script is a maintenance
+nightmare: You don't want to re-record all your tests each time the UI team
+tweaks the graphics! So pull out the common steps into a separate python
+module, and rewrite the script to:</p>
 <pre class="literal-block">
 import preconditions
-preconditions.network_settings_screen()
+preconditions.settings_screen()
 ...
 </pre>
 <p><cite>stbt run</cite> will search for the template image in the directory that contains
@@ -114,8 +116,8 @@ very high bar!</p>
 <table class="docutils footnote" frame="void" id="small" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>As of release 0.3: 700 lines of python code, and a GStreamer
-plugin totalling 500 lines of C code. stb-tester is essentially an
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>As of release 0.5: 860 lines of python code, and a GStreamer
+plugin totalling 1200 lines of C code. stb-tester is essentially an
 integration exercise: <a class="reference external" href="http://gstreamer.freedesktop.org">GStreamer</a>, <a class="reference external" href="http://opencv.willowgarage.com">OpenCV</a>, <a class="reference external" href="http://www.lirc.org">LIRC</a> and Video4Linux do
 all the work.</td></tr>
 </tbody>
@@ -157,6 +159,7 @@ simple shell script.</td></tr>
 <div id="footer">
 <p>This article copyright © 2012 <a href="http://david.rothlis.net">David
 Röthlisberger</a>.</p>
+<p>BBC iPlayer is copyright © 2012 BBC.</p>
 </div>
 
 </body>

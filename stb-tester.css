@@ -32,7 +32,7 @@ html, body, div, h1, h2, h3, p, ul { margin: 0; padding: 0; border: 0; }
 .figure         { float: right; }
 #index .figure  { margin-top: -18pt; }
 
-#introduction .video { margin-left: -100px; }
+#introduction iframe { margin-left: -20px; }
 
 .footnotes      { margin: 3.6em 0; }
 
@@ -54,8 +54,9 @@ a               { color: #007; }
 sup             { line-height: 0; }
 
 #header p       { font-style: italic; }
+#header #about  { font-size: 10pt; line-height: 1.8; margin: 1.8em 0; }
 #header #about,
-#header #about a { color: #777; }
+#header #about a { color: #777; text-decoration: none; }
 
 #footer         { font-size: 10pt; color: #777; }
 #footer p       { margin: 0; }
