@@ -145,8 +145,8 @@ stb-tester was initially developed at `YouView TV`_, and is released under the
 
 .. container:: footnotes
 
-  .. [#small] As of release 0.3: 700 lines of python code, and a GStreamer
-     plugin totalling 500 lines of C code. stb-tester is essentially an
+  .. [#small] As of release 0.5: 860 lines of python code, and a GStreamer
+     plugin totalling 1200 lines of C code. stb-tester is essentially an
      integration exercise: `GStreamer`_, `OpenCV`_, `LIRC`_ and Video4Linux do
      all the work.
 
