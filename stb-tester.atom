@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title>stb-tester articles &amp; releases</title>
+  <link href="http://stb-tester.com/" />
+  <link rel="self" type="application/atom+xml"
+        href="http://stb-tester.com/stb-tester.atom" />
+  <id>http://stb-tester.com/stb-tester.atom</id>
+  <author>
+    <name>The stb-tester project</name>
+  </author>
+  <updated>2012-08-21T08:00:00Z</updated>
+
+  <entry>
+    <title>stb-tester 0.1 release notes: Initial internal release</title>
+    <link rel="alternate"
+      href="http://stb-tester.com/release-notes.html#initial-internal-release" />
+    <id>http://stb-tester.com/release-notes.html#initial-internal-release</id>
+    <updated>2012-06-21T10:29:00Z</updated>
+    <summary type="html">
+      <![CDATA[
+        <p>Initial internal release.</p>
+      ]]>
+    </summary>
+  </entry>
+
+  <entry>
+    <title>
+      stb-tester 0.1.1 release notes: Initial internal release,
+      with packaging fixes
+    </title>
+    <link rel="alternate"
+      href="http://stb-tester.com/release-notes.html#initial-internal-release-with-packaging-fixes" />
+    <id>http://stb-tester.com/release-notes.html#initial-internal-release-with-packaging-fixes</id>
+    <updated>2012-06-21T13:03:00Z</updated>
+    <summary type="html">
+      <![CDATA[
+        <p>The difference from 0.1 is that <cite>make install</cite> now works
+        correctly from a dist tarball.</p>
+      ]]>
+    </summary>
+  </entry>
+
+  <entry>
+    <title>
+      stb-tester 0.2 release notes: Adds configurability, IR blaster support
+    </title>
+    <link rel="alternate"
+      href="http://stb-tester.com/release-notes.html#adds-configurability-ir-blaster-support" />
+    <id>http://stb-tester.com/release-notes.html#adds-configurability-ir-blaster-support</id>
+    <updated>2012-07-06T07:24:00Z</updated>
+    <summary type="html">
+      <![CDATA[
+        <p>Major changes since 0.1.1:</p>
+        <ul class="simple">
+        <li>The source &amp; sink gstreamer pipelines, the input &amp; output
+        remote control, and the input &amp; output script filename, are all
+        configurable.</li>
+        <li>Support for LIRC-based infrared emitter &amp; receiver hardware.</li>
+        <li>Handle gstreamer errors.</li>
+        <li>Automated self-tests.</li>
+      ]]>
+    </summary>
+  </entry>
+
+  <entry>
+    <title>
+      stb-tester 0.3 release notes: Fixes `stbt run` freezing on loss of input
+      video
+    </title>
+    <link rel="alternate"
+      href="http://stb-tester.com/release-notes.html#fixes-stbt-run-freezing-on-loss-of-input-video" />
+    <id>http://stb-tester.com/release-notes.html#fixes-stbt-run-freezing-on-loss-of-input-video</id>
+    <updated>2012-07-24T15:05:00Z</updated>
+    <summary type="html">
+      <![CDATA[
+        <p>You will still see the blue screen when input video cuts out, but
+          now <cite>stbt run</cite> should recover after 5 - 10 seconds and
+          continue running the test script.</p>
+        <p>Other changes since 0.2:</p>
+        <ul class="simple">
+          <li>Fix VirtualRemote recorder.</li>
+          <li>Clearer error messages on VirtualRemote failure to connect.</li>
+          <li>Added <cite>certainty</cite> optional argument to
+            <cite>press_until_match</cite> (<cite>wait_for_match</cite> already
+            takes <cite>certainty</cite>).</li>
+          <li><cite>man stbt</cite> documents the optional arguments to
+            <cite>wait_for_match</cite> and <cite>press_until_match</cite>.</li>
+        </ul>
+      ]]>
+    </summary>
+  </entry>
+
+  <entry>
+    <title>
+      stb-tester 0.4 release notes: Adds gstreamer plugin, improved
+      templatematch, motion detection
+    </title>
+    <link rel="alternate"
+      href="http://stb-tester.com/release-notes.html#adds-gstreamer-plugin-improved-templatematch-motion-detection" />
+    <id>http://stb-tester.com/release-notes.html#adds-gstreamer-plugin-improved-templatematch-motion-detection</id>
+    <updated>2012-08-14T12:55:00Z</updated>
+    <summary type="html">
+      <![CDATA[
+        <p>New &quot;libgst-stb-tester.so&quot; gstreamer plugin with
+          stbt-templatematch (copied from gst-plugins-bad and improved) and
+          stbt-motiondetect elements.</p>
+        <p>stbt scripts can use &quot;wait_for_motion&quot; to assert that
+          video is playing. &quot;wait_for_motion&quot; takes an optional
+          &quot;mask&quot; parameter (a black-and-white image where white
+          pixels indicate the regions to check for motion).</p>
+        <p>The improved templatematch is more robust in the presence of noise,
+          and can detect small but significant changes against large template
+          images.</p>
+        <p>Other changes since 0.3:</p>
+        <ul class="simple">
+          <li>Bash-completion script for stbt.</li>
+          <li>stbt no longer reads configuration from $PWD/stbt.conf.</li>
+          <li>extra/jenkins-stbt-run is a shell script that illustrates how to
+            use Jenkins (a continuous-integration system with a web interface)
+            to schedule stbt tests and report on their results. See commit
+            message d5e7983 for instructions.</li>
+        </ul>
+      ]]>
+    </summary>
+  </entry>
+
+  <entry>
+    <title>
+      stb-tester 0.5 release notes: `make install` installs
+      stbt{-run,-record,.py} into $libexecdir
+    </title>
+    <link rel="alternate"
+      href="http://stb-tester.com/release-notes.html#make-install-installs-stbt-run-record-py-into-libexecdir" />
+    <id>http://stb-tester.com/release-notes.html#make-install-installs-stbt-run-record-py-into-libexecdir</id>
+    <updated>2012-08-15T09:08:00Z</updated>
+    <summary type="html">
+      <![CDATA[
+        <p>The only difference from 0.4 is this change to install locations,
+        for the benefit of packagers.</p>
+      ]]>
+    </summary>
+  </entry>
+
+  <entry>
+    <title>stbt man page</title>
+    <link rel="alternate" href="http://stb-tester.com/stbt.html" />
+    <id>http://stb-tester.com/stbt.html</id>
+    <updated>2012-08-14T12:38:00Z</updated>
+    <summary type="html">
+      <![CDATA[
+        <p>stbt(1): A video-capture record/playback system for automated testing
+          of set-top boxes.</p>
+        <p>...</p>
+      ]]>
+    </summary>
+  </entry>
+
+  <entry>
+    <title>Introducing stb-tester</title>
+    <link rel="alternate" href="http://stb-tester.com/introduction.html" />
+    <id>http://stb-tester.com/introduction.html</id>
+    <updated>2012-08-18T15:08:00Z</updated>
+    <author>
+      <name>David Röthlisberger</name>
+    </author>
+    <summary type="html">
+      <![CDATA[
+        <p>stb-tester is an open-source system for automated testing of set-top
+        boxes and similar devices.</p>
+        <p>stb-tester is a collection of small command-line tools ...</p>
+      ]]>
+    </summary>
+  </entry>
+
+</feed>
