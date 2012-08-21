@@ -3,7 +3,7 @@ description := A video-capture record/playback testing system
 all: index.html stbt.html release-notes.html introduction.html
 
 deploy: index.html stbt.html release-notes.html introduction.html \
-  stb-tester.css stb-tester-350px.svg stb-tester-160px.svg \
+  stb-tester.atom stb-tester.css stb-tester-350px.svg stb-tester-160px.svg \
   video-introduction-thumbnail.jpg
 	mkdir static
 	cp $^ static
