@@ -347,8 +347,12 @@ questions, let us know! You'll find us on the `mailing list`_.
 </div>
 
 <div id="footer">
-<p>This article copyright © 2012 <a href="http://david.rothlis.net">David
-Röthlisberger</a>.</p>
+<p>
+  This article copyright © 2012 <a href="http://david.rothlis.net">David
+  Röthlisberger</a>.<br />
+  Released under the <a href="http://www.gnu.org/copyleft/fdl.html">GNU Free
+  Documentation License</a>.
+</p>
 </div>
 
 </body>
