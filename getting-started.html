@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>stb-tester: Getting started</title>
+  <link href="stb-tester.css" media="all" rel="stylesheet" type="text/css" />
+
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-34036034-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+</head>
+
+<!-- Copyright 2012 David Röthlisberger <david@rothlis.net>. All rights reserved. -->
+
+<body id="getting-started">
+
+<div id="header">
+  <h1>stb-tester: Getting started</h1>
+  <p id="about">
+    By <a href="http://david.rothlis.net">David Röthlisberger</a>.
+    Last updated 3 Sep 2012.
+  </p>
+</div>
+
+<div id="content">
+
+<p>The following instructions assume a basic knowledge of the Unix command line
+and of your system's package manager, and that you have read <a class="reference external" href="introduction.html">&quot;Introducing
+stb-tester&quot;</a>.</p>
+<div class="section" id="gstreamer-primer">
+<h2>GStreamer primer</h2>
+<p><a class="reference external" href="http://stb-tester.com">stb-tester</a> is built on top of <a class="reference external" href="http://gstreamer.freedesktop.org">GStreamer</a>, a library of media-handling
+components. So first of all install the <strong>gstreamer</strong> and <strong>gst-plugins-base</strong>
+packages (on some systems the latter will be called <em>gstreamer</em>-plugins-base).
+Verify by running:</p>
+<pre class="literal-block">
+gst-launch videotestsrc ! ximagesink
+</pre>
+<img alt="videotestsrc.png" src="videotestsrc.png" style="width: 267px; height: 224px;" />
+<p>You should see an X window with the test pattern shown at right.</p>
+<p><strong>gst-launch</strong> takes a GStreamer <em>pipeline</em> — the &quot;<strong>!</strong>&quot; is the GStreamer
+equivalent of the Unix pipe &quot;<strong>|</strong>&quot;.</p>
+<p>If your system supports the XVideo standard, you can use <strong>xvimagesink</strong>
+instead. Or <strong>autovideosink</strong> (from the gst-plugins-good package) which selects
+the best sink available (in theory; on my OS X system it doesn't work). Or
+<strong>fakesink</strong>, which is a null sink—but then you won't see anything at all. Or
+<strong>tcpclientsink</strong> to stream the video to a <strong>tcpserversrc</strong> on another
+computer. Or <strong>filesink</strong> to save the data to disk.</p>
+<p>GStreamer elements can be configured by setting their <strong>properties</strong>:</p>
+<pre class="literal-block">
+gst-launch videotestsrc pattern=1 ! ximagesink
+</pre>
+<p>Use <strong>gst-inspect</strong> to list an element's properties:</p>
+<pre class="literal-block">
+gst-inspect videotestsrc
+</pre>
+<p>To debug GStreamer pipelines you can tell <tt class="docutils literal"><span class="pre">gst-launch</span></tt> to print debug
+messages for the entire pipeline or individual elements. See the
+<a class="reference external" href="http://linux.die.net/man/1/gst-launch-0.10">gst-launch(1)</a> man page for details.</p>
+</div>
+<div class="section" id="building-installing-stb-tester">
+<h2>Building &amp; installing stb-tester</h2>
+<p>To build stb-tester you will need to install the following packages:
+<strong>gstreamer-devel</strong>, <strong>gstreamer-plugins-base-devel</strong>, <strong>opencv-devel</strong>, and
+<strong>python-docutils</strong> (to build the documentation). Then:</p>
+<pre class="literal-block">
+git clone git://github.com/drothlis/stb-tester.git
+make prefix=$HOME
+make prefix=$HOME install
+</pre>
+<p>This will install the <tt class="docutils literal">stbt</tt> command-line program to <tt class="docutils literal">$HOME/bin</tt>, and the
+<tt class="docutils literal"><span class="pre">libgst-stb-tester.so</span></tt> GStreamer plugin to <tt class="docutils literal"><span class="pre">$HOME/.gstreamer-0.10/plugins</span></tt>,
+which is on GStreamer's search path.</p>
+<p>To test that stb-tester's GStreamer plugin has been installed correctly:</p>
+<pre class="literal-block">
+gst-launch videotestsrc \
+    ! stbt-templatematch template=stb-tester/tests/videotestsrc-bw.png \
+    ! ffmpegcolorspace ! ximagesink
+</pre>
+<img alt="videotestsrc-templatematch.png" src="videotestsrc-templatematch.png" style="width: 267px; height: 224px;" />
+<p>You should see a red border around the area matched by the
+<strong>stbt-templatematch</strong> element.</p>
+<p>You can also run <strong>make check</strong> which will launch several pipelines like the
+above and verify they work by listening for certain messages on the GStreamer
+bus.</p>
+</div>
+<div class="section" id="gstreamer-primer-caps">
+<h2>GStreamer primer: Caps</h2>
+<p>Each GStreamer element supports one or more specific media formats on its
+<strong>source</strong> (output) and <strong>sink</strong> (input) pads. GStreamer calls this the
+element's <strong>capabilities</strong> or &quot;<strong>caps</strong>&quot;.</p>
+<p><strong>gst-inspect</strong> will list an element's caps:</p>
+<pre class="literal-block">
+gst-inspect stbt-templatematch
+</pre>
+<div class="figure container">
+<pre class="literal-block">
+Pad Templates:
+  SINK template: 'sink'
+    Availability: Always
+    Capabilities:
+      video/x-raw-rgb
+                    bpp: 24
+                  depth: 24
+             endianness: 4321
+               red_mask: 255
+             green_mask: 65280
+              blue_mask: 16711680
+                  width: [ 1, 2147483647 ]
+                 height: [ 1, 2147483647 ]
+              framerate: [ 0/1, 2147483647/1 ]
+  SRC template: 'src'
+    Availability: Always
+    Capabilities:
+      video/x-raw-rgb
+                    bpp: 24
+                  depth: 24
+             endianness: 4321
+               red_mask: 255
+             green_mask: 65280
+              blue_mask: 16711680
+                  width: [ 1, 2147483647 ]
+                 height: [ 1, 2147483647 ]
+              framerate: [ 0/1, 2147483647/1 ]&lt;/code&gt;
+</pre>
+<p>stbt-templatematch caps</p>
+</div>
+<p>stbt-templatematch's <strong>sink</strong> pad only accepts one format, <strong>video/x-raw-rgb</strong>
+with specific red, green and blue masks that correspond to BGR channel order.
+(In other words, RGB and BGR are both called &quot;video/x-raw-rgb&quot; but with
+different channel masks.)</p>
+<p>videotestsrc's <strong>source</strong> pad can emit many different formats, including the
+BGR expected by stbt-templatematch, so these two elements can be connected
+together. When the pipeline starts they will negotiate the best format to use.</p>
+<p>ximagesink, however, does not accept BGR on its source pad, so we inserted the
+<strong>ffmpegcolorspace</strong> element to convert each video frame to a format understood
+by ximagesink. Have a look at ffmpegcolorspace's caps with <tt class="docutils literal"><span class="pre">gst-inspect</span></tt>.</p>
+</div>
+<div class="section" id="stbt-record">
+<h2>stbt record</h2>
+<p>Now let's run stb-tester itself. The command line tool is <strong>stbt</strong>:</p>
+<pre class="literal-block">
+stbt record \
+    --source-pipeline=videotestsrc \
+    --sink-pipeline='ximagesink sync=false' \
+    --control-recorder=file:///dev/stdin \
+    --control=test
+</pre>
+<p><strong>stbt record</strong> will start recording a test script that can be run later with
+<strong>stbt run</strong>.</p>
+<p><strong>source-pipeline</strong> is a GStreamer pipeline that outputs video from the system
+under test. For this tutorial we're using videotestsrc, but in practice you
+would use something like v4l2src (followed by a demuxer and decoder if needed;
+source-pipeline should output raw video in a format understood by
+ffmpegcolorspace).</p>
+<p><strong>sink-pipeline</strong> is the familiar sink to display video on screen. In an
+automated test rig running <tt class="docutils literal">stbt</tt> continuously, you might set sink-pipeline
+to a fakesink, or a filesink (to log a video of the test run), or a tee to an
+ximagesink (for monitoring) <em>and</em> to a filesink.</p>
+<p><tt class="docutils literal">stbt record</tt> will listen for remote-control keypresses on the
+<strong>control-recorder</strong> and will forward those keypresses to the system under test
+using the <strong>control</strong>.</p>
+<p>In real use you will probably want the <strong>lirc</strong> control-recorder, which will
+use a USB infrared receiver (see <a class="reference external" href="#using-a-real-control">below</a> for details).
+Here we use standard input, so we will just type key names (in the format
+expected by the <strong>control</strong>) into the terminal.</p>
+<p><strong>control</strong> will also usually be a lirc infrared emitter, but here we're using
+a special <strong>test</strong> control that will change the videotestsrc's pattern
+property.</p>
+<p>Now type <tt class="docutils literal">15</tt> into the terminal (and press return) and notice that the video
+pattern has changed. Now type <tt class="docutils literal">10</tt>, and <tt class="docutils literal">1</tt>, and finish with Control-D or
+Control-C.</p>
+</div>
+<div class="section" id="the-test-script">
+<h2>The test script</h2>
+<p><tt class="docutils literal">stbt record</tt> has created <strong>test.py</strong> and three png <strong>screenshots</strong>. Use an
+image editor to crop the first two screenshots to what you want your test
+script to match. When capturing from a real set-top box, this is most likely to
+be a GUI element like a button or a logo.</p>
+<p>The third screenshot (if you typed <tt class="docutils literal">1</tt> into standard input as per the
+instructions in the previous section) will be random noise so whatever area you
+crop is unlikely to be found as an exact match when you re-run the test case;
+delete this screenshot.</p>
+<p>Edit the test script to:</p>
+<pre class="literal-block">
+press('15')
+wait_for_match('0000-15-complete.png')
+press('10')
+wait_for_match('0001-10-complete.png')
+press('1')
+wait_for_motion()
+</pre>
+<p><strong>press</strong> takes a string that must be understood by the control you specify on
+the <tt class="docutils literal">stbt</tt> command line.</p>
+<p><strong>wait_for_match</strong> looks for the specified image in the source video stream.
+The image can be specified as an absolute path, or a relative path from the
+location of the test script. It will raise a MatchTimeout if no match is found.</p>
+<p><strong>wait_for_motion</strong> looks for changes in consecutive frames of the source video
+stream. It will raise a MotionTimeout if no motion is detected.</p>
+<p>See <a class="reference external" href="stbt.html#test-script-format">&quot;Test script format&quot; in the stbt(1) man page</a> for details.</p>
+<p>Note that if you want your test script to be the slightest bit maintainable,
+you should rename the screenshots to something that reflects their content.</p>
+</div>
+<div class="section" id="stbt-run">
+<h2>stbt run</h2>
+<p>Now use <strong>stbt run</strong> to run the test script we just recorded:</p>
+<pre class="literal-block">
+stbt run \
+    --source-pipeline=videotestsrc \
+    --sink-pipeline='ximagesink sync=false' \
+    --control=test \
+    test.py
+</pre>
+<p>Check <tt class="docutils literal">stbt</tt>'s exit status (<tt class="docutils literal">echo $?</tt>) for success or failure.</p>
+</div>
+<div class="section" id="config-files">
+<h2>Config files</h2>
+<p>To save typing out the same <tt class="docutils literal"><span class="pre">--source-pipeline</span></tt>, <tt class="docutils literal"><span class="pre">--sink-pipeline</span></tt>,
+<tt class="docutils literal"><span class="pre">--control</span></tt> and <tt class="docutils literal"><span class="pre">--control-recorder</span></tt> options over and over on the
+<tt class="docutils literal">stbt</tt> command line, you can create a config file with default values.
+See <a class="reference external" href="stbt.html#configuration">&quot;Configuration&quot; in the stbt(1) man page</a> for details.</p>
+<p>Check the default values reported by <tt class="docutils literal">stbt run <span class="pre">--help</span></tt> to confirm that your
+config file is being read.</p>
+</div>
+<div class="section" id="using-a-real-video-source">
+<h2>Using a real video source</h2>
+<p>Using video from a real set-top box is simply a matter of replacing <tt class="docutils literal">stbt</tt>'s
+<strong>source-pipeline</strong> argument. The difficult part is finding a video capture
+device with good quality, well supported drivers.</p>
+<p>We use the <a class="reference external" href="http://www.hauppauge.com/site/products/data_hdpvr.html">Hauppauge HD PVR</a>, which takes HD component video up to 1080i,
+with the following <tt class="docutils literal"><span class="pre">source-pipeline</span></tt>:</p>
+<pre class="literal-block">
+v4l2src device=/dev/video0 ! mpegtsdemux ! video/x-h264 ! decodebin2
+</pre>
+<p><strong>v4l2src</strong> is a source element that should work with any device with
+Video-for-Linux drivers. The Hauppauge HD PVR has an <a class="reference external" href="http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=tree;f=drivers/media/video/hdpvr">open-source driver</a>
+already present in recent versions of the Linux kernel.</p>
+<p>The HD PVR produces MPEG-TS containing H.264, hence the remainder of the
+pipeline. The <tt class="docutils literal"><span class="pre">video/x-h264</span></tt> caps is there to throw away the audio component
+of the stream (without it, decodebin2 would still figure out that the stream is
+in H.264 format by negotiating with the mpegtsdemux element). stb-tester
+doesn't currently support audio, but it is on the roadmap.</p>
+<p>Make sure you get your own video capture pipeline working with <tt class="docutils literal"><span class="pre">gst-launch</span></tt>
+before attempting to use it with <tt class="docutils literal">stbt</tt>.</p>
+</div>
+<div class="section" id="using-a-real-control">
+<h2>Using a real control</h2>
+<p>To control the set-top box under test via infra-red signals, you will need a
+USB infra-red emitter supported by <a class="reference external" href="http://www.lirc.org">LIRC</a>, such as the <a class="reference external" href="http://www.redrat.co.uk/products/index.html">RedRat3</a>.</p>
+<p>Install the <strong>lirc</strong> package, start the <strong>lircd</strong> daemon, record a
+<strong>lircd.conf</strong> config file for your particular remote control with <a class="reference external" href="http://www.lirc.org/html/irrecord.html">irrecord</a>
+(you will need an infra-red receiver; the RedRat3 is both emitter and
+receiver), and test the emitter with <a class="reference external" href="http://www.lirc.org/html/irsend.html">irsend</a>.</p>
+<p>Then set <tt class="docutils literal">stbt</tt>'s <tt class="docutils literal"><span class="pre">--control</span></tt> to <strong>lirc::control_name</strong>, where
+<em>control_name</em> is the name specified in your <tt class="docutils literal">lircd.conf</tt>.</p>
+<p><tt class="docutils literal"><span class="pre">--control-recorder</span></tt> (used for recording test cases with <tt class="docutils literal">stbt
+record</tt>) also takes a similar lirc configuration string. (See
+<a class="reference external" href="stbt.html#options">&quot;Options&quot; in the stbt(1) man page</a> for details.)</p>
+<p>For non infra-red control methods, add your own receiver and emitter
+code to stb-tester. Currently you'd have to edit <tt class="docutils literal">stbt.py</tt> directly,
+but contact us first and we'll work out some kind of pluggable API.</p>
+</div>
+<div class="section" id="get-in-touch">
+<h2>Get in touch</h2>
+<p>If you have found stb-tester useful, or just intriguing, or you have any
+questions, let us know! You'll find us on the <a class="reference external" href="http://groups.google.com/group/stb-tester">mailing list</a>.</p>
+</div>
+
+
+</div>
+
+<div id="footer">
+<p>
+  This article copyright © 2012 <a href="http://david.rothlis.net">David
+  Röthlisberger</a>.<br />
+  Released under the <a href="http://www.gnu.org/copyleft/fdl.html">GNU Free
+  Documentation License</a>.
+</p>
+</div>
+
+</body>
+</html>

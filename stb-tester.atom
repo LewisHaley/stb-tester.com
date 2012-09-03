@@ -173,4 +173,23 @@
     </summary>
   </entry>
 
+  <entry>
+    <title>stb-tester: Getting started</title>
+    <link rel="alternate" href="http://stb-tester.com/getting-started.html" />
+    <id>http://stb-tester.com/getting-started.html</id>
+    <updated>2012-09-03T06:34:00Z</updated>
+    <author>
+      <name>David Röthlisberger</name>
+    </author>
+    <summary type="html">
+      <![CDATA[
+        <p>The following instructions assume a basic knowledge of the Unix
+        command line and of your system's package manager, and that you have
+        read <a href="http://stb-tester.com/introduction.html">&quot;Introducing
+        stb-tester&quot;</a>.</p>
+        <p>...</p>
+      ]]>
+    </summary>
+  </entry>
+
 </feed>
