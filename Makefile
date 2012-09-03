@@ -1,11 +1,14 @@
 description := A video-capture record/playback testing system
 
-all: index.html stbt.html release-notes.html introduction.html
+ARTICLES := release-notes.html introduction.html getting-started.html
 
-deploy: index.html stbt.html release-notes.html introduction.html \
+all: index.html stbt.html $(ARTICLES)
+
+deploy: index.html stbt.html $(ARTICLES) \
   stb-tester.css stb-tester-350px.svg stb-tester-160px.svg \
   stb-tester.atom atom.png \
-  video-introduction-thumbnail.jpg
+  video-introduction-thumbnail.jpg \
+  videotestsrc.png videotestsrc-templatematch.png
 	mkdir static
 	cp $^ static
 	trap 'rm -rf static' EXIT; \
@@ -34,7 +37,7 @@ stbt.html: stb-tester/README.rst stb-tester/VERSION stbt.html.template
 	> $@
 
 rst_markers := /Begin reStructuredText content/,/End reStructuredText content/
-introduction.html release-notes.html: %.html: %.rst
+$(ARTICLES): %.html: %.rst
 	@[ -n "$$BASH_VERSINFO" ] && [ "$$BASH_VERSINFO" -ge 4 ] || { \
 	    echo "ERROR: Requires bash version 4." >&2; \
 	    echo "Use 'make SHELL=/path/to/bash'" >&2; exit 1; }
@@ -67,6 +70,6 @@ stb-tester:
 	@exit 1
 
 clean:
-	rm -f index.html stbt.html release-notes.html introduction.html
+	rm -f index.html stbt.html $(ARTICLES)
 
 .DELETE_ON_ERROR:
