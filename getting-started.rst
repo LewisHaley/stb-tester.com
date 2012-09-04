@@ -294,6 +294,9 @@ of the stream (without it, decodebin2 would still figure out that the stream is
 in H.264 format by negotiating with the mpegtsdemux element). stb-tester
 doesn't currently support audio, but it is on the roadmap.
 
+Note that mpegtsdemux is from the gst-plugins-bad package, and decodebin2
+requires the gst-ffmpeg package in order to decode H.264.
+
 Make sure you get your own video capture pipeline working with ``gst-launch``
 before attempting to use it with ``stbt``.
 
