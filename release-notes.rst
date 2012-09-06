@@ -34,6 +34,51 @@
   `cd stb-tester && git tag -l` to list the tags;
   `git show $tag` to see the date and the annotated tag message.
 
+0.6 Improves templatematch, adds `--verbose` flag, `certainty` renamed to `noise_threshold`
+-------------------------------------------------------------------------------------------
+
+5 September 2012.
+
+The templatematch algorithm is more precise (see commit ee28b8e for
+details). Taking advantage of this, `wait_for_match` now waits by
+default for only one match.
+
+The optional parameter `certainty` of `wait_for_match` and
+`press_until_match` has been removed. Since 0.4 it actually didn't have
+any effect. It has been replaced with the parameter `noise_threshold`,
+a floating-point value between 0 and 1 that defaults to 0.16. Increase
+it to be more tolerant to noise (small differences between the desired
+template and the source video frame).
+
+Debug output is disabled by default; use `--verbose` or `-v` to enable.
+Use `-v -v` (or `-vv`) to enable additional debug, including dumping of
+intermediate images by the stbt-templatematch and stbt-motiondetect
+GStreamer elements (this is extremely verbose, and isn't intended for
+end users).
+
+libgst-stb-tester.so's `stbt-templatematch` element can now be installed
+alongside libgstopencv.so's `templatematch` element.
+
+MatchTimeout is reported correctly if the GStreamer pipeline failed to
+start due to a v4l2 error (even better would be to detect the v4l2 error
+itself).
+
+Limit the maximum attempts to restart the pipeline in case of underrun
+(e.g. on loss of input video signal). Previously, `stbt run` attempted
+to restart the pipeline infinitely.
+
+Fix `make install` with Ubuntu's shell (dash).
+
+Other non-user-visible and trivial changes since 0.5:
+
+* stbt-templatematch bus bessage's parameter `result` is renamed to
+  `match` and is now a boolean.
+* `make check` returns the correct exit status for failing self-tests.
+* The bash-completion script completes the `--help` flag.
+* Fix "unknown property debugDirectory" warning from
+  `stbt-templatematch` element.
+
+
 0.5 `make install` installs stbt{-run,-record,.py} into $libexecdir
 -------------------------------------------------------------------
 

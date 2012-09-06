@@ -143,6 +143,58 @@
   </entry>
 
   <entry>
+    <title>
+      stb-tester 0.6 release notes: Improves templatematch, adds `--verbose`
+      flag, `certainty` renamed to `noise_threshold`
+    </title>
+    <link rel="alternate"
+      href="http://stb-tester.com/release-notes.html#improves-templatematch-adds-verbose-flag-certainty-renamed-to-noise-threshold" />
+    <id>http://stb-tester.com/release-notes.html#improves-templatematch-adds-verbose-flag-certainty-renamed-to-noise-threshold</id>
+    <updated>2012-09-05T16:22:00Z</updated>
+    <summary type="html">
+      <![CDATA[
+        <p>The templatematch algorithm is more precise (see commit ee28b8e for
+          details). Taking advantage of this, <cite>wait_for_match</cite> now
+          waits by default for only one match.</p>
+        <p>The optional parameter <cite>certainty</cite> of
+          <cite>wait_for_match</cite> and <cite>press_until_match</cite> has
+          been removed. Since 0.4 it actually didn't have any effect. It has
+          been replaced with the parameter <cite>noise_threshold</cite>, a
+          floating-point value between 0 and 1 that defaults to 0.16. Increase
+          it to be more tolerant to noise (small differences between the
+          desired template and the source video frame).</p>
+        <p>Debug output is disabled by default; use <cite>--verbose</cite> or
+          <cite>-v</cite> to enable. Use <cite>-v -v</cite> (or
+          <cite>-vv</cite>) to enable additional debug, including dumping of
+          intermediate images by the stbt-templatematch and stbt-motiondetect
+          GStreamer elements (this is extremely verbose, and isn't intended for
+          end users).</p>
+        <p>libgst-stb-tester.so's <cite>stbt-templatematch</cite> element can
+          now be installed alongside libgstopencv.so's
+          <cite>templatematch</cite> element.</p>
+        <p>MatchTimeout is reported correctly if the GStreamer pipeline failed
+          to start due to a v4l2 error (even better would be to detect the v4l2
+          error itself).</p>
+        <p>Limit the maximum attempts to restart the pipeline in case of
+          underrun (e.g. on loss of input video signal). Previously, <cite>stbt
+          run</cite> attempted to restart the pipeline infinitely.</p>
+        <p>Fix <cite>make install</cite> with Ubuntu's shell (dash).</p>
+        <p>Other non-user-visible and trivial changes since 0.5:</p>
+        <ul class="simple">
+          <li>stbt-templatematch bus bessage's parameter <cite>result</cite> is
+            renamed to <cite>match</cite> and is now a boolean.</li>
+          <li><cite>make check</cite> returns the correct exit status for
+            failing self-tests.</li>
+          <li>The bash-completion script completes the <cite>--help</cite>
+            flag.</li>
+          <li>Fix &quot;unknown property debugDirectory&quot; warning from
+            <cite>stbt-templatematch</cite> element.</li>
+        </ul>
+      ]]>
+    </summary>
+  </entry>
+
+  <entry>
     <title>stbt man page</title>
     <link rel="alternate" href="http://stb-tester.com/stbt.html" />
     <id>http://stb-tester.com/stbt.html</id>
