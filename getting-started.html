@@ -26,7 +26,7 @@
   <h1>stb-tester: Getting started</h1>
   <p id="about">
     By <a href="http://david.rothlis.net">David Röthlisberger</a>.
-    Last updated 3 Sep 2012.
+    Last updated 4 Sep 2012.
   </p>
 </div>
 
@@ -248,6 +248,8 @@ pipeline. The <tt class="docutils literal"><span class="pre">video/x-h264</span>
 of the stream (without it, decodebin2 would still figure out that the stream is
 in H.264 format by negotiating with the mpegtsdemux element). stb-tester
 doesn't currently support audio, but it is on the roadmap.</p>
+<p>Note that mpegtsdemux is from the gst-plugins-bad package, and decodebin2
+requires the gst-ffmpeg package in order to decode H.264.</p>
 <p>Make sure you get your own video capture pipeline working with <tt class="docutils literal"><span class="pre">gst-launch</span></tt>
 before attempting to use it with <tt class="docutils literal">stbt</tt>.</p>
 </div>

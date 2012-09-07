@@ -39,7 +39,7 @@
 the source distribution for details)</td>
 </tr>
 <tr><th class="docinfo-name">Version:</th>
-<td>0.5</td></tr>
+<td>0.6</td></tr>
 </tbody>
 </table>
 <div class="section" id="synopsis">
@@ -107,6 +107,15 @@ v4l2src device=/dev/video0 ! mpegtsdemux ! video/x-h264 ! decodebin2
 <kbd><span class="option">--sink-pipeline=<var>&lt;pipeline&gt;</var></span></kbd></td>
 </tr>
 <tr><td>&nbsp;</td><td>A gstreamer pipeline to use for video output, like <cite>xvimagesink</cite>.</td></tr>
+<tr><td class="option-group">
+<kbd><span class="option">-v</span>, <span class="option">--verbose</span></kbd></td>
+<td><p class="first">Enable debug output.</p>
+<p class="last">Specify twice to enable GStreamer element dumps to ./stbt-debug directory
+(currently only the <cite>stbt-templatematch</cite> element). Note that this will dump a
+<em>lot</em> of files -- several images per frame processed. To group the images by
+frame, sort the files by timestamp. This is intended for debugging the
+GStreamer elements; it isn't intended for end users.</p>
+</td></tr>
 </tbody>
 </table>
 </div>
@@ -241,7 +250,7 @@ package (e.g. from the rpmfusion-free repository) for H.264 decoding.</li>
 </div>
 <div class="section" id="setup-tips">
 <h2>SETUP TIPS</h2>
-<p>Use &quot;gst-inspect templatematch&quot; to check that gstreamer can find the
+<p>Use &quot;gst-inspect stbt-templatematch&quot; to check that gstreamer can find the
 templatematch element. You may need to set GST_PLUGIN_PATH to point
 where you installed libgst-stb-tester.so.</p>
 <p>Run tests/run-tests.sh to verify that your gstreamer + OpenCV installation is
@@ -261,10 +270,11 @@ and maintainability.</p>
 <pre class="literal-block">
 press(&quot;KEY NAME&quot;)
 
-wait_for_match(&quot;filename.png&quot;, timeout_secs=10, certainty=0.99)
+wait_for_match(&quot;filename.png&quot;, timeout_secs=10, consecutive_matches=1,
+               noise_threshold=0.16)
 
 press_until_match(&quot;KEY NAME&quot;, &quot;filename.png&quot;,
-                  interval_secs=3, max_presses=10, certainty=0.99)
+                  interval_secs=3, noise_threshold=0.16, max_presses=10)
 
 wait_for_motion(mask=None, # Filename of mask image
                 timeout_secs=10, consecutive_frames=10)
