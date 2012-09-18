@@ -46,6 +46,11 @@
   <li><a href="stbt.html"><code>stbt</code> man page</a></li>
 </ul>
 
+<ul>
+  <li><a href="jenkins.html">Using Jenkins to schedule &amp; report stb-tester
+      scripts</a></li>
+</ul>
+
 
 <h2>Source</h2>
 

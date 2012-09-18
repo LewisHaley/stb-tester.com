@@ -1,6 +1,7 @@
 description := A video-capture record/playback testing system
 
 ARTICLES := release-notes.html introduction.html getting-started.html
+ARTICLES += jenkins.html
 
 all: index.html stbt.html $(ARTICLES)
 
@@ -8,7 +9,8 @@ deploy: index.html stbt.html $(ARTICLES) \
   stb-tester.css stb-tester-350px.svg stb-tester-160px.svg \
   stb-tester.atom atom.png \
   video-introduction-thumbnail.jpg \
-  videotestsrc.png videotestsrc-templatematch.png
+  videotestsrc.png videotestsrc-templatematch.png \
+  stb-tester+jenkins+setup.svg jenkins+jobs.png
 	mkdir static
 	cp $^ static
 	trap 'rm -rf static' EXIT; \
