@@ -29,7 +29,7 @@ html, body, div, h1, h2, h3, p, ul { margin: 0; padding: 0; border: 0; }
   #index #header h1 { padding-left: 60px; text-align: left; }
 }
 
-.figure         { float: right; }
+.figure         { float: right; margin: 0 0 1em 1em; }
 #index .figure  { margin-top: -18pt; }
 
 #introduction iframe { margin-left: -20px; }
@@ -44,7 +44,9 @@ body            { font-family: Verdana, Arial, sans-serif;
                   font-size: 12pt; line-height: 1.5; }
 
 h1, h2, h3      { font-family: georgia, "times new roman", serif; }
-h1              { font-size: 36pt; line-height: 1; margin-bottom: 0.5em; }
+h1              { font-size: 24pt; line-height: 1; margin-bottom: 0.75em; }
+#index h1,
+#stbt h1        { font-size: 36pt; line-height: 1; margin-bottom: 0.5em; }
 h2, h3          { font-size: 14pt; line-height: 1.286; margin: 1.286em 0; }
 p, ul           { margin: 1.5em 0; }
 
@@ -83,11 +85,14 @@ pre, code       { font-family: Menlo, "DejaVu Sans Mono",
 pre             { margin: 1.5em 0 1.5em 2em; }
 .footnotes      { font-size: 10pt; line-height: 1.8; }
 
+.figure p       { margin: 0;
+                  text-align: center; font-size: 10pt; font-weight: bold; }
+
 #getting-started .figure {
-                  overflow: hidden; border: 1px solid #ccc;
-                  padding: 1em; margin: 0 0 1em 1em;
+                  overflow: hidden; border: 1px solid #ccc; padding: 1em;
                   font-size: 10pt; line-height: 1; max-width: 300px; }
-#getting-started .figure pre { margin: 0; }
+#getting-started .figure pre { margin: 0 0 1em; }
 #getting-started .pre { white-space: pre; }
-#getting-started .figure p {
-                  margin: 1em 0 0; text-align: center; font-weight: bold; }
+
+#jenkins a[href^="http://stb-tester.com"],
+#jenkins a[href^="http://jenkins-ci.org"] { font-weight: bold; }

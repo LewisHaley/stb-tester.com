@@ -244,4 +244,27 @@
     </summary>
   </entry>
 
+  <entry>
+    <title>Using Jenkins to schedule &amp; report stb-tester scripts</title>
+    <link rel="alternate" href="http://stb-tester.com/jenkins.html" />
+    <id>http://stb-tester.com/jenkins.html</id>
+    <updated>2012-09-18T09:23:00Z</updated>
+    <author>
+      <name>David Röthlisberger</name>
+    </author>
+    <summary type="html">
+      <![CDATA[
+        <p><a href="http://stb-tester.com">stb-tester</a> is an open-source
+        command-line tool that runs automated tests against a set-top box or
+        similar device by capturing and analysing its video output.
+        <a href="http://jenkins-ci.org">Jenkins</a> is an open-source
+        &quot;continuous integration&quot; tool with a web interface. Jenkins
+        is typically used to run software compilation jobs and associated unit
+        tests, but here we will use it to run stb-tester test scripts and
+        report on the results.</p>
+        <p>...</p>
+      ]]>
+    </summary>
+  </entry>
+
 </feed>
