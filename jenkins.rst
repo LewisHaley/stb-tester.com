@@ -139,7 +139,8 @@ message <https://github.com/drothlis/stb-tester/commit/d5e7983>`_.
 <div id="footer">
 <p>
   This article copyright © 2012 <a href="http://david.rothlis.net">David
-  Röthlisberger</a>. Diagram by Will Manley.<br />
+  Röthlisberger</a> and YouView TV Ltd.<br />
+  Diagram by Will Manley.<br />
   Released under the <a href="http://www.gnu.org/copyleft/fdl.html">GNU Free
   Documentation License</a>.
 </p>
