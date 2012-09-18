@@ -71,7 +71,7 @@ Fix `make install` with Ubuntu's shell (dash).
 
 Other non-user-visible and trivial changes since 0.5:
 
-* stbt-templatematch bus bessage's parameter `result` is renamed to
+* stbt-templatematch bus message's parameter `result` is renamed to
   `match` and is now a boolean.
 * `make check` returns the correct exit status for failing self-tests.
 * The bash-completion script completes the `--help` flag.
