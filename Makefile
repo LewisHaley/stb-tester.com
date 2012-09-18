@@ -10,7 +10,8 @@ deploy: index.html stbt.html $(ARTICLES) \
   stb-tester.atom atom.png \
   video-introduction-thumbnail.jpg \
   videotestsrc.png videotestsrc-templatematch.png \
-  stb-tester+jenkins+setup.svg jenkins+jobs.png
+  stb-tester+jenkins+setup.svg jenkins+jobs.png \
+  jenkins+xunit+graph.png jenkins+xunit+results.png jenkins+artifacts.png
 	mkdir static
 	cp $^ static
 	trap 'rm -rf static' EXIT; \
