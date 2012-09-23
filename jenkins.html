@@ -26,7 +26,7 @@
   <h1>Using Jenkins to schedule &amp; report stb-tester scripts</h1>
   <p id="about">
     By <a href="http://david.rothlis.net">David Röthlisberger</a>.
-    Last updated 18 Sep 2012.
+    Last updated 23 Sep 2012.
   </p>
 </div>
 
@@ -58,10 +58,12 @@ stb-tester scripts. The job can be configured to run on a specific node, or on
 any available node that has been tagged with a particular label. The job can be
 configured to run once (to be scheduled manually with a single click from the
 Jenkins home page), or continuously.</p>
-<p>The Jenkins master instructs the node to run the job; the node checks out the
-source code repository containing the stb-tester scripts, runs the scripts with
-<cite>stbt run</cite>, and writes the results into an xml file. The master then retrieves
-the xml results and other artifacts of the test run from the node.</p>
+<p>When a job is scheduled, the Jenkins master instructs the node to run the job;
+the node checks out the source code repository containing the stb-tester
+scripts, runs the scripts with <cite>stbt run</cite>, and writes the results into an xml
+file. The master then retrieves the xml results and other artifacts of the test
+run from the node. If all nodes are busy, Jenkins manages a queue of pending
+jobs.</p>
 <div class="figure container">
 <img alt="jenkins+jobs.png" src="jenkins+jobs.png" />
 <p>Jenkins jobs</p>
@@ -96,10 +98,357 @@ include custom logs, and screenshots and/or videos of the test run.</p>
 </div>
 <div class="section" id="detailed-instructions">
 <h2>Detailed instructions</h2>
-<p>I haven't finished writing the detailed instructions to configure the setup
-described above; in the meantime, see the example script <a class="reference external" href="https://github.com/drothlis/stb-tester/blob/master/extra/jenkins-stbt-run">jenkins-stbt-run</a> to
-be run on the Jenkins node, and the configuration instructions in <a class="reference external" href="https://github.com/drothlis/stb-tester/commit/d5e7983">this commit
-message</a>.</p>
+<p>The following instructions assume that the Jenkins master and nodes are all
+Unixy systems, and that you have a basic knowledge of Unix systems
+administration, the command line, and <cite>stbt</cite>.</p>
+<p>I recommend that you create an RPM, puppet script or similar mechanism to
+automate the configuration of the node PCs.</p>
+</div>
+<div class="section" id="install-stbt-on-the-node-pc">
+<h2>Install <cite>stbt</cite> on the node PC</h2>
+<p>Create a user called &quot;stb-tester&quot;<a class="footnote-reference" href="#user" id="id1"><sup>1</sup></a>. Make sure this user can read from
+the video-capture device node (typically <tt class="docutils literal">/dev/video0</tt> or <tt class="docutils literal">/dev/video1</tt>)<a class="footnote-reference" href="#video-group" id="id2"><sup>2</sup></a>.</p>
+<p>Install stb-tester and ensure that <tt class="docutils literal">stbt</tt> is on the <cite>stb-tester</cite> user's
+<tt class="docutils literal">PATH</tt>.</p>
+<p>Create a <cite>stbt</cite> configuration file in <tt class="docutils literal"><span class="pre">~stb-tester/.config/stbt/stbt.conf</span></tt><a class="footnote-reference" href="#multiple-configs" id="id3"><sup>3</sup></a> with the correct GStreamer <cite>source_pipeline</cite> and
+<cite>control</cite>. Set <tt class="docutils literal">sink_pipeline = fakesink</tt>.</p>
+<p>As the <cite>stb-tester</cite> user, checkout the repository containing your <cite>stbt</cite>
+scripts. Make sure you can checkout and update without any user interaction
+such as specifying a password (set up any ssh keys to your source control
+server as necessary.)</p>
+<p>Run a script through <cite>stbt run</cite> just to make sure everything is working
+correctly.</p>
+<p>Install Java.<a class="footnote-reference" href="#install-java" id="id4"><sup>4</sup></a></p>
+</div>
+<div class="section" id="install-jenkins">
+<h2>Install Jenkins</h2>
+<p>Install Jenkins on the master PC and make it start automatically.<a class="footnote-reference" href="#id16" id="id5"><sup>5</sup></a></p>
+<p>If you'd like to access the Jenkins web UI at the standard http port (instead
+of 8080), you will have to install a &quot;reverse proxy&quot; like apache to forward
+requests from port 80 through to the Jenkins server.<a class="footnote-reference" href="#httpd" id="id6"><sup>6</sup></a></p>
+<p>Give the <cite>jenkins</cite> user a login shell.<a class="footnote-reference" href="#login-shell" id="id7"><sup>7</sup></a></p>
+</div>
+<div class="section" id="ssh-from-jenkins-master-pc-to-node-pc">
+<h2>SSH from Jenkins master PC to node PC</h2>
+<p>On the Jenkins master PC, generate a public &amp; private key pair for the
+<cite>jenkins</cite> user.<a class="footnote-reference" href="#ssh-keygen" id="id8"><sup>8</sup></a> Install the public key on the node PC.<a class="footnote-reference" href="#public-key" id="id9"><sup>9</sup></a></p>
+<p>Ensure that you can ssh from the master PC, as user <cite>jenkins</cite>, to
+<tt class="docutils literal"><span class="pre">stb-tester&#64;node-hostname</span></tt>.<a class="footnote-reference" href="#ssh-keys-debugging" id="id10"><sup>10</sup></a> Do this at least once to
+avoid the warning <cite>&quot;the authenticity of host ... can't be established. Are you
+sure you want to continue connecting?&quot;</cite></p>
+</div>
+<div class="section" id="add-the-node-details-on-jenkins">
+<h2>Add the node details on Jenkins</h2>
+<p>In the Jenkins web interface: <cite>Manage Jenkins</cite> &gt; <cite>Manage Nodes</cite> &gt; <cite>New Node</cite>.</p>
+<ul class="simple">
+<li>Dumb Slave.</li>
+<li>Node name: Give a combination of the node PC's hostname and the system under
+test it is connected to; for example &quot;testnode1-stb123&quot;.</li>
+</ul>
+<ul class="simple">
+<li># of executors: <tt class="docutils literal">1</tt></li>
+<li>Remote FS root: <tt class="docutils literal"><span class="pre">~stb-tester/</span></tt> (or the subdirectory for this node,<a class="footnote-reference" href="#multiple-configs" id="id11"><sup>3</sup></a> if running multiple nodes on a single PC).</li>
+<li>Labels: Anything you'd like, such as the software version on the attached
+set-top box; you can enter multiple labels.</li>
+<li>Usage: Utilize this slave as much as possible.</li>
+<li>Launch method: Launch slave agents on Unix machines via SSH.<a class="footnote-reference" href="#ssh-slaves" id="id12"><sup>11</sup></a></li>
+<li>Host: The node PC's hostname.</li>
+<li>Username: <tt class="docutils literal"><span class="pre">stb-tester</span></tt></li>
+<li>Password: Leave blank.</li>
+<li>Private Key File: <tt class="docutils literal"><span class="pre">~jenkins/.ssh/id_rsa</span></tt></li>
+<li>Environment variables: Specify STBT_CONFIG_FILE if not using the default
+location.<a class="footnote-reference" href="#multiple-configs" id="id13"><sup>3</sup></a></li>
+</ul>
+<p>Check the node's status in the <cite>Manage Nodes</cite> page. Jenkins provides logs of
+the connection attempt if you have any trouble.</p>
+</div>
+<div class="section" id="create-a-job">
+<h2>Create a job</h2>
+<p>In the Jenkins web interface: <cite>New Job</cite>.</p>
+<ul class="simple">
+<li>Build a free-style software project.</li>
+<li>Job name: Give a combination of the test suite this job will run, and the
+version of the system under test that it will run on; for example &quot;sanity
+pack - 8.0rc2&quot;.</li>
+</ul>
+<ul>
+<li><p class="first">Restrict where this project can be run: Enter the label for the nodes where
+this job can be run (e.g. &quot;8.0rc2&quot;).</p>
+</li>
+<li><p class="first">Source code management: Give the details for the repository containing the
+test scripts. You may need to install the Jenkins plugin for your version
+control system.<a class="footnote-reference" href="#jenkins-plugin" id="id14"><sup>12</sup></a></p>
+</li>
+<li><p class="first">Build: Execute shell: Enter a shell script like:</p>
+<pre class="literal-block">
+stbt run path/to/test1.py
+stbt run path/to/test2.py
+</pre>
+<p>(note that the parameters like <cite>source-pipeline</cite> will be taken from the
+<cite>stbt</cite> config file you set up earlier).</p>
+</li>
+</ul>
+<p>First test the shell command directly on the node PC, logged in as <cite>stb-tester</cite>
+over ssh from the <cite>jenkins</cite> user at the master PC.<a class="footnote-reference" href="#xhost" id="id15"><sup>13</sup></a> Then try running
+the job from Jenkins: <img alt="Build Now" class="align-middle" src="jenkins+build+now.png" /></p>
+</div>
+<div class="section" id="test-results">
+<h2>Test results</h2>
+<p>At this point the shell command will become more complex, so instead of typing
+it into each job's configuration, create a shell script on the node and
+configure the Jenkins job to run this script. For a complete example see
+<a class="reference external" href="https://github.com/drothlis/stb-tester/blob/master/extra/jenkins-stbt-run">jenkins-stbt-run</a>, which takes as arguments the <cite>stbt</cite> scripts to run.</p>
+<div class="figure container">
+<pre class="literal-block">
+&lt;?xml version='1.0' encoding='UTF-8'?&gt;
+&lt;testsuites&gt;
+  &lt;testsuite name='uitests' tests='8'&gt;
+    &lt;testcase name='iPlayer_plays_video' time='152'&gt;
+      &lt;system-out&gt;...&lt;/system-out&gt;
+      &lt;system-err&gt;...&lt;/system-err&gt;
+    &lt;/testcase&gt;
+    &lt;testcase name='resume_from_active_standby' time='108'&gt;
+      &lt;failure /&gt;
+      &lt;system-out&gt;FAIL: Didn't find match ...&lt;/system-out&gt;
+      &lt;system-err&gt;...&lt;/system-err&gt;
+    &lt;/testcase&gt;
+    ...
+</pre>
+<p>results.xml</p>
+</div>
+<p><cite>jenkins-stbt-run</cite> creates a <tt class="docutils literal">results.xml</tt> file in the <a class="reference external" href="https://svn.jenkins-ci.org/trunk/hudson/dtkit/dtkit-format/dtkit-junit-model/src/main/resources/com/thalesgroup/dtkit/junit/model/xsd/junit-4.xsd">xUnit format</a>,
+containing each test's success or failure status and standard output and
+standard error logs.</p>
+<p>Install the Jenkins xUnit plugin and modify the job configuration as follows:</p>
+<ul class="simple">
+<li>Post-build Actions: Publish xUnit test result report.</li>
+<li>Add: JUnit.</li>
+<li>JUnit Pattern: <tt class="docutils literal">results.xml</tt> (this is the path to the file generated by
+<cite>jenkins-stbt-run</cite>, relative to the Jenkins workspace).</li>
+<li>Failed Tests: Total: Threshold: <tt class="docutils literal">0</tt></li>
+</ul>
+<p>(Or use the yellow &quot;unstable&quot; for test failures, and reserve the red &quot;failure&quot;
+for test <em>errors</em>. Jenkins will also mark the job as failed if the shell script
+returns a non-zero exit status.)</p>
+</div>
+<div class="section" id="artifacts">
+<h2>Artifacts</h2>
+<p>You can modify <cite>jenkins-stbt-run</cite> to collect other logs directly from the
+system under test while the <cite>stbt</cite> script is running. The xUnit xml file
+doesn't provide a place to put these logs, but you can save them as &quot;job
+artifacts&quot;, viewable from the Jenkins web interface.</p>
+<p>Modify the job configuration:</p>
+<ul class="simple">
+<li>Post-build Actions: Archive the artifacts</li>
+<li>Files to archive: <tt class="docutils literal">runs/</tt> (This is a directory created under the Jenkins
+workspace by <cite>jenkins-stbt-run</cite>; in addition to the standard output &amp; error
+logs it contains the screenshot taken by <cite>stbt run</cite> when <cite>wait_for_match</cite>
+fails.)</li>
+</ul>
+<p>At the end of the job run, Jenkins will copy the artifacts to the master PC.</p>
+</div>
+<div class="section" id="record-a-video-of-each-test-run">
+<h2>Record a video of each test run</h2>
+<div class="figure container">
+<object data="hdpvr-mp4-pipeline.svg" type="image/svg+xml">
+hdpvr-mp4-pipeline.svg</object>
+<p>Source pipeline to remux HD PVR
+<span class="raw-html"><br /></span>
+video to MP4 and save it to disk</p>
+</div>
+<p>To record a video of each test run, configure the GStreamer source or sink
+pipeline to save to a <cite>filesink</cite>. Video encoding is quite processor-intensive,
+so it is best to save the video from the capture device before decoding it. The
+example source-pipeline shown here takes the input from the Hauppauge HD PVR
+(H.264 MPEG-TS) and uses a GStreamer <em>tee</em> element to split the pipeline in
+two: One branch to save the video to disk, the second branch as the source for
+<cite>stbt</cite>. Before saving to disk it re-muxes the video into the HTML5-friendly MP4
+container, so that the video can be played directly in the browser.</p>
+<p>As always, test your pipeline directly (with <cite>gst-launch</cite>) before integrating
+it with <cite>stbt run</cite> and Jenkins.</p>
+</div>
+<div class="section" id="soak-tests">
+<h2>Soak tests</h2>
+<p>To have a job run continuously, install the Jenkins Parameterized Trigger
+plugin and modify the job configuration:</p>
+<ul class="simple">
+<li>Post-build Actions: Trigger parameterized build on other projects.</li>
+<li>Projects to build: Specify this same project.</li>
+<li>Trigger when build is: Complete (always trigger).</li>
+<li>Trigger build without parameters (unless, of course, you have actually
+configured this build to use parameters).</li>
+</ul>
+<p>Note that you have to use the Parameterized Trigger plugin even when your job
+doesn't use the Jenkins parameterized build feature; the built-in &quot;Build other
+projects&quot; post-build action doesn't work if you specify the selfsame project.</p>
+<p>It would be nice to have a Jenkins plugin where the &quot;soak-ness&quot; of the job can
+be specified when you schedule a build (without having to modify the job
+configuration), similar to the way Jenkins prompts for <a class="reference external" href="https://wiki.jenkins-ci.org/display/JENKINS/Parameterized+Build">build parameters</a>.
+Any volunteers?</p>
+</div>
+<div class="section" id="disk-space-on-the-jenkins-master-pc">
+<h2>Disk space on the Jenkins master PC</h2>
+<p>If you are saving videos of each test run, you will need to keep an eye on the
+Jenkins master's disk space.</p>
+<p>Look into the &quot;Discard old builds&quot; setting of the job configuration, and note
+that Jenkins allows you to mark an individual build as &quot;Keep this log forever&quot;,
+to exclude certain important builds (test failures, in our case) from being
+discarded automatically.</p>
+<div class="footnotes container">
+<table class="docutils footnote" frame="void" id="user" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td><p class="first">This, and all the following footnotes, give example commands for
+Fedora 17:</p>
+<pre class="last literal-block">
+useradd \
+  -c &quot;Slave for stb-tester-jenkins.example.com&quot; \
+  --create-home \
+  stb-tester
+</pre>
+</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="video-group" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2">[2]</a></td><td>I had to add the user to group &quot;video&quot; (use <tt class="docutils literal"><span class="pre">-G</span> video</tt> in
+the <cite>useradd</cite> command above).</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="multiple-configs" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[3]</td><td><em>(<a class="fn-backref" href="#id3">1</a>, <a class="fn-backref" href="#id11">2</a>, <a class="fn-backref" href="#id13">3</a>)</em> <p>If you are going to run multiple nodes on the same PC,
+you will need to create separate directories under <tt class="docutils literal"><span class="pre">~stb-tester/</span></tt> for
+each node, each containing a <cite>stbt.conf</cite>. Then, when you create the node
+configuration on the Jenkins master, you will specify <tt class="docutils literal">STBT_CONFIG_FILE</tt>
+pointing at the right <cite>stbt.conf</cite>.</p>
+<p class="last">If you have multiple video-capture devices connected to the same PC, you
+will need to specify the device nodes in each <cite>stbt.conf</cite>'s source
+pipeline in such a way that the device node won't change across reboots.
+So instead of <cite>/dev/video1</cite> which depends on the order the devices are
+connected, use <cite>/dev/v4l/by-path/...</cite>.</p>
+</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="install-java" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id4">[4]</a></td><td>The Jenkins node agent is a java program. <tt class="docutils literal">sudo yum
+install java</tt></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id16" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id5">[5]</a></td><td><p class="first"><a class="reference external" href="http://jenkins-ci.org">http://jenkins-ci.org</a> has packages for most systems. On
+Fedora 17:</p>
+<pre class="last literal-block">
+sudo wget -O /etc/yum.repos.d/jenkins.repo \
+  http://pkg.jenkins-ci.org/redhat/jenkins.repo
+sudo rpm --import \
+  http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key
+sudo yum install jenkins
+sudo chkconfig jenkins on
+sudo service jenkins start
+</pre>
+</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="httpd" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id6">[6]</a></td><td><p class="first">Installing &amp; configuring Apache on Fedora 17 (note that other
+Linux systems can be quite different, with separate config files for
+each virtual host):</p>
+<pre class="last literal-block">
+sudo yum install httpd
+cat &lt;&lt;EOF | sudo sh -c 'cat &gt;&gt; /etc/httpd/conf/httpd.conf'
+ProxyRequests On
+&lt;VirtualHost *:80&gt;
+        ServerAdmin you&#64;example.com
+        ProxyRequests Off
+        &lt;Proxy *&gt;
+                Allow from all
+        &lt;/Proxy&gt;
+        ProxyPreserveHost on
+        ProxyPass / http://localhost:8080/
+&lt;/VirtualHost&gt;
+EOF
+sudo systemctl enable httpd.service
+sudo systemctl start httpd.service
+sudo setsebool -P httpd_can_network_connect 1
+</pre>
+</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="login-shell" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id7">[7]</a></td><td>Use <tt class="docutils literal">sudo vipw</tt> to edit the password file, and for the
+<cite>jenkins</cite> user specify a valid shell (or leave it blank) instead of
+<tt class="docutils literal">/bin/false</tt>.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="ssh-keygen" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id8">[8]</a></td><td>As the <cite>jenkins</cite> user, run <tt class="docutils literal"><span class="pre">ssh-keygen</span></tt> and accept the
+default choices of <tt class="docutils literal"><span class="pre">~/.ssh/id_rsa</span></tt> and no passphrase.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="public-key" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id9">[9]</a></td><td>Add the contents of <tt class="docutils literal"><span class="pre">~jenkins/.ssh/id_rsa.pub</span></tt> from the
+master PC, to <tt class="docutils literal"><span class="pre">~stb-tester/.ssh/authorized_keys</span></tt> on the node PC.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="ssh-keys-debugging" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id10">[10]</a></td><td><p class="first">Debugging problems with SSH keys can be frustrating.
+Try restarting the SSH server on the node PC after making any changes,
+check the system and security logs (on Fedora: <tt class="docutils literal">/var/log/messages</tt> and
+<tt class="docutils literal">/var/log/secure</tt>) on the node PC after restarting the SSH server and
+after the connection attempt. Make sure the permissions on the <tt class="docutils literal"><span class="pre">~/.ssh</span></tt>
+directory are correct:</p>
+<pre class="last literal-block">
+drwx------ stb-tester ~/.ssh
+-rw------- stb-tester ~/.ssh/authorized_keys
+-rw------- stb-tester ~/.ssh/id_rsa
+-rw-r--r-- stb-tester ~/.ssh/id_rsa.pub
+</pre>
+</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="ssh-slaves" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id12">[11]</a></td><td>Jenkins will ssh to the node PC, install and launch the
+Jenkins client. This client will then communicate with the master
+directly. On older versions of Jenkins, you will have to install the <cite>SSH
+Slaves</cite> plugin to get this launch method.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="jenkins-plugin" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id14">[12]</a></td><td>Jenkins plugins are installed via the Jenkins web
+interface. Go to <cite>Manage Jenkins</cite> &gt; <cite>Manage Plugins</cite>.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="xhost" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id15">[13]</a></td><td>On the node you may need to set <cite>DISPLAY=:0</cite> and run <cite>xhost +</cite>
+(even though <cite>stbt.conf</cite> specifies &quot;sink_pipeline = fakesink&quot;, i.e. no
+video is shown on the node's screen, one of the libraries used by <cite>stbt</cite>
+still tries to connect to the X display).</td></tr>
+</tbody>
+</table>
+</div>
 </div>
 
 
@@ -108,7 +457,8 @@ message</a>.</p>
 <div id="footer">
 <p>
   This article copyright © 2012 <a href="http://david.rothlis.net">David
-  Röthlisberger</a> and YouView TV Ltd.<br />
+  Röthlisberger</a> and <a href="http://www.youview.com">YouView TV Ltd.</a>
+  <br />
   Diagram by Will Manley.<br />
   Released under the <a href="http://www.gnu.org/copyleft/fdl.html">GNU Free
   Documentation License</a>.
