@@ -10,8 +10,9 @@ deploy: index.html stbt.html $(ARTICLES) \
   stb-tester.atom atom.png \
   video-introduction-thumbnail.jpg \
   videotestsrc.png videotestsrc-templatematch.png \
-  stb-tester+jenkins+setup.svg jenkins+jobs.png \
-  jenkins+xunit+graph.png jenkins+xunit+results.png jenkins+artifacts.png
+  stb-tester+jenkins+setup.svg jenkins+jobs.png jenkins+build+now.png \
+  jenkins+xunit+graph.png jenkins+xunit+results.png jenkins+artifacts.png \
+  hdpvr-mp4-pipeline.svg
 	mkdir static
 	cp $^ static
 	trap 'rm -rf static' EXIT; \
@@ -57,6 +58,10 @@ $(ARTICLES): %.html: %.rst
 	    --initial-header-level=2 --footnote-references=superscript \
 	    --strip-comments \
 	> $@
+
+jenkins.html: hdpvr-mp4-pipeline.svg
+hdpvr-mp4-pipeline.svg: hdpvr-mp4-pipeline.dot
+	dot -Tsvg -o $@ $<
 
 
 # Requires a little manual intervention: `cd` to stb-tester and `git checkout`

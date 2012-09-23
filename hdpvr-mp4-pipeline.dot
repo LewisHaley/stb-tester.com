@@ -1,0 +1,19 @@
+digraph G {
+
+  size="3,6";
+  node [shape=box];
+  queue_1 [label="queue"];
+  queue_2 [label="queue"];
+
+  subgraph cluster1 {
+    style=dashed;
+    queue_1 -> h264parse -> "video/x-h264,stream-format=avc" ->
+    "mp4mux dts-method=reorder" -> "filesink location=video.mp4";
+    label="video save pipeline";
+  };
+
+  v4l2src -> mpegtsdemux -> "tee name=d";
+  "tee name=d" -> queue_1;
+  "tee name=d" -> queue_2 -> "video/x-h264" -> "decodebin2";
+
+}
