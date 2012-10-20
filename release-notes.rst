@@ -34,6 +34,65 @@
   `cd stb-tester && git tag -l` to list the tags;
   `git show $tag` to see the date and the annotated tag message.
 
+0.7 Exposes `detect_match` and `detect_motion`; removes `directory` argument, changes image search path
+-------------------------------------------------------------------------------------------------------
+
+21 October 2012.
+
+New functions `detect_match` and `detect_motion` provide low-level
+access to all the information provided by the `stbt-templatematch` and
+`stbt-motiondetect` GStreamer elements for each frame of video processed.
+To keep your test scripts readable, I recommend against using
+`detect_match` and `detect_motion` directly; they are intended for you
+to write helper functions that you can then use in your scripts. For an
+example see `wait_for_match` and `wait_for_motion` in stbt.py: They are
+now implemented in terms of `detect_match` and `detect_motion`.
+
+`wait_for_match`, `press_until_match` and `wait_for_motion` no longer
+accept the optional `directory` argument. In most cases the correct
+upgrade path is simply to not give the `directory` argument from your
+scripts. These functions (plus `detect_match` and `detect_motion`) now
+search for specified template or mask images by looking in their
+caller's directory, then their caller's caller's directory, etc.
+(instead of looking only in their immediate caller's directory, or the
+directory specified as an argument). This allows you to write helper
+functions that take an image filename and then call `wait_for_match`.
+See commit message 4e5cd23c for details.
+
+Bufgixes and minor changes:
+
+ * `stbt run` no longer requires an X-Windows display (unless you're
+   using an X-Windows sink in your pipeline).
+ * wait_for_motion and detect_motion visualisation: Detected motion is
+   highlighted in red in the output video, and masked-out portions of
+   the frame are darkened.
+ * Additional wait_for_motion logging with `stbt run -vv`.
+ * wait_for_motion fails immediately if a mask is given but not found
+   on the filesystem.
+ * Send an end-of-stream event in the pipeline teardown; this avoids
+   corrupted videos when using a source or sink pipeline that records
+   video to disk.
+ * Reset wait_for_match after it fails. (If the user's script caught the
+   MatchTimeout exception and continued, the stbt-templatematch element
+   used to remain active, consuming CPU and showing the search rectangle
+   on the output video.) Same fix for wait_for_motion, detect_motion,
+   etc.
+ * `stbt record` now accepts `-v` (or `--verbose`) command-line option
+   (`stbt run` already did).
+ * `stbt run` throws exceptions for all error conditions (instead of
+   exiting with `sys.exit(1)` in some cases).
+ * `stbt run` exposes the following exceptions directly in the script's
+   namespace (so the script can say `except MatchTimeout` instead of
+   `import stbt; except stbt.MatchTimeout`): UITestError, UITestFailure,
+   MatchTimeout, MotionTimeout, ConfigurationError.
+ * All functions and classes exposed to user scripts are now fully
+   documented in the man page.
+ * Fixes to the self-tests: `test_record` wasn't reporting failures;
+   `test_wait_for_match_nonexistent_{template,match}` were failing
+   intermittently.
+ * RPM spec file in extras/
+
+
 0.6 Improves templatematch, adds `--verbose` flag, `certainty` renamed to `noise_threshold`
 -------------------------------------------------------------------------------------------
 
