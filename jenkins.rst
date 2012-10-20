@@ -229,7 +229,7 @@ In the Jenkins web interface: `New Job`.
   `stbt` config file you set up earlier).
 
 First test the shell command directly on the node PC, logged in as `stb-tester`
-over ssh from the `jenkins` user at the master PC. [#xhost]_ Then try running
+over ssh from the `jenkins` user at the master PC. Then try running
 the job from Jenkins: |jenkins+build+now.png|
 
 .. |jenkins+build+now.png| image:: jenkins+build+now.png
@@ -446,11 +446,6 @@ discarded automatically.
 
   .. [#jenkins-plugin] Jenkins plugins are installed via the Jenkins web
      interface. Go to `Manage Jenkins` > `Manage Plugins`.
-
-  .. [#xhost] On the node you may need to set `DISPLAY=:0` and run `xhost +`
-     (even though `stbt.conf` specifies "sink_pipeline = fakesink", i.e. no
-     video is shown on the node's screen, one of the libraries used by `stbt`
-     still tries to connect to the X display).
 
 
 .. _stb-tester: http://stb-tester.com
