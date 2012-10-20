@@ -12,8 +12,8 @@ digraph G {
     label="video save pipeline";
   };
 
-  v4l2src -> mpegtsdemux -> "tee name=d";
-  "tee name=d" -> queue_1;
-  "tee name=d" -> queue_2 -> "video/x-h264" -> "decodebin2";
+  v4l2src -> mpegtsdemux -> tee;
+  tee -> queue_1;
+  tee -> queue_2 -> "video/x-h264" -> "decodebin2";
 
 }
