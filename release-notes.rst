@@ -57,7 +57,9 @@ caller's directory, then their caller's caller's directory, etc.
 (instead of looking only in their immediate caller's directory, or the
 directory specified as an argument). This allows you to write helper
 functions that take an image filename and then call `wait_for_match`.
-See commit message 4e5cd23c for details.
+See commit message
+`4e5cd23c <https://github.com/drothlis/stb-tester/commit/4e5cd23c>`_
+for details.
 
 Bufgixes and minor changes:
 
@@ -98,7 +100,8 @@ Bufgixes and minor changes:
 
 5 September 2012.
 
-The templatematch algorithm is more precise (see commit ee28b8e for
+The templatematch algorithm is more precise (see commit
+`ee28b8e <https://github.com/drothlis/stb-tester/commit/ee28b8e>`_ for
 details). Taking advantage of this, `wait_for_match` now waits by
 default for only one match.
 
@@ -170,7 +173,8 @@ Other changes since 0.3:
 * extra/jenkins-stbt-run is a shell script that illustrates how to use
   Jenkins (a continuous-integration system with a web interface) to
   schedule stbt tests and report on their results. See commit message
-  d5e7983 for instructions.
+  `d5e7983 <https://github.com/drothlis/stb-tester/commit/d5e7983>`_
+  for instructions.
 
 
 0.3 Fixes `stbt run` freezing on loss of input video.
