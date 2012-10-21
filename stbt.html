@@ -39,7 +39,7 @@
 the source distribution for details)</td>
 </tr>
 <tr><th class="docinfo-name">Version:</th>
-<td>0.6</td></tr>
+<td>0.7</td></tr>
 </tbody>
 </table>
 <div class="section" id="synopsis">
@@ -110,11 +110,11 @@ v4l2src device=/dev/video0 ! mpegtsdemux ! video/x-h264 ! decodebin2
 <tr><td class="option-group">
 <kbd><span class="option">-v</span>, <span class="option">--verbose</span></kbd></td>
 <td><p class="first">Enable debug output.</p>
-<p class="last">Specify twice to enable GStreamer element dumps to ./stbt-debug directory
-(currently only the <cite>stbt-templatematch</cite> element). Note that this will dump a
-<em>lot</em> of files -- several images per frame processed. To group the images by
-frame, sort the files by timestamp. This is intended for debugging the
-GStreamer elements; it isn't intended for end users.</p>
+<p class="last">With <cite>stbt run</cite>, specify <cite>-v</cite> twice to enable GStreamer element dumps to
+<cite>./stbt-debug</cite> directory. Note that this will dump a <em>lot</em> of files --
+several images per frame processed. To group the images by frame, sort the
+files by timestamp. This is intended for debugging the GStreamer elements; it
+isn't intended for end users.</p>
 </td></tr>
 </tbody>
 </table>
@@ -224,9 +224,10 @@ boxes at once.</p>
 </div>
 <div class="section" id="linux-server">
 <h3>Linux server</h3>
-<p>We expect that an 8-core machine will be able to drive 4 set-top boxes
-simultaneously with at least 1 frame per second per set-top box.
-(TODO: Assuming enough bandwidth on the USB bus -- need to test this).</p>
+<p>An 8-core machine will be able to drive 4 set-top boxes simultaneously with at
+least 1 frame per second per set-top box. (Note that <cite>stbt</cite> currently doesn't
+support multiple infra-red emitters on the same PC, but this is relatively
+trivial to fix and will be addressed in the near future.)</p>
 </div>
 </div>
 <div class="section" id="software-requirements">
@@ -265,20 +266,84 @@ stb-tester.</p>
 respectively, are actually python scripts, so you can use the full power of
 python. Don't get too carried away, though; aim for simplicity, readability,
 and maintainability.</p>
-<p>The following functions are available (the &quot;keyword arguments&quot; like
-<cite>timeout_secs</cite> are optional, and default to the value shown):</p>
-<pre class="literal-block">
-press(&quot;KEY NAME&quot;)
-
-wait_for_match(&quot;filename.png&quot;, timeout_secs=10, consecutive_matches=1,
-               noise_threshold=0.16)
-
-press_until_match(&quot;KEY NAME&quot;, &quot;filename.png&quot;,
-                  interval_secs=3, noise_threshold=0.16, max_presses=10)
-
-wait_for_motion(mask=None, # Filename of mask image
-                timeout_secs=10, consecutive_frames=10)
-</pre>
+<p>The following functions are available:</p>
+<!-- <start python docs> -->
+<dl class="docutils">
+<dt>press(key)</dt>
+<dd><p class="first">Send the specified key-press to the system under test.</p>
+<p>The mechanism used to send the key-press depends on what you've configured
+with <cite>--control</cite>.</p>
+<p class="last"><cite>key</cite> is a string. The allowed values depend on the control you're using:
+If that's lirc, then <cite>key</cite> is a key name from your lirc config file.</p>
+</dd>
+<dt>wait_for_match(image, timeout_secs=10, consecutive_matches=1, noise_threshold=0.16)</dt>
+<dd><p class="first">Search for <cite>image</cite> in the source video stream.</p>
+<p>Raises <cite>MatchTimeout</cite> if no match is found after <cite>timeout_secs</cite> seconds.</p>
+<p><cite>consecutive_matches</cite> forces this function to wait for several consecutive
+frames with a match found at the same x,y position.</p>
+<p class="last">Increase <cite>noise_threshold</cite> to avoid false negatives, at the risk of
+increasing false positives (a value of 1.0 will report a match every time);
+increase <cite>consecutive_matches</cite> to avoid false positives due to noise. But
+please let us know if you are having trouble with image matches, so that we
+can improve the matching algorithm.</p>
+</dd>
+<dt>press_until_match(key, image, interval_secs=3, noise_threshold=0.16, max_presses=10)</dt>
+<dd><p class="first">Calls <cite>press</cite> as many times as necessary to find the specified <cite>image</cite>.</p>
+<p>Raises <cite>MatchTimeout</cite> if no match is found after <cite>max_presses</cite> times.</p>
+<p class="last"><cite>interval_secs</cite> is the number of seconds to wait for a match before
+pressing again.</p>
+</dd>
+<dt>wait_for_motion(timeout_secs=10, consecutive_frames=10, mask=None)</dt>
+<dd><p class="first">Search for motion in the source video stream.</p>
+<p>Raises <cite>MotionTimeout</cite> if no motion is detected after <cite>timeout_secs</cite>
+seconds.</p>
+<p>Considers the video stream to have motion if there were differences between
+10 consecutive frames (or the number specified with <cite>consecutive_frames</cite>).</p>
+<p class="last"><cite>mask</cite> is a black and white image that specifies which part of the image
+to search for motion. White pixels select the area to search; black pixels
+the area to ignore.</p>
+</dd>
+<dt>detect_match(image, timeout_secs=10, noise_threshold=0.16)</dt>
+<dd><p class="first">Generator that yields a sequence of one <cite>MatchResult</cite> for each frame in
+the source video stream.</p>
+<p>Returns after <cite>timeout_secs</cite> seconds. (Note that the caller can also choose
+to stop iterating over this function's results at any time.)</p>
+<p class="last"><cite>noise_threshold</cite> is a parameter used by the templatematch algorithm.
+Increase <cite>noise_threshold</cite> to avoid false negatives, at the risk of
+increasing false positives (a value of 1.0 will report a match every time).</p>
+</dd>
+<dt>detect_motion(timeout_secs=10, mask=None)</dt>
+<dd><p class="first">Generator that yields a sequence of one <cite>MotionResult</cite> for each frame
+in the source video stream.</p>
+<p>Returns after <cite>timeout_secs</cite> seconds. (Note that the caller can also choose
+to stop iterating over this function's results at any time.)</p>
+<p class="last"><cite>mask</cite> is a black and white image that specifies which part of the image
+to search for motion. White pixels select the area to search; black pixels
+the area to ignore.</p>
+</dd>
+<dt>class MatchResult</dt>
+<dd><ul class="first last simple">
+<li><cite>timestamp</cite>: Video stream timestamp.</li>
+<li><cite>match</cite>: Boolean result.</li>
+<li><cite>position</cite>: <cite>Position</cite> of the match.</li>
+<li><cite>first_pass_result</cite>: Value between 0 (poor) and 1.0 (excellent match)
+from the first pass of the two-pass templatematch algorithm.</li>
+</ul>
+</dd>
+<dt>class Position</dt>
+<dd><ul class="first last simple">
+<li><cite>x</cite> and <cite>y</cite>: Integer coordinates from the top left corner of the video
+frame.</li>
+</ul>
+</dd>
+<dt>class MotionResult</dt>
+<dd><ul class="first last simple">
+<li><cite>timestamp</cite>: Video stream timestamp.</li>
+<li><cite>motion</cite>: Boolean result.</li>
+</ul>
+</dd>
+</dl>
+<!-- <end python docs> -->
 </div>
 <div class="section" id="test-script-best-practices">
 <h2>TEST SCRIPT BEST PRACTICES</h2>

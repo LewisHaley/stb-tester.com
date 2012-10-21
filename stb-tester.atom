@@ -195,6 +195,83 @@
   </entry>
 
   <entry>
+    <title>
+      stb-tester 0.7 release notes: Exposes `detect_match` and `detect_motion`;
+      removes `directory` argument, changes image search path
+    </title>
+    <link rel="alternate"
+      href="http://stb-tester.com/release-notes.html#exposes-detect-match-and-detect-motion-removes-directory-argument-changes-image-search-path" />
+    <id>http://stb-tester.com/release-notes.html#exposes-detect-match-and-detect-motion-removes-directory-argument-changes-image-search-path</id>
+    <updated>2012-10-21T10:20:00Z</updated>
+    <summary type="html">
+      <![CDATA[
+        <p>New functions <cite>detect_match</cite> and
+          <cite>detect_motion</cite> provide low-level access to all the
+          information provided by the <cite>stbt-templatematch</cite> and
+          <cite>stbt-motiondetect</cite> GStreamer elements for each frame of
+          video processed. To keep your test scripts readable, I recommend
+          against using <cite>detect_match</cite> and
+          <cite>detect_motion</cite> directly; they are intended for you to
+          write helper functions that you can then use in your scripts. For an
+          example see <cite>wait_for_match</cite> and
+          <cite>wait_for_motion</cite> in stbt.py: They are now implemented in
+          terms of <cite>detect_match</cite> and
+          <cite>detect_motion</cite>.</p>
+        <p><cite>wait_for_match</cite>, <cite>press_until_match</cite> and
+          <cite>wait_for_motion</cite> no longer accept the optional
+          <cite>directory</cite> argument. In most cases the correct upgrade
+          path is simply to not give the <cite>directory</cite> argument from
+          your scripts. These functions (plus <cite>detect_match</cite> and
+          <cite>detect_motion</cite>) now search for specified template or mask
+          images by looking in their caller's directory, then their caller's
+          caller's directory, etc. (instead of looking only in their immediate
+          caller's directory, or the directory specified as an argument). This
+          allows you to write helper functions that take an image filename and
+          then call <cite>wait_for_match</cite>. See commit message 4e5cd23c
+          for details.</p>
+        <p>Bufgixes and minor changes:</p>
+        <ul class="simple">
+          <li><cite>stbt run</cite> no longer requires an X-Windows display
+            (unless you're using an X-Windows sink in your pipeline).</li>
+          <li>wait_for_motion and detect_motion visualisation: Detected motion
+            is highlighted in red in the output video, and masked-out portions
+            of the frameare darkened.</li>
+          <li>Additional wait_for_motion logging with <cite>stbt run
+            -vv</cite>.</li>
+          <li>wait_for_motion fails immediately if a mask is given but not
+            found on the filesystem.</li>
+          <li>Send an end-of-stream event in the pipeline teardown; this avoids
+            corrupted videos when using a source or sink pipeline that records
+            video to disk.</li>
+          <li>Reset wait_for_match after it fails. (If the user's script caught
+            the MatchTimeout exception and continued, the stbt-templatematch
+            element used to remain active, consuming CPU and showing the search
+            rectangle on the output video.) Same fix for wait_for_motion,
+            detect_motion, etc.</li>
+          <li><cite>stbt record</cite> now accepts <cite>-v</cite> (or
+            <cite>--verbose</cite>) command-line option (<cite>stbt run</cite>
+            already did).</li>
+          <li><cite>stbt run</cite> throws exceptions for all error conditions
+            (instead of exiting with <cite>sys.exit(1)</cite> in some
+            cases).</li>
+          <li><cite>stbt run</cite> exposes the following exceptions directly
+            in the script's namespace (so the script can say <cite>except
+            MatchTimeout</cite> instead of <cite>import stbt; except
+            stbt.MatchTimeout</cite>): UITestError, UITestFailure,
+            MatchTimeout, MotionTimeout, ConfigurationError.</li>
+          <li>All functions and classes exposed to user scripts are now fully
+            documented in the man page.</li>
+          <li>Fixes to the self-tests: <cite>test_record</cite> wasn't
+            reporting failures;
+            <cite>test_wait_for_match_nonexistent_{template,match}</cite> were
+            failing intermittently.</li>
+          <li>RPM spec file in extras/</li>
+        </ul>
+      ]]>
+    </summary>
+  </entry>
+
+  <entry>
     <title>stbt man page</title>
     <link rel="alternate" href="http://stb-tester.com/stbt.html" />
     <id>http://stb-tester.com/stbt.html</id>

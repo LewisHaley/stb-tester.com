@@ -26,7 +26,7 @@
   <h1>Using Jenkins to schedule &amp; report stb-tester scripts</h1>
   <p id="about">
     By <a href="http://david.rothlis.net">David Röthlisberger</a>.
-    Last updated 23 Sep 2012.
+    Last updated 20 Oct 2012.
   </p>
 </div>
 
@@ -122,7 +122,7 @@ correctly.</p>
 </div>
 <div class="section" id="install-jenkins">
 <h2>Install Jenkins</h2>
-<p>Install Jenkins on the master PC and make it start automatically.<a class="footnote-reference" href="#id16" id="id5"><sup>5</sup></a></p>
+<p>Install Jenkins on the master PC and make it start automatically.<a class="footnote-reference" href="#id15" id="id5"><sup>5</sup></a></p>
 <p>If you'd like to access the Jenkins web UI at the standard http port (instead
 of 8080), you will have to install a &quot;reverse proxy&quot; like apache to forward
 requests from port 80 through to the Jenkins server.<a class="footnote-reference" href="#httpd" id="id6"><sup>6</sup></a></p>
@@ -189,7 +189,7 @@ stbt run path/to/test2.py
 </li>
 </ul>
 <p>First test the shell command directly on the node PC, logged in as <cite>stb-tester</cite>
-over ssh from the <cite>jenkins</cite> user at the master PC.<a class="footnote-reference" href="#xhost" id="id15"><sup>13</sup></a> Then try running
+over ssh from the <cite>jenkins</cite> user at the master PC. Then try running
 the job from Jenkins: <img alt="Build Now" class="align-middle" src="jenkins+build+now.png" /></p>
 </div>
 <div class="section" id="test-results">
@@ -339,7 +339,7 @@ connected, use <cite>/dev/v4l/by-path/...</cite>.</p>
 install java</tt></td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id16" rules="none">
+<table class="docutils footnote" frame="void" id="id15" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
 <tr><td class="label"><a class="fn-backref" href="#id5">[5]</a></td><td><p class="first"><a class="reference external" href="http://jenkins-ci.org">http://jenkins-ci.org</a> has packages for most systems. On
@@ -437,15 +437,6 @@ Slaves</cite> plugin to get this launch method.</td></tr>
 <tbody valign="top">
 <tr><td class="label"><a class="fn-backref" href="#id14">[12]</a></td><td>Jenkins plugins are installed via the Jenkins web
 interface. Go to <cite>Manage Jenkins</cite> &gt; <cite>Manage Plugins</cite>.</td></tr>
-</tbody>
-</table>
-<table class="docutils footnote" frame="void" id="xhost" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id15">[13]</a></td><td>On the node you may need to set <cite>DISPLAY=:0</cite> and run <cite>xhost +</cite>
-(even though <cite>stbt.conf</cite> specifies &quot;sink_pipeline = fakesink&quot;, i.e. no
-video is shown on the node's screen, one of the libraries used by <cite>stbt</cite>
-still tries to connect to the X display).</td></tr>
 </tbody>
 </table>
 </div>
