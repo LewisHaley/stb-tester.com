@@ -229,7 +229,7 @@
           allows you to write helper functions that take an image filename and
           then call <cite>wait_for_match</cite>. See commit message 4e5cd23c
           for details.</p>
-        <p>Bufgixes and minor changes:</p>
+        <p>Bugfixes and minor changes:</p>
         <ul class="simple">
           <li><cite>stbt run</cite> no longer requires an X-Windows display
             (unless you're using an X-Windows sink in your pipeline).</li>

@@ -61,7 +61,7 @@ See commit message
 `4e5cd23c <https://github.com/drothlis/stb-tester/commit/4e5cd23c>`_
 for details.
 
-Bufgixes and minor changes:
+Bugfixes and minor changes:
 
  * `stbt run` no longer requires an X-Windows display (unless you're
    using an X-Windows sink in your pipeline).
