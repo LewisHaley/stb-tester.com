@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>stb-tester example script: Double carousel navigation</title>
+  <link href="stb-tester.css" media="all" rel="stylesheet" type="text/css" />
+
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-34036034-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+</head>
+
+<body id="find-player">
+
+<div id="header">
+  <h1>stb-tester example script: Double carousel navigation</h1>
+  <p id="about">
+    By <a href="http://david.rothlis.net">David Röthlisberger</a>.
+    Last updated 10 Nov 2012.
+  </p>
+</div>
+
+<div id="content">
+
+<p>The following <a class="reference external" href="http://stb-tester.com">stb-tester</a> script finds the position of the BBC iPlayer
+and navigates to it, then to the 4oD and Demand5 players:</p>
+<div class="container">
+<p>from players import <span class='highlight-definition'>find_player</span></p>
+<p>&nbsp;</p>
+<p>find_player(<span class='highlight-image'>"images/iPlayer-selected.png"</span><a href='find-player-iPlayer-selected.png'><img src='find-player-iPlayer-selected.png'></a>,</p>
+<p>            <span class='highlight-image'>"images/iPlayer-unselected.png"</span><a href='find-player-iPlayer-unselected.png'><img src='find-player-iPlayer-unselected.png'></a>)</p>
+<p>find_player(<span class='highlight-image'>"images/4oD-selected.png"</span><a href='find-player-4oD-selected.png'><img src='find-player-4oD-selected.png'></a>,</p>
+<p>            <span class='highlight-image'>"images/4oD-unselected.png"</span><a href='find-player-4oD-unselected.png'><img src='find-player-4oD-unselected.png'></a>)</p>
+<p>find_player(<span class='highlight-image'>"images/Demand5-selected.png"</span><a href='find-player-Demand5-selected.png'><img src='find-player-Demand5-selected.png'></a>,</p>
+<p>            <span class='highlight-image'>"images/Demand5-unselected.png"</span><a href='find-player-Demand5-unselected.png'><img src='find-player-Demand5-unselected.png'></a>)</p></div>
+<p><tt class="docutils literal">find_player</tt> uses the <em>unselected</em> image to find the player's location on
+the screen, and the <em>selected</em> image to know that it has reached the player.
+Watch it in action:</p>
+<iframe
+src="http://player.vimeo.com/video/53212708?title=0&byline=0&portrait=0"
+width="640" height="360" frameborder="0"
+webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe><p>The implementation of <tt class="docutils literal">find_player</tt> follows, with error-handling and support
+for multiple pages removed for simplicity (or see the <a class="reference external" href="players.py">full implementation</a>).</p>
+<div class="players-py container">
+<p>import <span class='highlight-definition'>time</span></p>
+<p>import <span class='highlight-definition'>stbt</span></p>
+<p>&nbsp;</p>
+<p>def <span class='highlight-definition'>find_player</span>(<span class='highlight-definition'>selected_image</span>, <span class='highlight-definition'>unselected_image</span>):</p>
+<p>    <span class='highlight-docstring'>"""Navigates to the specified player.</span></p>
+<p><span class='highlight-docstring'>&nbsp;</span></p>
+<p><span class='highlight-docstring'>    Precondition: In the OnDemand Players screen.</span></p>
+<p><span class='highlight-docstring'>&nbsp;</span></p>
+<p><span class='highlight-docstring'>    Uses `unselected_image` to find where the player is on screen;</span></p>
+<p><span class='highlight-docstring'>    navigates there;</span></p>
+<p><span class='highlight-docstring'>    uses `selected_image` to know that it has reached the player.</span></p>
+<p><span class='highlight-docstring'>    """</span></p>
+<p>&nbsp;</p>
+<p>    while not _player_selected(selected_image):</p>
+<p>        <span class='highlight-definition'>target</span> = stbt.detect_match(unselected_image).next()</p>
+<p>        <span class='highlight-definition'>source</span> = _matches(<span class='highlight-image'>"images/any-player-selected.png"</span><a href='find-player-any-player-selected.png'><img src='find-player-any-player-selected.png'></a>).next()</p>
+<p>        stbt.press(_next_key(source.position, target.position))</p>
+<p>        _wait_for_selection_to_move(source)</p>
+<p>&nbsp;</p>
+<p>def <span class='highlight-definition'>_player_selected</span>(<span class='highlight-definition'>image</span>):</p>
+<p>    return stbt.detect_match(image).next().match</p>
+<p>&nbsp;</p>
+<p>def <span class='highlight-definition'>_wait_for_selection_to_move</span>(<span class='highlight-definition'>source</span>):</p>
+<p>    for <span class='highlight-definition'>m</span> in _matches(<span class='highlight-image'>"images/any-player-selected.png"</span><a href='find-player-any-player-selected.png'><img src='find-player-any-player-selected.png'></a>):</p>
+<p>        if m.position != source.position:</p>
+<p>            break</p>
+<p>    <span class='highlight-comment'># Wait for animation to end, so match position is stable</span></p>
+<p>    stbt.wait_for_match(<span class='highlight-image'>"images/any-player-selected.png"</span><a href='find-player-any-player-selected.png'><img src='find-player-any-player-selected.png'></a>,</p>
+<p>                        consecutive_matches=2)</p>
+<p>&nbsp;</p>
+<p>def <span class='highlight-definition'>_matches</span>(<span class='highlight-definition'>image</span>):</p>
+<p>    <span class='highlight-docstring'>"""Like detect_match, but only yields matching results."""</span></p>
+<p>    for <span class='highlight-definition'>result</span> in stbt.detect_match(image):</p>
+<p>        if result.match:</p>
+<p>            yield result</p>
+<p>&nbsp;</p>
+<p>def <span class='highlight-definition'>_next_key</span>(<span class='highlight-definition'>source</span>, <span class='highlight-definition'>target</span>):</p>
+<p>    <span class='highlight-docstring'>"""Returns the key to press to get closer to the target position."""</span></p>
+<p>    if _less(target.x, source.x):</p>
+<p>        return <span class='highlight-string'>"CURSOR_LEFT"</span></p>
+<p>    if _less(source.y, target.y):</p>
+<p>        return <span class='highlight-string'>"CURSOR_DOWN"</span></p>
+<p>    if _less(target.y, source.y):</p>
+<p>        return <span class='highlight-string'>"CURSOR_UP"</span></p>
+<p>    if _less(source.x, target.x):</p>
+<p>        return <span class='highlight-string'>"CURSOR_RIGHT"</span></p>
+<p>    raise stbt.UITestError(</p>
+<p>        <span class='highlight-string'>"_next_key called when the target player already found"</span>)</p>
+<p>&nbsp;</p>
+<p>def <span class='highlight-definition'>_less</span>(<span class='highlight-definition'>a</span>, <span class='highlight-definition'>b</span>, <span class='highlight-definition'>tolerance</span>=20):</p>
+<p>    <span class='highlight-docstring'>"""An implementation of '<' with a tolerance of what is considered equal."""</span></p>
+<p>    return a < (b - tolerance)</p></div>
+
+
+</div>
+
+<div id="footer">
+<p>
+  This article copyright © 2012 <a href="http://david.rothlis.net">David
+  Röthlisberger</a>.<br />
+  The names and logos of BBC iPlayer, ITV Player, 4oD, Demand 5, NOW TV,
+  and Milkshake! are trademarks of their respective owners.<br />
+  Source code in this article is placed in the <a
+  href="http://creativecommons.org/publicdomain/mark/1.0/">public domain</a>
+  (if you live somewhere with totally braindead copyright laws, you can use the
+  <a href="http://opensource.org/licenses/ISC">ISC</a> or <a
+  href="http://creativecommons.org/publicdomain/zero/1.0">CC0</a> licenses,
+  both of which are as close to the public domain as possible.)
+</p>
+</div>
+
+</body>
+</html>
