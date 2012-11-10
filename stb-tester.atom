@@ -344,4 +344,22 @@
     </summary>
   </entry>
 
+  <entry>
+    <title>stb-tester example script: Double carousel navigation</title>
+    <link rel="alternate" href="http://stb-tester.com/find-player.html" />
+    <id>http://stb-tester.com/find-player.html</id>
+    <updated>2012-11-10T17:29:00Z</updated>
+    <author>
+      <name>David Röthlisberger</name>
+    </author>
+    <summary type="html">
+      <![CDATA[
+        <p>The following <a href="http://stb-tester.com">stb-tester</a> script
+        finds the position of the BBC iPlayer and navigates to it, then to the
+        4oD and Demand5 players:</p>
+        <p>...</p>
+      ]]>
+    </summary>
+  </entry>
+
 </feed>

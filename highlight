@@ -1,0 +1,43 @@
+#!/usr/bin/env perl
+
+while(<>) {
+  if (/highlight:: /) {
+    # Insert <img> tag with the image that the line of code refers to.
+    s,"images/([^"]+)","images/$1"<a href='find-player-$1'><img src='find-player-$1'></a>,;
+
+    # Without this, blank lines appear as 0-height paragraphs.
+    s,(?<=highlight:: )$,&nbsp;,;
+
+    # Syntax colouring.
+    s,(?<=import )\w+,<span class='highlight-definition'>$&</span>,;
+    s,(?<=def )\w+,<span class='highlight-definition'>$&</span>,;
+    if (/\bdef /) {
+      s,(?<=\()\w+,<span class='highlight-definition'>$&</span>,;
+      s#(?<=, )\w+#<span class='highlight-definition'>$&</span>#g;
+    }
+    s,\w+(?= = ),<span class='highlight-definition'>$&</span>,;
+    s,(?<=for )\w+(?= in),<span class='highlight-definition'>$&</span>,;
+    s,"images/[^"]+",<span class='highlight-image'>$&</span>,;
+    s,(?<!")("(?!images/)[^"]+")(?!"),<span class='highlight-string'>$&</span>,;
+    s,#.*,<span class='highlight-comment'>$&</span>,;
+    if (/""".*"""/) {
+      s,""".*""",<span class='highlight-docstring'>$&</span>,;
+    }
+    elsif (/"""/ && $indocstring) {
+      s,(?<=highlight:: ).*""",<span class='highlight-docstring'>$&</span>,;
+      $indocstring = 0;
+    }
+    elsif (/"""/) {
+      s,""".*,<span class='highlight-docstring'>$&</span>,;
+      $indocstring = 1;
+    }
+    elsif ($indocstring) {
+      s,(?<=highlight:: ).*,<span class='highlight-docstring'>$&</span>,;
+    }
+  }
+
+  # Remove the "highlight:: " marker; wrap each line in <p> for easy styling.
+  s,highlight:: (.*),<p>$1</p>,;
+
+  print;
+}

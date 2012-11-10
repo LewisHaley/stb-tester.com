@@ -1,7 +1,7 @@
 description := A video-capture record/playback testing system
 
 ARTICLES := release-notes.html introduction.html getting-started.html
-ARTICLES += jenkins.html
+ARTICLES += find-player.html jenkins.html
 
 all: index.html stbt.html $(ARTICLES)
 
@@ -10,6 +10,11 @@ deploy: index.html stbt.html $(ARTICLES) \
   stb-tester.atom atom.png \
   video-introduction-thumbnail.jpg \
   videotestsrc.png videotestsrc-templatematch.png \
+  find-player-4oD-selected.png find-player-4oD-unselected.png \
+  find-player-Demand5-selected.png find-player-Demand5-unselected.png \
+  find-player-any-player-selected.png \
+  find-player-iPlayer-selected.png find-player-iPlayer-unselected.png \
+  players.py \
   stb-tester+jenkins+setup.svg jenkins+jobs.png jenkins+build+now.png \
   jenkins+xunit+graph.png jenkins+xunit+results.png jenkins+artifacts.png \
   hdpvr-mp4-pipeline.svg
@@ -48,6 +53,7 @@ $(ARTICLES): %.html: %.rst
 	cat $< |\
 	sed -n -e '$(rst_markers) p' |\
 	sed -e '/reStructuredText content/ d' |\
+	./highlight |\
 	rst2html \
 	    --template=<( \
 	        cat $< |\
@@ -58,6 +64,8 @@ $(ARTICLES): %.html: %.rst
 	    --initial-header-level=2 --footnote-references=superscript \
 	    --strip-comments \
 	> $@
+
+find-player.html: highlight
 
 jenkins.html: hdpvr-mp4-pipeline.svg
 hdpvr-mp4-pipeline.svg: hdpvr-mp4-pipeline.dot
