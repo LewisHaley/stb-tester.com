@@ -18,8 +18,6 @@
 
 </head>
 
-<!-- Copyright 2012 David Röthlisberger <david@rothlis.net>. All rights reserved. -->
-
 <body id="jenkins">
 
 <div id="header">
