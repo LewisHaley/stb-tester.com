@@ -29,7 +29,7 @@ deploy: index.html stbt.html $(ARTICLES) \
 	     "&& git checkout master ***"
 
 
-index.html: index.html.in release-notes.rst
+index.html: index.html.in stb-tester/VERSION
 	cat $< |\
 	sed -e "s/@VERSION@/$$(cat stb-tester/VERSION)/" \
 	> $@
@@ -74,7 +74,7 @@ hdpvr-mp4-pipeline.svg: hdpvr-mp4-pipeline.dot
 
 # Requires a little manual intervention: `cd` to stb-tester and `git checkout`
 # the most recent tag, so that version is "0.x" instead of "0.x-n-abcdefgh".
-stb-tester/VERSION: | stb-tester
+stb-tester/VERSION: stb-tester
 	$(MAKE) -C stb-tester stbt
 
 stb-tester/README.rst: stb-tester
