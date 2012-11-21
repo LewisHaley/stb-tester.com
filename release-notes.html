@@ -26,6 +26,38 @@
 
 <div id="content">
 
+<div class="section" id="bugfixes-wait-for-match-returns-the-matchresult-adds-get-frame-save-frame-debug">
+<h2>0.8 Bugfixes; <cite>wait_for_match</cite> returns the <cite>MatchResult</cite>; adds <cite>get_frame</cite>, <cite>save_frame</cite>, <cite>debug</cite></h2>
+<p>21 Nov 2012.</p>
+<p><cite>wait_for_match</cite> and <cite>press_until_match</cite> now return the <cite>MatchResult</cite> object
+for successful matches, and <cite>wait_for_motion</cite> returns the <cite>MotionResult</cite>. See
+commit <a class="reference external" href="https://github.com/drothlis/stb-tester/commit/540476ff">540476ff</a> for
+details.</p>
+<p>New functions <cite>get_frame</cite> and <cite>save_frame</cite> allow capturing screenshots
+at arbitrary points in the user's script. New function <cite>debug</cite> allows
+user's scripts to print output only when stbt run &quot;--verbose&quot; was given.
+Also documented the (existing) exception hierarchy in the README /
+man-page.</p>
+<p>Bugfixes:</p>
+<blockquote>
+<ul class="simple">
+<li>Fixes a deadlock (introduced in 0.7) after GStreamer errors or video
+loss from the system under test.</li>
+<li>Improves GStreamer pipeline restarting after transient video loss (see
+commit <a class="reference external" href="https://github.com/drothlis/stb-tester/commit/2c434b2d">2c434b2d</a> for details).</li>
+<li>Fixes segfault in <cite>stbt-motiondetect</cite> GStreamer element when
+<cite>debugDirectory</cite> enabled with no mask.</li>
+</ul>
+</blockquote>
+<p>Other minor changes:</p>
+<blockquote>
+<ul class="simple">
+<li>The selftests now work correctly on OS X.</li>
+<li><cite>make install</cite> will rebuild <cite>stbt</cite> if given a different <cite>prefix</cite>
+directory than the <cite>prefix</cite> given to <cite>make stbt</cite>.</li>
+</ul>
+</blockquote>
+</div>
 <div class="section" id="exposes-detect-match-and-detect-motion-removes-directory-argument-changes-image-search-path">
 <h2>0.7 Exposes <cite>detect_match</cite> and <cite>detect_motion</cite>; removes <cite>directory</cite> argument, changes image search path</h2>
 <p>21 October 2012.</p>
