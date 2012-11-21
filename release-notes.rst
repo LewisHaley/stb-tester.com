@@ -34,6 +34,39 @@
   `cd stb-tester && git tag -l` to list the tags;
   `git show $tag` to see the date and the annotated tag message.
 
+0.8 Bugfixes; `wait_for_match` returns the `MatchResult`; adds `get_frame`, `save_frame`, `debug`
+-------------------------------------------------------------------------------------------------
+
+21 Nov 2012.
+
+`wait_for_match` and `press_until_match` now return the `MatchResult` object
+for successful matches, and `wait_for_motion` returns the `MotionResult`. See
+commit `540476ff <https://github.com/drothlis/stb-tester/commit/540476ff>`_ for
+details.
+
+New functions `get_frame` and `save_frame` allow capturing screenshots
+at arbitrary points in the user's script. New function `debug` allows
+user's scripts to print output only when stbt run "--verbose" was given.
+Also documented the (existing) exception hierarchy in the README /
+man-page.
+
+Bugfixes:
+
+ * Fixes a deadlock (introduced in 0.7) after GStreamer errors or video
+   loss from the system under test.
+ * Improves GStreamer pipeline restarting after transient video loss (see
+   commit `2c434b2d
+   <https://github.com/drothlis/stb-tester/commit/2c434b2d>`_ for details).
+ * Fixes segfault in `stbt-motiondetect` GStreamer element when
+   `debugDirectory` enabled with no mask.
+
+Other minor changes:
+
+ * The selftests now work correctly on OS X.
+ * `make install` will rebuild `stbt` if given a different `prefix`
+   directory than the `prefix` given to `make stbt`.
+
+
 0.7 Exposes `detect_match` and `detect_motion`; removes `directory` argument, changes image search path
 -------------------------------------------------------------------------------------------------------
 
