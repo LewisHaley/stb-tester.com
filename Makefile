@@ -3,6 +3,8 @@ description := A video-capture record/playback testing system
 ARTICLES := release-notes.html introduction.html getting-started.html
 ARTICLES += find-player.html jenkins.html
 
+SHELL := bash
+
 all: index.html stbt.html $(ARTICLES)
 
 deploy: index.html stbt.html $(ARTICLES) \
@@ -47,9 +49,6 @@ stbt.html: stb-tester/README.rst stb-tester/VERSION stbt.html.template
 
 rst_markers := /Begin reStructuredText content/,/End reStructuredText content/
 $(ARTICLES): %.html: %.rst
-	@[ -n "$$BASH_VERSINFO" ] && [ "$$BASH_VERSINFO" -ge 4 ] || { \
-	    echo "ERROR: Requires bash version 4." >&2; \
-	    echo "Use 'make SHELL=/path/to/bash'" >&2; exit 1; }
 	cat $< |\
 	sed -n -e '$(rst_markers) p' |\
 	sed -e '/reStructuredText content/ d' |\
