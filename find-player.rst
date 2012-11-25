@@ -34,8 +34,12 @@
 
 <!-- Begin reStructuredText content -->
 
-The following `stb-tester`_ script finds the position of the BBC iPlayer
-and navigates to it, then to the 4oD and Demand5 players:
+The following `stb-tester`_ automated script knows how to navigate a set-top
+box's double-carousel menu like a human user would: By identifying the current
+selection and the target location, then pressing the appropriate keys to
+navigate directly to the target.
+
+This script navigates to the BBC iPlayer, then to the 4oD and Demand5 players:
 
 .. container::
 
@@ -114,8 +118,6 @@ for multiple pages removed for simplicity (or see the `full implementation`_).
     highlight::         return "CURSOR_UP"
     highlight::     if _less(source.x, target.x):
     highlight::         return "CURSOR_RIGHT"
-    highlight::     raise stbt.UITestError(
-    highlight::         "_next_key called when the target player already found")
     highlight:: 
     highlight:: def _less(a, b, tolerance=20):
     highlight::     """An implementation of '<' with a tolerance of what is considered equal."""
