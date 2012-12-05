@@ -44,6 +44,9 @@ GStreamer primer
 `stb-tester`_ is built on top of `GStreamer`_, a library of media-handling
 components. So first of all install the **gstreamer** and **gst-plugins-base**
 packages (on some systems the latter will be called *gstreamer*-plugins-base).
+Currently stb-tester requires GStreamer **0.10** — the newer 1.0 is not
+backwards compatible.
+
 Verify by running::
 
     gst-launch videotestsrc ! ximagesink
