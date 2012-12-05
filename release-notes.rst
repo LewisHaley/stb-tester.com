@@ -34,6 +34,11 @@
   `cd stb-tester && git tag -l` to list the tags;
   `git show $tag` to see the date and the annotated tag message.
 
+`stb-tester <http://stb-tester.com>`_ is in "beta" stage, in the sense that
+interfaces may change from one release to the next, though stb-tester *is* used
+in production by several companies so we do try to minimise incompatible
+changes. The release notes always provide an exhaustive list of any changes.
+
 0.8 Bugfixes; `wait_for_match` returns the `MatchResult`; adds `get_frame`, `save_frame`, `debug`
 -------------------------------------------------------------------------------------------------
 
