@@ -24,7 +24,7 @@
   <h1>stb-tester: Getting started</h1>
   <p id="about">
     By <a href="http://david.rothlis.net">David Röthlisberger</a>.
-    Last updated 10 Nov 2012.
+    Last updated 5 Dec 2012.
   </p>
 </div>
 
@@ -38,7 +38,9 @@ stb-tester&quot;</a>.</p>
 <p><a class="reference external" href="http://stb-tester.com">stb-tester</a> is built on top of <a class="reference external" href="http://gstreamer.freedesktop.org">GStreamer</a>, a library of media-handling
 components. So first of all install the <strong>gstreamer</strong> and <strong>gst-plugins-base</strong>
 packages (on some systems the latter will be called <em>gstreamer</em>-plugins-base).
-Verify by running:</p>
+Currently stb-tester requires GStreamer <strong>0.10</strong> — the newer 1.0 is not
+backwards compatible.</p>
+<p>Verify by running:</p>
 <pre class="literal-block">
 gst-launch videotestsrc ! ximagesink
 </pre>

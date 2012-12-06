@@ -269,14 +269,14 @@ and maintainability.</p>
 <p>The following functions are available:</p>
 <!-- <start python docs> -->
 <dl class="docutils">
-<dt>press(key)</dt>
+<dt id="press">press(key)</dt>
 <dd><p class="first">Send the specified key-press to the system under test.</p>
 <p>The mechanism used to send the key-press depends on what you've configured
 with <cite>--control</cite>.</p>
 <p class="last"><cite>key</cite> is a string. The allowed values depend on the control you're using:
 If that's lirc, then <cite>key</cite> is a key name from your lirc config file.</p>
 </dd>
-<dt>wait_for_match(image, timeout_secs=10, consecutive_matches=1, noise_threshold=0.16)</dt>
+<dt id="wait_for_match">wait_for_match(image, timeout_secs=10, consecutive_matches=1, noise_threshold=0.16)</dt>
 <dd><p class="first">Search for <cite>image</cite> in the source video stream.</p>
 <p>Returns <cite>MatchResult</cite> when <cite>image</cite> is found.
 Raises <cite>MatchTimeout</cite> if no match is found after <cite>timeout_secs</cite> seconds.</p>
@@ -288,14 +288,14 @@ increase <cite>consecutive_matches</cite> to avoid false positives due to noise.
 please let us know if you are having trouble with image matches, so that we
 can improve the matching algorithm.</p>
 </dd>
-<dt>press_until_match(key, image, interval_secs=3, noise_threshold=0.16, max_presses=10)</dt>
+<dt id="press_until_match">press_until_match(key, image, interval_secs=3, noise_threshold=0.16, max_presses=10)</dt>
 <dd><p class="first">Calls <cite>press</cite> as many times as necessary to find the specified <cite>image</cite>.</p>
 <p>Returns <cite>MatchResult</cite> when <cite>image</cite> is found.
 Raises <cite>MatchTimeout</cite> if no match is found after <cite>max_presses</cite> times.</p>
 <p class="last"><cite>interval_secs</cite> is the number of seconds to wait for a match before
 pressing again.</p>
 </dd>
-<dt>wait_for_motion(timeout_secs=10, consecutive_frames=10, mask=None)</dt>
+<dt id="wait_for_motion">wait_for_motion(timeout_secs=10, consecutive_frames=10, mask=None)</dt>
 <dd><p class="first">Search for motion in the source video stream.</p>
 <p>Returns <cite>MotionResult</cite> when motion is detected.
 Raises <cite>MotionTimeout</cite> if no motion is detected after <cite>timeout_secs</cite>
@@ -306,7 +306,7 @@ seconds.</p>
 to search for motion. White pixels select the area to search; black pixels
 the area to ignore.</p>
 </dd>
-<dt>detect_match(image, timeout_secs=10, noise_threshold=0.16)</dt>
+<dt id="detect_match">detect_match(image, timeout_secs=10, noise_threshold=0.16)</dt>
 <dd><p class="first">Generator that yields a sequence of one <cite>MatchResult</cite> for each frame
 processed from the source video stream.</p>
 <p>Returns after <cite>timeout_secs</cite> seconds. (Note that the caller can also choose
@@ -315,7 +315,7 @@ to stop iterating over this function's results at any time.)</p>
 Increase <cite>noise_threshold</cite> to avoid false negatives, at the risk of
 increasing false positives (a value of 1.0 will report a match every time).</p>
 </dd>
-<dt>detect_motion(timeout_secs=10, mask=None)</dt>
+<dt id="detect_motion">detect_motion(timeout_secs=10, mask=None)</dt>
 <dd><p class="first">Generator that yields a sequence of one <cite>MotionResult</cite> for each frame
 processed from the source video stream.</p>
 <p>Returns after <cite>timeout_secs</cite> seconds. (Note that the caller can also choose
@@ -324,16 +324,16 @@ to stop iterating over this function's results at any time.)</p>
 to search for motion. White pixels select the area to search; black pixels
 the area to ignore.</p>
 </dd>
-<dt>save_frame(buf, filename)</dt>
+<dt id="save_frame">save_frame(buf, filename)</dt>
 <dd><p class="first">Save a GStreamer buffer to the specified file in png format.</p>
 <p class="last">Takes a buffer <cite>buf</cite> obtained from <cite>get_frame</cite> or from the <cite>screenshot</cite>
 property of <cite>MatchTimeout</cite> or <cite>MotionTimeout</cite>.</p>
 </dd>
-<dt>get_frame()</dt>
+<dt id="get_frame">get_frame()</dt>
 <dd>Get a GStreamer buffer containing the current video frame.</dd>
-<dt>debug(s)</dt>
+<dt id="debug">debug(s)</dt>
 <dd>Print the given string to stderr if stbt run <cite>--verbose</cite> was given.</dd>
-<dt>class MatchResult</dt>
+<dt id="MatchResult">class MatchResult</dt>
 <dd><ul class="first last simple">
 <li><cite>timestamp</cite>: Video stream timestamp.</li>
 <li><cite>match</cite>: Boolean result.</li>
@@ -342,19 +342,19 @@ property of <cite>MatchTimeout</cite> or <cite>MotionTimeout</cite>.</p>
 from the first pass of the two-pass templatematch algorithm.</li>
 </ul>
 </dd>
-<dt>class Position</dt>
+<dt id="Position">class Position</dt>
 <dd><ul class="first last simple">
 <li><cite>x</cite> and <cite>y</cite>: Integer coordinates from the top left corner of the video
 frame.</li>
 </ul>
 </dd>
-<dt>class MotionResult</dt>
+<dt id="MotionResult">class MotionResult</dt>
 <dd><ul class="first last simple">
 <li><cite>timestamp</cite>: Video stream timestamp.</li>
 <li><cite>motion</cite>: Boolean result.</li>
 </ul>
 </dd>
-<dt>class MatchTimeout(UITestFailure)</dt>
+<dt id="MatchTimeout">class MatchTimeout(UITestFailure)</dt>
 <dd><ul class="first last simple">
 <li><cite>screenshot</cite>: A GStreamer frame from the source video when the search
 for the expected image timed out.</li>
@@ -362,7 +362,7 @@ for the expected image timed out.</li>
 <li><cite>timeout_secs</cite>: Number of seconds that the image was searched for.</li>
 </ul>
 </dd>
-<dt>class MotionTimeout(UITestFailure)</dt>
+<dt id="MotionTimeout">class MotionTimeout(UITestFailure)</dt>
 <dd><ul class="first last simple">
 <li><cite>screenshot</cite>: A GStreamer frame from the source video when the search
 for motion timed out.</li>
@@ -370,9 +370,9 @@ for motion timed out.</li>
 <li><cite>timeout_secs</cite>: Number of seconds that motion was searched for.</li>
 </ul>
 </dd>
-<dt>class UITestFailure(Exception)</dt>
+<dt id="UITestFailure">class UITestFailure(Exception)</dt>
 <dd>The test failed because the system under test didn't behave as expected.</dd>
-<dt>class UITestError(Exception)</dt>
+<dt id="UITestError">class UITestError(Exception)</dt>
 <dd>The test script had an unrecoverable error.</dd>
 </dl>
 <!-- <end python docs> -->
