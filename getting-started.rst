@@ -83,8 +83,8 @@ Building & installing stb-tester
 --------------------------------
 
 To build stb-tester you will need to install the following packages:
-**gstreamer-devel**, **gstreamer-plugins-base-devel**, **opencv-devel**, and
-**python-docutils** (to build the documentation). Then::
+**gstreamer-devel**, **gstreamer-plugins-base-devel**, **gstreamer-python**,
+**opencv-devel**, and **python-docutils** (to build the documentation). Then::
 
     git clone git://github.com/drothlis/stb-tester.git
     make prefix=$HOME
