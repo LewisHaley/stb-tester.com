@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Video-capture hardware used with stb-tester</title>
+  <link href="stb-tester.css" media="all" rel="stylesheet" type="text/css" />
+
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-34036034-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+</head>
+
+<body id="hardware">
+
+<div id="header">
+  <h1>Video-capture hardware</h1>
+  <p id="about">
+    By <a href="http://david.rothlis.net">David Röthlisberger</a>.
+    Last updated 27 Dec 2012.
+  </p>
+</div>
+
+<div id="content">
+
+<p>Experience reports of video-capture hardware used with <a class="reference external" href="http://stb-tester.com">stb-tester</a>. (If you
+have worked with hardware not on this list, please <a class="reference external" href="mailto:david&#64;rothlis.net">send me</a> details and I
+will add it to this list with due credit.)</p>
+<div class="section" id="hauppauge-hd-pvr">
+<h2>Hauppauge HD PVR</h2>
+<p>The <a class="reference external" href="http://www.hauppauge.com/site/products/data_hdpvr.html">Hauppauge HD PVR</a> is an inexpensive external video-capture device. It
+takes component video, and hardware-encodes into H.264 MPEG-TS delivered to the
+PC over USB. The HD PVR has an open-source driver (not written by Hauppauge)
+already present in recent versions of the Linux kernel.</p>
+<p>For an example <cite>source-pipeline</cite> to use with <cite>stbt</cite>, see the stb-tester
+<a class="reference external" href="http://stb-tester.com/getting-started.html#using-a-real-video-source">Getting started</a> article.</p>
+<p>Note that the HD PVR is being discontinued by Hauppauge in favour of the
+<a class="reference external" href="http://www.hauppauge.com/site/products/data_hdpvr2-gaming.html">HD PVR 2</a> which does <em>not</em> have a Linux driver, but the original HD PVR can
+still be purchased in bulk orders direct from the manufacturer.</p>
+<p>The HD PVR works well as the capture device for a developer writing tests with
+<cite>stbt record</cite>. But for <em>running</em> tests continuously in an automated test rig,
+it is quite unreliable: After a while it locks up and stops providing video,
+with the message &quot;libv4l2: error getting pixformat: Bad address&quot;.</p>
+<p>I have been told that in this scenario (recording for short amounts of time,
+with frequent starting &amp; stopping) the HD PVR is unreliable on Windows too,
+which implies a problem in the hardware or firmware, rather than the Linux
+driver software.</p>
+<p>We tried all sorts of experiments: Adding a better heatsink to the H.264
+encoder chip; adding a heatsink to the A/D chip; different kernel versions;
+multiple HD PVRs connected to a single PC versus a single one. The only
+significant improvement we found was from removing the lid and <a class="reference external" href="hdpvr-fan.jpg">adding fans</a>
+directly over the circuit board, but this doesn't cure the problem completely,
+it only increases the time-to-failure. We've measured the surface temperature
+of the encoder chip's heatsink, and of the A/D chip, and neither one was ever
+observed to exceed 40°C (with the fan); but the HD PVR still fails.</p>
+<p>Our measurements:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="18%" />
+<col width="12%" />
+<col width="12%" />
+<col width="13%" />
+<col width="12%" />
+<col width="11%" />
+<col width="12%" />
+<col width="12%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head" colspan="5">Time-to-failure in hours: Average (StdDev) /Samples</th>
+<th class="head" colspan="3">Simultaneous HDPVRs</th>
+</tr>
+<tr><th class="head">PC</th>
+<th class="head">Fan</th>
+<th class="head">No fan</th>
+<th class="head">Kernel 3.6.6</th>
+<th class="head">&lt;3.6</th>
+<th class="head">1</th>
+<th class="head">2</th>
+<th class="head">3</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>dev1</td>
+<td>&nbsp;</td>
+<td>14 (10) /9</td>
+<td>12 (8) /4</td>
+<td>16 (13) /5</td>
+<td>&nbsp;</td>
+<td>14 (10) /9</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>dev2</td>
+<td>&nbsp;</td>
+<td>15 (13) /9</td>
+<td>8 (8) /4</td>
+<td>22 (15) /5</td>
+<td>16 (14) /9</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>stb-tester-slave1</td>
+<td>33 (43) /10</td>
+<td>12 (8) /12</td>
+<td>20 (26) /5</td>
+<td>22 (33) /17</td>
+<td>9 (4) /5</td>
+<td>4 (1) /2</td>
+<td>28 (36) /15</td>
+</tr>
+<tr><td>stb-tester-slave2</td>
+<td>&nbsp;</td>
+<td>20 (18) /20</td>
+<td>25 (14) /4</td>
+<td>19 (21) /16</td>
+<td>18 (13) /7</td>
+<td>22 (23) /13</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>stb-tester-slave5</td>
+<td>&nbsp;</td>
+<td>37 (36) /12</td>
+<td>42 (24) /2</td>
+<td>36 (39) /10</td>
+<td>21 (24) /5</td>
+<td>50 (41) /7</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>All tests were run using <a class="reference external" href="https://github.com/drothlis/hdpvr-stability-tests">gst-launch-start-stop.sh</a>.</li>
+<li>&quot;Failure&quot; means a permanent lock-up; I ignored transient failures where the
+HDPVR continued working after stopping &amp; re-starting recording.</li>
+<li>The runs with 3 simultaneous HDPVRs tended to also be the runs with fans,
+which could explain the longer running times. Of the 3 HDPVRs, the first to
+fail was usually one of the 2 on the same USB controller. Note that we did
+observe failures with the fan and a single HDPVR per PC.</li>
+</ul>
+</div>
+<div class="section" id="blackmagic-intensity-pro">
+<h2>Blackmagic Intensity Pro</h2>
+<p>The <a class="reference external" href="http://www.blackmagicdesign.com/products/intensity/">Blackmagic Intensity Pro</a> is an inexpensive PCIe video-capture card. It
+takes HDMI (non HDCP), component, composite, or S-Video and delivers raw video.
+The Intensity Pro has a (closed source) Linux driver. Note that the external
+USB models like the Intensity Shuttle do <em>not</em> have a Linux driver.</p>
+<p>The Intensity Pro is much more stable than the HD PVR, but does occasionally
+suffer from lockups that crash the entire PC — a reboot is required to recover.
+Anecdotally, using two cards simultaneously on a single PC increases the crash
+rate significantly. We are gathering more data.</p>
+</div>
+<div class="section" id="bt878">
+<h2>BT878</h2>
+<p>I know of one organisation successfully using <a class="reference external" href="http://www.linuxtv.org/wiki/index.php/Brooktree_Bt878">BT878</a> analogue video decoders
+with stb-tester. The signal is a bit noisy but this can be overcome by tweaking
+stb-tester's <a class="reference external" href="https://github.com/drothlis/stb-tester/commit/b4dcbe39">noise_threshold</a> parameters.</p>
+</div>
+<div class="section" id="software-capture">
+<h2>Software capture</h2>
+<p>This is the very opposite of video-capture <em>hardware</em>, but I'll mention it here
+anyway. If you can install GStreamer on your system-under-test, you can write a
+GStreamer element to grab video directly from the framebuffer and stream it to
+a GStreamer network source on the test-runner PC.</p>
+<p>For an example see the <a class="reference external" href="https://bugzilla.gnome.org/show_bug.cgi?id=685877">DirectFB surface source</a> element.</p>
+</div>
+
+
+</div>
+
+<div id="footer">
+<p>
+  This article copyright © 2012 <a href="http://www.youview.com">YouView TV
+  Ltd</a>.<br />
+  Released under the <a href="http://www.gnu.org/copyleft/fdl.html">GNU Free
+  Documentation License</a>.
+</p>
+</div>
+
+</body>
+</html>
