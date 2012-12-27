@@ -1,7 +1,7 @@
 description := A video-capture record/playback testing system
 
 ARTICLES := release-notes.html introduction.html getting-started.html
-ARTICLES += find-player.html jenkins.html
+ARTICLES += find-player.html jenkins.html hardware.html
 
 SHELL := bash
 
@@ -19,7 +19,7 @@ deploy: index.html stbt.html $(ARTICLES) \
   players.py \
   stb-tester+jenkins+setup.svg jenkins+jobs.png jenkins+build+now.png \
   jenkins+xunit+graph.png jenkins+xunit+results.png jenkins+artifacts.png \
-  hdpvr-mp4-pipeline.svg
+  hdpvr-mp4-pipeline.svg hdpvr-fan.jpg
 	mkdir static
 	cp $^ static
 	trap 'rm -rf static' EXIT; \
