@@ -402,4 +402,22 @@
     </summary>
   </entry>
 
+  <entry>
+    <title>stb-tester: Video-capture hardware</title>
+    <link rel="alternate" href="http://stb-tester.com/hardware.html" />
+    <id>http://stb-tester.com/hardware.html</id>
+    <updated>2012-12-27T12:37:00Z</updated>
+    <author>
+      <name>David Röthlisberger</name>
+    </author>
+    <summary type="html">
+      <![CDATA[
+        <p>Experience reports of video-capture hardware used with <a
+        class="reference external" href="http://stb-tester.com">stb-tester</a>.
+        </p>
+        <p>...</p>
+      ]]>
+    </summary>
+  </entry>
+
 </feed>
