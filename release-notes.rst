@@ -39,6 +39,43 @@ interfaces may change from one release to the next, though stb-tester *is* used
 in production by several companies so we do try to minimise incompatible
 changes. The release notes always provide an exhaustive list of any changes.
 
+
+0.9 Support for RedRat irNetBox; `wait_for_motion` more tolerant to noise
+-------------------------------------------------------------------------
+
+The RedRat irNetBox-III is a rack-mountable network-controlled infrared
+emitter with 16 separate outputs and adjustable power levels to avoid
+infrared interference between the systems-under-test.
+For further information see
+http://www.redrat.co.uk/products/irnetbox.html ,
+the `--control=irnetbox` configuration in the
+`stbt man page <http://stb-tester.com/stbt.html#global-options>`_,
+and commit messages
+`508941e <https://github.com/drothlis/stb-tester/commit/508941e>`_ and
+`778d847 <https://github.com/drothlis/stb-tester/commit/778d847>`_.
+Many thanks to Chris Dodge at RedRat for the donation of irNetBox hardware to
+the stb-tester project and of his time in answering questions.
+
+`wait_for_motion` now takes a
+`noise_threshold <http://stb-tester.com/stbt.html#wait_for_motion>`_ parameter;
+decrease `noise_threshold` to avoid false positives when dealing with noisy
+analogue video sources.
+Thanks to Emmett Kelly for the patch!
+
+Other minor changes:
+
+ * The remote control implementations of `stbt.press` (Lirc,
+   VirtualRemote, irNetBox) try to re-connect if the connection (to
+   lircd, to the set-top box, to the irNetBox, respectively) had been
+   dropped.
+
+ * Build/packaging fix: Always rebuild `stbt` (which reports the version
+   with `stbt --version`) when the version changes.
+
+ * Minor fixes to the tab-completion script, self-tests and
+   documentation.
+
+
 0.8 Bugfixes; `wait_for_match` returns the `MatchResult`; adds `get_frame`, `save_frame`, `debug`
 -------------------------------------------------------------------------------------------------
 
