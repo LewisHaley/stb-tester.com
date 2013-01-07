@@ -52,6 +52,8 @@ stbt.html: stb-tester/README.rst stb-tester/VERSION stbt.html.template
 	> $@
 
 rst_markers := /Begin reStructuredText content/,/End reStructuredText content/
+release-notes.html: article_postprocess := | sed -e 's,<h2>\([0-9.]*\),<h2 id="\1">\1,'
+
 $(ARTICLES): %.html: %.rst
 	cat $< |\
 	sed -n -e '$(rst_markers) p' |\
@@ -66,6 +68,7 @@ $(ARTICLES): %.html: %.rst
 	                awk '{print $$2, $$3, $$4}')/") \
 	    --initial-header-level=2 --footnote-references=superscript \
 	    --strip-comments \
+	$(article_postprocess) \
 	> $@
 
 find-player.html: highlight
