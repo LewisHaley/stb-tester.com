@@ -39,7 +39,7 @@
 the source distribution for details)</td>
 </tr>
 <tr><th class="docinfo-name">Version:</th>
-<td>0.8</td></tr>
+<td>0.9</td></tr>
 </tbody>
 </table>
 <div class="section" id="synopsis">
@@ -82,6 +82,13 @@ system.</p>
 Control) daemon. <cite>lircd_socket</cite> defaults to <cite>/var/run/lirc/lircd</cite>.
 <cite>remote_control_name</cite> is the name of a remote-control specification in
 lircd.conf.</dd>
+<dt>irnetbox:&lt;hostname&gt;:&lt;output&gt;:&lt;config_file&gt;</dt>
+<dd>RedRat irNetBox-III network-controlled infrared emitter hardware.
+<cite>hostname</cite> is the hostname or IP address of the irNetBox-III device.
+<cite>output</cite> is the infrared output to use, a number between 1 and 16
+(inclusive). <cite>config_file</cite> is the configuration file that describes the
+infrared protocol to use; it can be created with RedRat's (Windows-only)
+&quot;IR Signal Database Utility&quot;.</dd>
 <dt>vr:&lt;hostname&gt;:&lt;port&gt;</dt>
 <dd>A &quot;virtual remote&quot; that communicates with the set-top box over TCP.
 Requires a virtual remote listener (which we haven't released yet) running
@@ -237,8 +244,9 @@ trivial to fix and will be addressed in the near future.)</p>
 allegedly work on BSD, Mac OS X, and possibly Windows with MingW/MSys).</li>
 <li>Drivers for any required hardware components</li>
 <li>gstreamer 0.10 (multimedia framework) + gst-plugins-base + gst-plugins-good.</li>
-<li>python (we have tested with 2.6 and 2.7) + pygst + pygtk2 (+ nose for the
-self-tests).</li>
+<li>python (we have tested with 2.6 and 2.7; on &lt;2.7 you will also need to
+install the python-argparse package) + pygst + docutils (for building
+the documentation) + nose (for the self-tests).</li>
 <li>OpenCV (image processing library) version &gt;= 2.0.0.</li>
 <li>For the Hauppauge video capture device you'll need the gstreamer-ffmpeg
 package (e.g. from the rpmfusion-free repository) for H.264 decoding.</li>
@@ -295,13 +303,16 @@ Raises <cite>MatchTimeout</cite> if no match is found after <cite>max_presses</c
 <p class="last"><cite>interval_secs</cite> is the number of seconds to wait for a match before
 pressing again.</p>
 </dd>
-<dt id="wait_for_motion">wait_for_motion(timeout_secs=10, consecutive_frames=10, mask=None)</dt>
+<dt id="wait_for_motion">wait_for_motion(timeout_secs=10, consecutive_frames=10, noise_threshold=0.84, mask=None)</dt>
 <dd><p class="first">Search for motion in the source video stream.</p>
 <p>Returns <cite>MotionResult</cite> when motion is detected.
 Raises <cite>MotionTimeout</cite> if no motion is detected after <cite>timeout_secs</cite>
 seconds.</p>
 <p>Considers the video stream to have motion if there were differences between
 10 consecutive frames (or the number specified with <cite>consecutive_frames</cite>).</p>
+<p>Increase <cite>noise_threshold</cite> to avoid false negatives, at the risk of
+increasing false positives (a value of 0.0 will never report motion).
+This is particularly useful with noisy analogue video sources.</p>
 <p class="last"><cite>mask</cite> is a black and white image that specifies which part of the image
 to search for motion. White pixels select the area to search; black pixels
 the area to ignore.</p>
@@ -315,11 +326,15 @@ to stop iterating over this function's results at any time.)</p>
 Increase <cite>noise_threshold</cite> to avoid false negatives, at the risk of
 increasing false positives (a value of 1.0 will report a match every time).</p>
 </dd>
-<dt id="detect_motion">detect_motion(timeout_secs=10, mask=None)</dt>
+<dt id="detect_motion">detect_motion(timeout_secs=10, noise_threshold=0.84, mask=None)</dt>
 <dd><p class="first">Generator that yields a sequence of one <cite>MotionResult</cite> for each frame
 processed from the source video stream.</p>
 <p>Returns after <cite>timeout_secs</cite> seconds. (Note that the caller can also choose
 to stop iterating over this function's results at any time.)</p>
+<p><cite>noise_threshold</cite> is a parameter used by the motiondetect algorithm.
+Increase <cite>noise_threshold</cite> to avoid false negatives, at the risk of
+increasing false positives (a value of 0.0 will never report motion).
+This is particularly useful with noisy analogue video sources.</p>
 <p class="last"><cite>mask</cite> is a black and white image that specifies which part of the image
 to search for motion. White pixels select the area to search; black pixels
 the area to ignore.</p>
@@ -386,10 +401,21 @@ contain <em>any</em> elements that might be absent when the test case succeeds. 
 example, you must not include any part of a live TV stream (which will be
 different each time the test case is run), nor translucent menu overlays with
 live TV showing through.</li>
-<li>Don't crop tiny images: Instead of selecting just the text in a menu button,
-select the whole button. (Larger images provide a greater gap between the
-&quot;match certainty&quot; reported for non-matching vs. matching images, which makes
-for more robust tests).</li>
+<li>Crop template images as tightly as possible. For example if you're looking
+for a button, don't include the background outside of the button. (This is
+particularly important if your system-under-test is still under development
+and minor aesthetic changes to the UI are common.)</li>
+<li>Always follow a <cite>press</cite> with a <cite>wait_for_match</cite> -- don't assume that
+the <cite>press</cite> worked.</li>
+<li>Use <cite>press_until_match</cite> instead of assuming that the position of a menu item
+will never change within that menu.</li>
+<li>Use the <cite>timeout_secs</cite> parameter of <cite>wait_for_match</cite> and <cite>wait_for_motion</cite>
+instead of using <cite>time.sleep</cite>.</li>
+<li>Rename the template images captured by <cite>stbt record</cite> to a name that explains
+the contents of the image.</li>
+<li>Extract common navigation patterns into separate python functions. It is
+useful to start each test script by calling a function that brings the
+system-under-test to a known state.</li>
 </ul>
 </div>
 <div class="section" id="see-also">

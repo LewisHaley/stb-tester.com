@@ -312,6 +312,50 @@
   </entry>
 
   <entry>
+    <title>
+      stb-tester 0.9 release notes: Support for RedRat irNetBox;
+      `wait_for_motion` more tolerant to noise
+    </title>
+    <link rel="alternate"
+      href="http://stb-tester.com/release-notes.html/release-notes.html#0.9" />
+    <id>http://stb-tester.com/release-notes.html/release-notes.html#0.9</id>
+    <updated>2013-01-07T09:14:00Z</updated>
+    <summary type="html">
+      <![CDATA[
+        <p>The RedRat irNetBox-III is a rack-mountable network-controlled
+          infrared emitter with 16 separate outputs and adjustable power levels
+          to avoid infrared interference between the systems-under-test.
+          For further information see
+          http://www.redrat.co.uk/products/irnetbox.html , the
+          <cite>--control=irnetbox</cite> configuration in the
+          <a href="http://stb-tester.com/stbt.html#global-options">stbt man
+            page</a>,
+          and commit messages 508941e and 778d847.
+          Many thanks to Chris Dodge at RedRat for the donation of irNetBox
+          hardware to the stb-tester project and of his time in answering
+          questions.</p>
+        <p><cite>wait_for_motion</cite> now takes a
+          <cite>noise_threshold</cite> parameter; decrease
+          <cite>noise_threshold</cite> to avoid false positives when dealing
+          with noisy analogue video sources.
+          Thanks to Emmett Kelly for the patch!</p>
+        <p>Other minor changes:</p>
+        <ul>
+          <li>The remote control implementations of <cite>stbt.press</cite>
+            (Lirc, VirtualRemote, irNetBox) try to re-connect if the connection
+            (to lircd, to the set-top box, to the irNetBox, respectively) had been
+            dropped.</li>
+        <li>Build/packaging fix: Always rebuild <cite>stbt</cite> (which
+          reports the version with <cite>stbt --version</cite>) when the
+          version changes.</li>
+        <li>Minor fixes to the tab-completion script, self-tests and
+          documentation.</li>
+        </ul>
+      ]]>
+    </summary>
+  </entry>
+
+  <entry>
     <title>stbt man page</title>
     <link rel="alternate" href="http://stb-tester.com/stbt.html" />
     <id>http://stb-tester.com/stbt.html</id>
