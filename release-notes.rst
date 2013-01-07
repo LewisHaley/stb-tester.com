@@ -43,12 +43,11 @@ changes. The release notes always provide an exhaustive list of any changes.
 0.9 Support for RedRat irNetBox; `wait_for_motion` more tolerant to noise
 -------------------------------------------------------------------------
 
-The RedRat irNetBox-III is a rack-mountable network-controlled infrared
-emitter with 16 separate outputs and adjustable power levels to avoid
-infrared interference between the systems-under-test.
-For further information see
-http://www.redrat.co.uk/products/irnetbox.html ,
-the `--control=irnetbox` configuration in the
+The `RedRat irNetBox-III <http://www.redrat.co.uk/products/irnetbox.html>`_ is
+a rack-mountable network-controlled infrared emitter with 16 separate outputs
+and adjustable power levels to avoid infrared interference between the
+systems-under-test. For further information see the `--control=irnetbox`
+configuration in the
 `stbt man page <http://stb-tester.com/stbt.html#global-options>`_,
 and commit messages
 `508941e <https://github.com/drothlis/stb-tester/commit/508941e>`_ and
