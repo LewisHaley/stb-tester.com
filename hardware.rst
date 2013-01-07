@@ -113,8 +113,9 @@ BT878
 -----
 
 I know of one organisation successfully using `BT878`_ analogue video decoders
-with stb-tester. The signal is a bit noisy but this can be overcome by tweaking
-stb-tester's `noise_threshold`_ parameters.
+with stb-tester (though they say they haven't stressed this card as much as we
+have the HD PVR). The signal is a bit noisy but this can be overcome by
+tweaking stb-tester's `noise_threshold`_ parameters.
 
 
 Software capture
