@@ -135,14 +135,19 @@ for multiple pages removed for simplicity (or see the `full implementation`_).
 <p>
   This article copyright © 2012 <a href="http://david.rothlis.net">David
   Röthlisberger</a>.<br />
-  The names and logos of BBC iPlayer, ITV Player, 4oD, Demand 5, NOW TV,
-  and Milkshake! are trademarks of their respective owners.<br />
+  Licensed under a <a rel="license"
+  href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons
+  Attribution-ShareAlike 3.0 Unported license</a>.<br />
   Source code in this article is placed in the <a
   href="http://creativecommons.org/publicdomain/mark/1.0/">public domain</a>
-  (if you live somewhere with totally braindead copyright laws, you can use the
+  (or, at your choice, you can use the
   <a href="http://opensource.org/licenses/ISC">ISC</a> or <a
   href="http://creativecommons.org/publicdomain/zero/1.0">CC0</a> licenses,
-  both of which are as close to the public domain as possible.)
+  both of which are as close to the public domain as possible).
+</p>
+<p>
+  The names and logos of BBC iPlayer, ITV Player, 4oD, Demand 5, NOW TV,
+  and Milkshake! are trademarks of their respective owners.<br />
 </p>
 </div>
 

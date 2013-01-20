@@ -179,8 +179,9 @@ stb-tester was initially developed at `YouView TV`_, and is released under the
 <p>
   This article copyright © 2012 <a href="http://david.rothlis.net">David
   Röthlisberger</a>.<br />
-  Released under the <a href="http://www.gnu.org/copyleft/fdl.html">GNU Free
-  Documentation License</a>.
+  Licensed under a <a rel="license"
+  href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons
+  Attribution-ShareAlike 3.0 Unported license</a>.
 </p>
 <p>BBC iPlayer is copyright © 2012 BBC.</p>
 </div>

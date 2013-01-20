@@ -150,8 +150,9 @@ For an example see the `DirectFB surface source`_ element.
 <p>
   This article copyright © 2012 <a href="http://www.youview.com">YouView TV
   Ltd</a>.<br />
-  Released under the <a href="http://www.gnu.org/copyleft/fdl.html">GNU Free
-  Documentation License</a>.
+  Licensed under a <a rel="license"
+  href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons
+  Attribution-ShareAlike 3.0 Unported license</a>.
 </p>
 </div>
 
