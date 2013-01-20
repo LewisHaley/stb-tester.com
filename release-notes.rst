@@ -43,6 +43,8 @@ changes. The release notes always provide an exhaustive list of any changes.
 0.9 Support for RedRat irNetBox; `wait_for_motion` more tolerant to noise
 -------------------------------------------------------------------------
 
+7 Jan 2013.
+
 The `RedRat irNetBox-III <http://www.redrat.co.uk/products/irnetbox.html>`_ is
 a rack-mountable network-controlled infrared emitter with 16 separate outputs
 and adjustable power levels to avoid infrared interference between the
