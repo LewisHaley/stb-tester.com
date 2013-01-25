@@ -87,9 +87,10 @@ every single frame when the test demands it (e.g. for measuring animation
 smoothness [#animation]_).
 
 To control the set-top box stb-tester supports hardware infra-red emitters via
-`LIRC`_ (Linux Infrared Remote Control). We have also written a custom
-TCP-based "virtual remote" for controlling set-top boxes instrumented with the
-corresponding listener [#virtualremote]_.
+`LIRC`_ (Linux Infrared Remote Control), and the network-controlled RedRat
+`irNetBox`_. We have also written a custom TCP-based "virtual remote" for
+controlling set-top boxes instrumented with the corresponding listener
+[#virtualremote]_.
 
 
 The test scripts are plain python
@@ -143,13 +144,13 @@ stb-tester was initially developed at `YouView TV`_, and is released under the
 
 .. container:: footnotes
 
-  .. [#small] As of release 0.5: 860 lines of python code, and a GStreamer
-     plugin totalling 1200 lines of C code. stb-tester is essentially an
+  .. [#small] As of release 0.9: 1500 lines of python code, and a GStreamer
+     plugin totalling 1400 lines of C code. stb-tester is essentially an
      integration exercise: `GStreamer`_, `OpenCV`_, `LIRC`_ and Video4Linux do
      all the work.
 
-  .. [#fbsrc] GStreamer already has a `DirectFB`_ sink element; we have plans
-     to write a DirectFB source.
+  .. [#fbsrc] GStreamer already has a `DirectFB`_ sink element; we have written
+     a `DirectFB source`_.
 
   .. [#animation] We haven't implemented the infrastructure for test scripts to
      easily measure animation smoothness, just yet.
@@ -165,8 +166,10 @@ stb-tester was initially developed at `YouView TV`_, and is released under the
 .. _GStreamer: http://gstreamer.freedesktop.org
 .. _OpenCV: http://opencv.willowgarage.com
 .. _LIRC: http://www.lirc.org
+.. _irNetBox: http://www.redrat.co.uk/products/irnetbox.html
 .. _GStreamer element for DekTec DVB modulators: https://github.com/wmanley/gst-dektec
 .. _DirectFB: http://directfb.org
+.. _DirectFB source: https://bugzilla.gnome.org/show_bug.cgi?id=685877
 .. _YouView TV: http://www.youview.com
 .. _LGPL: http://www.gnu.org/licenses/lgpl-2.1.html
 
