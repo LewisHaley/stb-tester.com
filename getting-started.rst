@@ -42,10 +42,10 @@ GStreamer primer
 ----------------
 
 `stb-tester`_ is built on top of `GStreamer`_, a library of media-handling
-components. So first of all install the **gstreamer** and **gst-plugins-base**
-packages (on some systems the latter will be called *gstreamer*-plugins-base).
-Currently stb-tester requires GStreamer **0.10** — the newer 1.0 is not
-backwards compatible.
+components. So first of all install the **gstreamer** and
+**gstreamer-plugins-base** packages. [#package-names]_
+stb-tester requires GStreamer **0.10** — the newer 1.0 is not backwards
+compatible. [#fedora18]_
 
 Verify by running::
 
@@ -58,13 +58,14 @@ Verify by running::
 You should see an X window with the test pattern shown at right.
 
 **gst-launch** takes a GStreamer *pipeline* — the "**!**" is the GStreamer
-equivalent of the Unix pipe "**|**".
+equivalent of the Unix pipe "**|**". The **videotestsrc** element generates a
+video stream; **ximagesink** draws it on an X11 display. [#x11]_
 
-If your system supports the XVideo standard, you can use **xvimagesink**
-instead. Or **autovideosink** (from the gst-plugins-good package) which selects
-the best sink available (in theory; on my OS X system it doesn't work). Or
-**fakesink**, which is a null sink—but then you won't see anything at all. Or
-**tcpclientsink** to stream the video to a **tcpserversrc** on another
+If your system supports the XVideo standard, you can use the more efficient
+**xvimagesink** instead. Or **autovideosink** (from the gstreamer-plugins-good
+package) which selects the best sink available (in theory; on my OS X system it
+doesn't work). Or **fakesink**, which is a null sink—but then you won't see
+anything at all. Or **udpsink** to stream the video to a **udpsrc** on another
 computer. Or **filesink** to save the data to disk.
 
 GStreamer elements can be configured by setting their **properties**::
@@ -79,12 +80,24 @@ To debug GStreamer pipelines you can tell ``gst-launch`` to print debug
 messages for the entire pipeline or individual elements. See the
 `gst-launch(1)`_ man page for details.
 
-Building & installing stb-tester
---------------------------------
+Install stb-tester from pre-built packages
+------------------------------------------
+
+stb-tester RPMs for Fedora 16 and 17 are hosted by the OpenSUSE Build Service
+at http://download.opensuse.org/repositories/home:/stb-tester/
+
+Register the repository with your package manager by downloading the file
+``home:stb-tester.repo`` to ``/etc/yum.repos.d/`` [#stb-tester.repo]_ and then
+``sudo yum install stb-tester``.
+
+
+Install stb-tester from source
+------------------------------
 
 To build stb-tester you will need to install the following packages:
-**gstreamer-devel**, **gstreamer-plugins-base-devel**, **gstreamer-python**,
-**opencv-devel**, and **python-docutils** (to build the documentation). Then::
+[#devel-package-names]_ **gstreamer-devel**, **gstreamer-plugins-base-devel**,
+**gstreamer-python**, **opencv-devel**, and **python-docutils** (to build the
+documentation). Then::
 
     git clone git://github.com/drothlis/stb-tester.git
     make prefix=$HOME
@@ -295,8 +308,9 @@ of the stream (without it, decodebin2 would still figure out that the stream is
 in H.264 format by negotiating with the mpegtsdemux element). stb-tester
 doesn't currently support audio, but it is on the roadmap.
 
-Note that mpegtsdemux is from the gst-plugins-bad package, and decodebin2
-requires the gst-ffmpeg package in order to decode H.264.
+Note that mpegtsdemux is from the **gstreamer-plugins-bad** package, and
+decodebin2 requires the **gstreamer-ffmpeg** [#fn-rpmfusion]_ package in order
+to decode H.264.
 
 Make sure you get your own video capture pipeline working with ``gst-launch``
 before attempting to use it with ``stbt``.
@@ -330,9 +344,53 @@ If you have found stb-tester useful, or just intriguing, or you have any
 questions, let us know! You'll find us on the `mailing list`_.
 
 
+.. container:: footnotes
+
+  .. [#package-names]
+     RedHat-based Linux distributions (RHEL, Fedora):
+       sudo yum install **gstreamer gstreamer-plugins-base**
+     Debian-based Linux distributions (Ubuntu):
+       sudo apt-get install **gstreamer0.10-tools gstreamer0.10-plugins-base**
+     OS X (use `macports`_ or `homebrew`_):
+       sudo port install **gstreamer gst-plugins-base**
+
+  .. [#fedora18] On Fedora 18, for example, GStreamer 0.10 packages are called
+     "gstreamer", "gstreamer-plugins-base", etc., while GStreamer 1.0 packages
+     are "gstreamer1", "gstreamer1-plugins-base", etc.
+
+  .. [#x11] If your OS X system doesn't have X11 install `XQuartz`_, or use
+     glimagesink (from the gst-plugins-gl macports package) instead of
+     ximagesink.
+
+  .. [#stb-tester.repo] For example,
+     for Fedora 17::
+
+         sudo wget -O /etc/yum.repos.d/stb-tester.repo \
+         http://download.opensuse.org/repositories/home:/\
+         stb-tester/Fedora_17/home:stb-tester.repo
+
+  .. [#devel-package-names]
+     RedHat-based Linux distributions (RHEL, Fedora):
+       **gstreamer-devel**, **gstreamer-plugins-base-devel**,
+       **gstreamer-python**, **opencv-devel**, and **python-docutils**.
+     Debian-based Linux distributions (Ubuntu):
+       **libgstreamer0.10-dev**, **libgstreamer-plugins-base0.10-dev**,
+       **python-gst0.10**, **libcv-dev**, **libhighgui-dev**, and
+       **python-docutils**.
+     OS X with `macports`_:
+       **py27-gst-python**, **opencv**, and **py27-docutils**.
+     OS X with `homebrew`_:
+       Install **gst-python** and **opencv** via homebrew, and **docutils**
+       via your `python package manager`_.
+
+  .. [#fn-rpmfusion] On Fedora and RHEL you can get the gstreamer-ffmpeg package
+     from `rpmfusion`_.
+
 .. _"Introducing stb-tester": introduction.html
 .. _stb-tester: http://stb-tester.com
 .. _GStreamer: http://gstreamer.freedesktop.org
+.. _macports: http://www.macports.org/install.php
+.. _homebrew: http://mxcl.github.com/homebrew/
 .. _gst-launch(1): http://linux.die.net/man/1/gst-launch-0.10
 .. _"Test script format" in the stbt(1) man page: stbt.html#test-script-format
 .. _"Configuration" in the stbt(1) man page: stbt.html#configuration
@@ -344,6 +402,9 @@ questions, let us know! You'll find us on the `mailing list`_.
 .. _irrecord: http://www.lirc.org/html/irrecord.html
 .. _irsend: http://www.lirc.org/html/irsend.html
 .. _mailing list: http://groups.google.com/group/stb-tester
+.. _XQuartz: http://xquartz.macosforge.org
+.. _python package manager: http://pypi.python.org/pypi/pip/
+.. _rpmfusion: http://rpmfusion.org
 
 
 <!-- End reStructuredText content -->
@@ -352,7 +413,7 @@ questions, let us know! You'll find us on the `mailing list`_.
 
 <div id="footer">
 <p>
-  This article copyright © 2012 <a href="http://david.rothlis.net">David
+  This article copyright © 2012-2013 <a href="http://david.rothlis.net">David
   Röthlisberger</a>.<br />
   Licensed under a <a rel="license"
   href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons
