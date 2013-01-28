@@ -309,7 +309,7 @@ in H.264 format by negotiating with the mpegtsdemux element). stb-tester
 doesn't currently support audio, but it is on the roadmap.
 
 Note that mpegtsdemux is from the **gstreamer-plugins-bad** package, and
-decodebin2 requires the **gstreamer-ffmpeg** [#fn-rpmfusion]_ package in order
+decodebin2 requires the **gstreamer-ffmpeg** package [#fn-rpmfusion]_ in order
 to decode H.264.
 
 Make sure you get your own video capture pipeline working with ``gst-launch``
@@ -383,8 +383,8 @@ questions, let us know! You'll find us on the `mailing list`_.
        Install **gst-python** and **opencv** via homebrew, and **docutils**
        via your `python package manager`_.
 
-  .. [#fn-rpmfusion] On Fedora and RHEL you can get the gstreamer-ffmpeg package
-     from `rpmfusion`_.
+  .. [#fn-rpmfusion] On Fedora and RHEL you can get the gstreamer-plugins-bad
+     and gstreamer-ffmpeg packages from `rpmfusion`_.
 
 .. _"Introducing stb-tester": introduction.html
 .. _stb-tester: http://stb-tester.com
