@@ -24,7 +24,7 @@
   <h1>stb-tester: Getting started</h1>
   <p id="about">
     By <a href="http://david.rothlis.net">David Röthlisberger</a>.
-    Last updated 11 Dec 2012.
+    Last updated 28 Jan 2013.
   </p>
 </div>
 
@@ -36,10 +36,10 @@ stb-tester&quot;</a>.</p>
 <div class="section" id="gstreamer-primer">
 <h2>GStreamer primer</h2>
 <p><a class="reference external" href="http://stb-tester.com">stb-tester</a> is built on top of <a class="reference external" href="http://gstreamer.freedesktop.org">GStreamer</a>, a library of media-handling
-components. So first of all install the <strong>gstreamer</strong> and <strong>gst-plugins-base</strong>
-packages (on some systems the latter will be called <em>gstreamer</em>-plugins-base).
-Currently stb-tester requires GStreamer <strong>0.10</strong> — the newer 1.0 is not
-backwards compatible.</p>
+components. So first of all install the <strong>gstreamer</strong> and
+<strong>gstreamer-plugins-base</strong> packages.<a class="footnote-reference" href="#package-names" id="id1"><sup>1</sup></a>
+stb-tester requires GStreamer <strong>0.10</strong> — the newer 1.0 is not backwards
+compatible.<a class="footnote-reference" href="#fedora18" id="id2"><sup>2</sup></a></p>
 <p>Verify by running:</p>
 <pre class="literal-block">
 gst-launch videotestsrc ! ximagesink
@@ -47,12 +47,13 @@ gst-launch videotestsrc ! ximagesink
 <img alt="videotestsrc.png" src="videotestsrc.png" style="width: 267px; height: 224px;" />
 <p>You should see an X window with the test pattern shown at right.</p>
 <p><strong>gst-launch</strong> takes a GStreamer <em>pipeline</em> — the &quot;<strong>!</strong>&quot; is the GStreamer
-equivalent of the Unix pipe &quot;<strong>|</strong>&quot;.</p>
-<p>If your system supports the XVideo standard, you can use <strong>xvimagesink</strong>
-instead. Or <strong>autovideosink</strong> (from the gst-plugins-good package) which selects
-the best sink available (in theory; on my OS X system it doesn't work). Or
-<strong>fakesink</strong>, which is a null sink—but then you won't see anything at all. Or
-<strong>tcpclientsink</strong> to stream the video to a <strong>tcpserversrc</strong> on another
+equivalent of the Unix pipe &quot;<strong>|</strong>&quot;. The <strong>videotestsrc</strong> element generates a
+video stream; <strong>ximagesink</strong> draws it on an X11 display.<a class="footnote-reference" href="#x11" id="id3"><sup>3</sup></a></p>
+<p>If your system supports the XVideo standard, you can use the more efficient
+<strong>xvimagesink</strong> instead. Or <strong>autovideosink</strong> (from the gstreamer-plugins-good
+package) which selects the best sink available (in theory; on my OS X system it
+doesn't work). Or <strong>fakesink</strong>, which is a null sink—but then you won't see
+anything at all. Or <strong>udpsink</strong> to stream the video to a <strong>udpsrc</strong> on another
 computer. Or <strong>filesink</strong> to save the data to disk.</p>
 <p>GStreamer elements can be configured by setting their <strong>properties</strong>:</p>
 <pre class="literal-block">
@@ -66,11 +67,19 @@ gst-inspect videotestsrc
 messages for the entire pipeline or individual elements. See the
 <a class="reference external" href="http://linux.die.net/man/1/gst-launch-0.10">gst-launch(1)</a> man page for details.</p>
 </div>
-<div class="section" id="building-installing-stb-tester">
-<h2>Building &amp; installing stb-tester</h2>
-<p>To build stb-tester you will need to install the following packages:
-<strong>gstreamer-devel</strong>, <strong>gstreamer-plugins-base-devel</strong>, <strong>gstreamer-python</strong>,
-<strong>opencv-devel</strong>, and <strong>python-docutils</strong> (to build the documentation). Then:</p>
+<div class="section" id="install-stb-tester-from-pre-built-packages">
+<h2>Install stb-tester from pre-built packages</h2>
+<p>stb-tester RPMs for Fedora 16 and 17 are hosted by the OpenSUSE Build Service
+at <a class="reference external" href="http://download.opensuse.org/repositories/home:/stb-tester/">http://download.opensuse.org/repositories/home:/stb-tester/</a></p>
+<p>Register the repository with your package manager by downloading the file
+<tt class="docutils literal"><span class="pre">home:stb-tester.repo</span></tt> to <tt class="docutils literal">/etc/yum.repos.d/</tt><a class="footnote-reference" href="#stb-tester-repo" id="id4"><sup>4</sup></a> and then
+<tt class="docutils literal">sudo yum install <span class="pre">stb-tester</span></tt>.</p>
+</div>
+<div class="section" id="install-stb-tester-from-source">
+<h2>Install stb-tester from source</h2>
+<p>To build stb-tester you will need to install the following packages:<a class="footnote-reference" href="#devel-package-names" id="id5"><sup>5</sup></a> <strong>gstreamer-devel</strong>, <strong>gstreamer-plugins-base-devel</strong>,
+<strong>gstreamer-python</strong>, <strong>opencv-devel</strong>, and <strong>python-docutils</strong> (to build the
+documentation). Then:</p>
 <pre class="literal-block">
 git clone git://github.com/drothlis/stb-tester.git
 make prefix=$HOME
@@ -248,8 +257,9 @@ pipeline. The <tt class="docutils literal"><span class="pre">video/x-h264</span>
 of the stream (without it, decodebin2 would still figure out that the stream is
 in H.264 format by negotiating with the mpegtsdemux element). stb-tester
 doesn't currently support audio, but it is on the roadmap.</p>
-<p>Note that mpegtsdemux is from the gst-plugins-bad package, and decodebin2
-requires the gst-ffmpeg package in order to decode H.264.</p>
+<p>Note that mpegtsdemux is from the <strong>gstreamer-plugins-bad</strong> package, and
+decodebin2 requires the <strong>gstreamer-ffmpeg</strong> package<a class="footnote-reference" href="#fn-rpmfusion" id="id6"><sup>6</sup></a> in order
+to decode H.264.</p>
 <p>Make sure you get your own video capture pipeline working with <tt class="docutils literal"><span class="pre">gst-launch</span></tt>
 before attempting to use it with <tt class="docutils literal">stbt</tt>.</p>
 </div>
@@ -274,6 +284,78 @@ but contact us first and we'll work out some kind of pluggable API.</p>
 <h2>Get in touch</h2>
 <p>If you have found stb-tester useful, or just intriguing, or you have any
 questions, let us know! You'll find us on the <a class="reference external" href="http://groups.google.com/group/stb-tester">mailing list</a>.</p>
+<div class="footnotes container">
+<table class="docutils footnote" frame="void" id="package-names" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td><dl class="first last docutils">
+<dt>RedHat-based Linux distributions (RHEL, Fedora):</dt>
+<dd>sudo yum install <strong>gstreamer gstreamer-plugins-base</strong></dd>
+<dt>Debian-based Linux distributions (Ubuntu):</dt>
+<dd>sudo apt-get install <strong>gstreamer0.10-tools gstreamer0.10-plugins-base</strong></dd>
+<dt>OS X (use <a class="reference external" href="http://www.macports.org/install.php">macports</a> or <a class="reference external" href="http://mxcl.github.com/homebrew/">homebrew</a>):</dt>
+<dd>sudo port install <strong>gstreamer gst-plugins-base</strong></dd>
+</dl>
+</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="fedora18" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2">[2]</a></td><td>On Fedora 18, for example, GStreamer 0.10 packages are called
+&quot;gstreamer&quot;, &quot;gstreamer-plugins-base&quot;, etc., while GStreamer 1.0 packages
+are &quot;gstreamer1&quot;, &quot;gstreamer1-plugins-base&quot;, etc.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="x11" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id3">[3]</a></td><td>If your OS X system doesn't have X11 install <a class="reference external" href="http://xquartz.macosforge.org">XQuartz</a>, or use
+glimagesink (from the gst-plugins-gl macports package) instead of
+ximagesink.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="stb-tester-repo" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id4">[4]</a></td><td><p class="first">For example,
+for Fedora 17:</p>
+<pre class="last literal-block">
+sudo wget -O /etc/yum.repos.d/stb-tester.repo \
+http://download.opensuse.org/repositories/home:/\
+stb-tester/Fedora_17/home:stb-tester.repo
+</pre>
+</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="devel-package-names" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id5">[5]</a></td><td><dl class="first last docutils">
+<dt>RedHat-based Linux distributions (RHEL, Fedora):</dt>
+<dd><strong>gstreamer-devel</strong>, <strong>gstreamer-plugins-base-devel</strong>,
+<strong>gstreamer-python</strong>, <strong>opencv-devel</strong>, and <strong>python-docutils</strong>.</dd>
+<dt>Debian-based Linux distributions (Ubuntu):</dt>
+<dd><strong>libgstreamer0.10-dev</strong>, <strong>libgstreamer-plugins-base0.10-dev</strong>,
+<strong>python-gst0.10</strong>, <strong>libcv-dev</strong>, <strong>libhighgui-dev</strong>, and
+<strong>python-docutils</strong>.</dd>
+<dt>OS X with <a class="reference external" href="http://www.macports.org/install.php">macports</a>:</dt>
+<dd><strong>py27-gst-python</strong>, <strong>opencv</strong>, and <strong>py27-docutils</strong>.</dd>
+<dt>OS X with <a class="reference external" href="http://mxcl.github.com/homebrew/">homebrew</a>:</dt>
+<dd>Install <strong>gst-python</strong> and <strong>opencv</strong> via homebrew, and <strong>docutils</strong>
+via your <a class="reference external" href="http://pypi.python.org/pypi/pip/">python package manager</a>.</dd>
+</dl>
+</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="fn-rpmfusion" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id6">[6]</a></td><td>On Fedora and RHEL you can get the gstreamer-plugins-bad
+and gstreamer-ffmpeg packages from <a class="reference external" href="http://rpmfusion.org">rpmfusion</a>.</td></tr>
+</tbody>
+</table>
+</div>
 </div>
 
 
@@ -281,7 +363,7 @@ questions, let us know! You'll find us on the <a class="reference external" href
 
 <div id="footer">
 <p>
-  This article copyright © 2012 <a href="http://david.rothlis.net">David
+  This article copyright © 2012-2013 <a href="http://david.rothlis.net">David
   Röthlisberger</a>.<br />
   Licensed under a <a rel="license"
   href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons

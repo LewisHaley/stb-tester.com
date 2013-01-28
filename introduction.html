@@ -24,7 +24,7 @@
   <h1>Introducing stb-tester</h1>
   <p id="about">
     By <a href="http://david.rothlis.net">David Röthlisberger</a>.
-    Last updated 10 Nov 2012.
+    Last updated 25 Jan 2013.
   </p>
 </div>
 
@@ -68,9 +68,9 @@ configured to drop frames so that the test runs in real time, or to queue up
 every single frame when the test demands it (e.g. for measuring animation
 smoothness<a class="footnote-reference" href="#animation" id="id3"><sup>3</sup></a>).</p>
 <p>To control the set-top box stb-tester supports hardware infra-red emitters via
-<a class="reference external" href="http://www.lirc.org">LIRC</a> (Linux Infrared Remote Control). We have also written a custom
-TCP-based &quot;virtual remote&quot; for controlling set-top boxes instrumented with the
-corresponding listener<a class="footnote-reference" href="#virtualremote" id="id4"><sup>4</sup></a>.</p>
+<a class="reference external" href="http://www.lirc.org">LIRC</a> (Linux Infrared Remote Control), and the network-controlled RedRat
+<a class="reference external" href="http://www.redrat.co.uk/products/irnetbox.html">irNetBox</a>. We have also written a custom TCP-based &quot;virtual remote&quot; for
+controlling set-top boxes instrumented with the corresponding listener<a class="footnote-reference" href="#virtualremote" id="id4"><sup>4</sup></a>.</p>
 </div>
 <div class="section" id="the-test-scripts-are-plain-python">
 <h2>The test scripts are plain python</h2>
@@ -114,8 +114,8 @@ very high bar!</p>
 <table class="docutils footnote" frame="void" id="small" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>As of release 0.5: 860 lines of python code, and a GStreamer
-plugin totalling 1200 lines of C code. stb-tester is essentially an
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>As of release 0.9: 1500 lines of python code, and a GStreamer
+plugin totalling 1400 lines of C code. stb-tester is essentially an
 integration exercise: <a class="reference external" href="http://gstreamer.freedesktop.org">GStreamer</a>, <a class="reference external" href="http://opencv.willowgarage.com">OpenCV</a>, <a class="reference external" href="http://www.lirc.org">LIRC</a> and Video4Linux do
 all the work.</td></tr>
 </tbody>
@@ -123,8 +123,8 @@ all the work.</td></tr>
 <table class="docutils footnote" frame="void" id="fbsrc" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id2">[2]</a></td><td>GStreamer already has a <a class="reference external" href="http://directfb.org">DirectFB</a> sink element; we have plans
-to write a DirectFB source.</td></tr>
+<tr><td class="label"><a class="fn-backref" href="#id2">[2]</a></td><td>GStreamer already has a <a class="reference external" href="http://directfb.org">DirectFB</a> sink element; we have written
+a <a class="reference external" href="https://bugzilla.gnome.org/show_bug.cgi?id=685877">DirectFB source</a>.</td></tr>
 </tbody>
 </table>
 <table class="docutils footnote" frame="void" id="animation" rules="none">
