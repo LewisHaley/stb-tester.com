@@ -390,6 +390,24 @@
   </entry>
 
   <entry>
+    <title>
+      stb-tester 0.10.1 release notes: Fix irNetBox connection retry
+    </title>
+    <link rel="alternate"
+      href="http://stb-tester.com/release-notes.html/release-notes.html#0.10.1" />
+    <id>http://stb-tester.com/release-notes.html/release-notes.html#0.10.1</id>
+    <updated>2013-02-14T09:15:00Z</updated>
+    <summary type="html">
+      <![CDATA[
+        <p>Release 0.10 was supposed to fix the irNetBox connection retry on
+        Linux, but in fact broke it for everyone. This release fixes that, and
+        also adds static analysis to &quot;make check&quot; so that this type
+        of error doesn't happen again.</p>
+      ]]>
+    </summary>
+  </entry>
+
+  <entry>
     <title>stbt man page</title>
     <link rel="alternate" href="http://stb-tester.com/stbt.html" />
     <id>http://stb-tester.com/stbt.html</id>
