@@ -40,6 +40,17 @@ in production by several companies so we do try to minimise incompatible
 changes. The release notes always provide an exhaustive list of any changes.
 
 
+0.10.1 Fix irNetBox connection retry
+------------------------------------
+
+14 Feb 2013.
+
+Release 0.10 was supposed to fix the irNetBox connection retry on Linux,
+but in fact broke it for everyone. This release fixes that, and also
+adds static analysis to "make check" so that this type of error doesn't
+happen again.
+
+
 0.10 Fix irNetBox connection retry on Linux; other minor fixes
 --------------------------------------------------------------
 
