@@ -408,6 +408,38 @@
   </entry>
 
   <entry>
+    <title>
+      stb-tester 0.11 release notes: Support for RedRat irNetBox-II; improved robustness after video loss; improved exception output
+    </title>
+    <link rel="alternate"
+      href="http://stb-tester.com/release-notes.html/release-notes.html#0.11" />
+    <id>http://stb-tester.com/release-notes.html/release-notes.html#0.11</id>
+    <updated>2013-02-27T08:25:00Z</updated>
+    <summary type="html">
+      <![CDATA[
+        <p>The RedRat irNetBox is a rack-mountable network-controlled infrared
+          emitter. This release adds support for the irNetBox model II;
+          previously only model III was supported. Thanks to Emmett Kelly for
+          the patch.</p>
+        <p>The first <cite>wait_for_match</cite> after restarting pipeline (due
+          to video loss) now obeys <cite>timeout_secs</cite>. Due to a bug, the
+          total timeout in this situation used to be the specified
+          <cite>timeout_secs</cite> plus the time the script had spent running
+          so far (possibly many minutes!). See commit cf57a4c2 for details.</p>
+        <p>Fixed bug observed with Blackmagic Intensity Pro video capture
+          cards, where restarting the pipeline (after momentary video loss)
+          caused the card to stop delivering timestamps in the video frames,
+          causing <cite>stbt run</cite> to hang. See commit 53d5ecf3 for
+          details.</p>
+        <p><cite>stbt run</cite> now prints an exception's name &amp; message,
+          not just the stack trace. Since version 0.10, <cite>stbt</cite>
+          wasn't printing this information for non-<cite>MatchTimeout</cite>
+          exceptions.</p>
+      ]]>
+    </summary>
+  </entry>
+
+  <entry>
     <title>stbt man page</title>
     <link rel="alternate" href="http://stb-tester.com/stbt.html" />
     <id>http://stb-tester.com/stbt.html</id>

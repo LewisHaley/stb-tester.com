@@ -39,7 +39,7 @@
 the source distribution for details)</td>
 </tr>
 <tr><th class="docinfo-name">Version:</th>
-<td>0.10.1</td></tr>
+<td>0.11</td></tr>
 </tbody>
 </table>
 <div class="section" id="synopsis">
@@ -83,12 +83,13 @@ Control) daemon. <cite>lircd_socket</cite> defaults to <cite>/var/run/lirc/lircd
 <cite>remote_control_name</cite> is the name of a remote-control specification in
 lircd.conf.</dd>
 <dt>irnetbox:&lt;hostname&gt;:&lt;output&gt;:&lt;config_file&gt;</dt>
-<dd>RedRat irNetBox-III network-controlled infrared emitter hardware.
-<cite>hostname</cite> is the hostname or IP address of the irNetBox-III device.
+<dd>RedRat irNetBox network-controlled infrared emitter hardware.
+<cite>hostname</cite> is the hostname or IP address of the irNetBox device.
 <cite>output</cite> is the infrared output to use, a number between 1 and 16
 (inclusive). <cite>config_file</cite> is the configuration file that describes the
 infrared protocol to use; it can be created with RedRat's (Windows-only)
-&quot;IR Signal Database Utility&quot;.</dd>
+&quot;IR Signal Database Utility&quot;.
+stbt supports the irNetBox models II and III.</dd>
 <dt>vr:&lt;hostname&gt;:&lt;port&gt;</dt>
 <dd>A &quot;virtual remote&quot; that communicates with the set-top box over TCP.
 Requires a virtual remote listener (which we haven't released yet) running

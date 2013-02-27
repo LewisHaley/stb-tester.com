@@ -30,6 +30,28 @@
 interfaces may change from one release to the next, though stb-tester <em>is</em> used
 in production by several companies so we do try to minimise incompatible
 changes. The release notes always provide an exhaustive list of any changes.</p>
+<div class="section" id="support-for-redrat-irnetbox-ii-improved-robustness-after-video-loss-improved-exception-output">
+<h2 id="0.11">0.11 Support for RedRat irNetBox-II; improved robustness after video loss; improved exception output</h2>
+<p>27 Feb 2013.</p>
+<p>The RedRat irNetBox is a rack-mountable network-controlled infrared
+emitter. This release adds support for the irNetBox model II; previously
+only model III was supported. Thanks to Emmett Kelly for the patch.</p>
+<p>The first <cite>wait_for_match</cite> after restarting pipeline (due to video loss)
+now obeys <cite>timeout_secs</cite>. Due to a bug, the total timeout in this
+situation used to be the specified <cite>timeout_secs</cite> plus the time the
+script had spent running so far (possibly many minutes!). See commit
+<a class="reference external" href="https://github.com/drothlis/stb-tester/commit/cf57a4c2">cf57a4c2</a> for
+details.</p>
+<p>Fixed bug observed with Blackmagic Intensity Pro video capture cards,
+where restarting the pipeline (after momentary video loss) caused the
+card to stop delivering timestamps in the video frames, causing <cite>stbt
+run</cite> to hang. See commit
+<a class="reference external" href="https://github.com/drothlis/stb-tester/commit/53d5ecf3">53d5ecf3</a>
+for details.</p>
+<p><cite>stbt run</cite> now prints an exception's name &amp; message, not just the stack
+trace. Since version 0.10, <cite>stbt</cite> wasn't printing this information for
+non-<cite>MatchTimeout</cite> exceptions.</p>
+</div>
 <div class="section" id="fix-irnetbox-connection-retry">
 <h2 id="0.10.1">0.10.1 Fix irNetBox connection retry</h2>
 <p>14 Feb 2013.</p>
