@@ -40,6 +40,34 @@ in production by several companies so we do try to minimise incompatible
 changes. The release notes always provide an exhaustive list of any changes.
 
 
+0.11 Support for RedRat irNetBox-II; improved robustness after video loss; improved exception output
+----------------------------------------------------------------------------------------------------
+
+27 Feb 2013.
+
+The RedRat irNetBox is a rack-mountable network-controlled infrared
+emitter. This release adds support for the irNetBox model II; previously
+only model III was supported. Thanks to Emmett Kelly for the patch.
+
+The first `wait_for_match` after restarting pipeline (due to video loss)
+now obeys `timeout_secs`. Due to a bug, the total timeout in this
+situation used to be the specified `timeout_secs` plus the time the
+script had spent running so far (possibly many minutes!). See commit
+`cf57a4c2 <https://github.com/drothlis/stb-tester/commit/cf57a4c2>`_ for
+details.
+
+Fixed bug observed with Blackmagic Intensity Pro video capture cards,
+where restarting the pipeline (after momentary video loss) caused the
+card to stop delivering timestamps in the video frames, causing `stbt
+run` to hang. See commit
+`53d5ecf3 <https://github.com/drothlis/stb-tester/commit/53d5ecf3>`_
+for details.
+
+`stbt run` now prints an exception's name & message, not just the stack
+trace. Since version 0.10, `stbt` wasn't printing this information for
+non-`MatchTimeout` exceptions.
+
+
 0.10.1 Fix irNetBox connection retry
 ------------------------------------
 
