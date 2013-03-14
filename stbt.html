@@ -34,12 +34,12 @@
 <col class="docinfo-content" />
 <tbody valign="top">
 <tr><th class="docinfo-name">Copyright:</th>
-<td>Copyright © 2012 YouView TV Ltd. and others</td></tr>
+<td>Copyright © 2012-2013 YouView TV Ltd. and others</td></tr>
 <tr class="field"><th class="docinfo-name">License:</th><td class="field-body">LGPL v2.1 or (at your option) any later version (see LICENSE file in
 the source distribution for details)</td>
 </tr>
 <tr><th class="docinfo-name">Version:</th>
-<td>0.11</td></tr>
+<td>0.12</td></tr>
 </tbody>
 </table>
 <div class="section" id="synopsis">
@@ -63,6 +63,7 @@ wait_for_match(&quot;BBC One.png&quot;)
 <p><strong>stbt run</strong> will play back the given test script, returning an exit status of
 success or failure for easy integration with your existing test reporting
 system.</p>
+<p><strong>stbt</strong> has other auxiliary sub-commands; run <cite>stbt --help</cite> for details.</p>
 </div>
 <div class="section" id="options">
 <h2>OPTIONS</h2>
@@ -173,13 +174,13 @@ later files taking precedence):</p>
 <p>These files are simple ini files with the form:</p>
 <pre class="literal-block">
 [global]
-    source_pipeline=videotestsrc
-    control=None
+source_pipeline = videotestsrc
+control = None
 [run]
-    script=test.py
+script = test.py
 [record]
-    output_file=test.py
-    control_recorder=file:///dev/stdin
+output_file = test.py
+control_recorder = file:///dev/stdin
 </pre>
 <p>Each key corresponds to a command line option with hyphens replaced with
 underscores.  Configuration items in the 'global' section will be passed to
@@ -309,8 +310,14 @@ pressing again.</p>
 <p>Returns <cite>MotionResult</cite> when motion is detected.
 Raises <cite>MotionTimeout</cite> if no motion is detected after <cite>timeout_secs</cite>
 seconds.</p>
-<p>Considers the video stream to have motion if there were differences between
-10 consecutive frames (or the number specified with <cite>consecutive_frames</cite>).</p>
+<p>Considers the video stream to have motion if there were diferences between
+10 consecutive frames, or the number specified by <cite>consecutive_frames</cite>,
+which can be:</p>
+<ul class="simple">
+<li>a positive integer value, or</li>
+<li>a string in the form &quot;x/y&quot;, where <cite>x</cite> is the number of frames with motion
+detected out of a sliding window of <cite>y</cite> frames.</li>
+</ul>
 <p>Increase <cite>noise_threshold</cite> to avoid false negatives, at the risk of
 increasing false positives (a value of 0.0 will never report motion).
 This is particularly useful with noisy analogue video sources.</p>
@@ -347,6 +354,13 @@ property of <cite>MatchTimeout</cite> or <cite>MotionTimeout</cite>.</p>
 </dd>
 <dt id="get_frame">get_frame()</dt>
 <dd>Get a GStreamer buffer containing the current video frame.</dd>
+<dt id="get_config">get_config(key, tool=None)</dt>
+<dd><p class="first">Read the value of <cite>key</cite> from the stbt config file.</p>
+<p>See 'CONFIGURATION' in the stbt(1) man page for the config file search
+path.</p>
+<p class="last">Raises <cite>ConfigurationError</cite> if the specified <cite>tool</cite> section or <cite>key</cite> is not
+found.</p>
+</dd>
 <dt id="debug">debug(s)</dt>
 <dd>Print the given string to stderr if stbt run <cite>--verbose</cite> was given.</dd>
 <dt id="MatchResult">class MatchResult</dt>
