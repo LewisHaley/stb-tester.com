@@ -440,6 +440,41 @@
   </entry>
 
   <entry>
+    <title>
+      stb-tester 0.12 release notes: New command-line tools; new `stbt.get_config` function; `wait_for_motion` non-consecutive frames
+    </title>
+    <link rel="alternate"
+      href="http://stb-tester.com/release-notes.html/release-notes.html#0.12" />
+    <id>http://stb-tester.com/release-notes.html/release-notes.html#0.12</id>
+    <updated>2013-03-14T15:05:00Z</updated>
+    <summary type="html">
+      <![CDATA[
+        <p>New command-line tools:</p>
+        <ul class="simple">
+          <li>stbt config: Print configuration value.</li>
+          <li>stbt screenshot: Capture a single screenshot.</li>
+          <li>stbt templatematch: Compare two images.</li>
+          <li>stbt tv: View live video on screen.</li>
+        </ul>
+        <p>Use <cite>stbt &lt;command&gt; --help</cite> for usage details, and
+          see the git commit messages (e.g. <cite>git log
+          stbt-screenshot</cite>) for the motivations behind each tool.</p>
+        <p>New python function <cite>stbt.get_config</cite> for stbt scripts to
+          read from the stbt configuration file, using the search path
+          documented in the &quot;configuration&quot; section of the stbt(1)
+          man page.</p>
+        <p>To avoid false positives, <cite>wait_for_motion</cite> looks for
+          <cite>consecutive_frames</cite> (10, by default) consecutive frames
+          with motion. However, this can give false negatives, so the
+          <cite>consecutive_frames</cite> parameter can now take a fraction
+          given as a string, e.g. &quot;10/20&quot; looks for at least 10
+          frames with motion out of a sliding window of 20. In a future release
+          we will probably make &quot;10/20&quot; the default.</p>
+      ]]>
+    </summary>
+  </entry>
+
+  <entry>
     <title>stbt man page</title>
     <link rel="alternate" href="http://stb-tester.com/stbt.html" />
     <id>http://stb-tester.com/stbt.html</id>

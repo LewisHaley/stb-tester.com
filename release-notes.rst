@@ -40,6 +40,34 @@ in production by several companies so we do try to minimise incompatible
 changes. The release notes always provide an exhaustive list of any changes.
 
 
+0.12 New command-line tools; new `stbt.get_config` function; `wait_for_motion` non-consecutive frames
+-----------------------------------------------------------------------------------------------------
+
+14 Mar 2013.
+
+New command-line tools:
+
+* stbt config: Print configuration value.
+* stbt screenshot: Capture a single screenshot.
+* stbt templatematch: Compare two images.
+* stbt tv: View live video on screen.
+
+Use `stbt <command> --help` for usage details, and see the git commit
+messages (e.g. `git log stbt-screenshot`) for the motivations behind
+each tool.
+
+New python function `stbt.get_config` for stbt scripts to read from the
+stbt configuration file, using the search path documented in the
+"configuration" section of the stbt(1) man page.
+
+To avoid false positives, `wait_for_motion` looks for
+`consecutive_frames` (10, by default) consecutive frames with motion.
+However, this can give false negatives, so the `consecutive_frames`
+parameter can now take a fraction given as a string, e.g. "10/20" looks
+for at least 10 frames with motion out of a sliding window of 20.
+In a future release we will probably make "10/20" the default.
+
+
 0.11 Support for RedRat irNetBox-II; improved robustness after video loss; improved exception output
 ----------------------------------------------------------------------------------------------------
 
