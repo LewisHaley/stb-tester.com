@@ -2,6 +2,7 @@ description := A video-capture record/playback testing system
 
 ARTICLES := release-notes.html introduction.html getting-started.html
 ARTICLES += find-player.html jenkins.html hardware.html
+ARTICLES += templatematch-process.html
 
 SHELL := bash
 
@@ -19,7 +20,17 @@ deploy: index.html stbt.html $(ARTICLES) \
   players.py \
   stb-tester+jenkins+setup.svg jenkins+jobs.png jenkins+build+now.png \
   jenkins+xunit+graph.png jenkins+xunit+results.png jenkins+artifacts.png \
-  hdpvr-mp4-pipeline.svg hdpvr-fan.jpg
+  hdpvr-mp4-pipeline.svg hdpvr-fan.jpg \
+  banner-low-threshold-absdiff.png banner-template.png blue-bunny-template.png \
+  bunny-template.png match-method1.png match-method3.png match-method5.png \
+  moon-template.png noisy-source.png noisy-thick-border-bunny-source.png \
+  red-bunny-source.png rotated-sun-absdiff-normalized.png \
+  rotated-sun-absdiff.png rotated-sun-absdiff-threshold-2-erodes.png \
+  rotated-sun-threshold-erode.png rotated-sun-source-roi-gray-normalized.png \
+  rotated-sun-source-roi-gray.png rotated-sun-source-roi.png \
+  rotated-sun-template-gray-normalized.png rotated-sun-template-gray.png \
+  rotated-sun-template.png stbt-templatematch-graphic.png  test-source.png \
+  thick-border-bunny-template.png
 	mkdir static
 	cp $^ static
 	trap 'rm -rf static' EXIT; \
