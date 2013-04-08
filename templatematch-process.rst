@@ -38,7 +38,12 @@ The stbt-templatematch gstreamer element and the python function "detect_match"
 and its decendants have been upgraded to allow much greater customisation to
 the end user. Each available parameter will uniquely affect the result of an
 attempted match, and here we will attempt to verbally and visually demonstrate
-the available parameters.
+the available parameters. For clarity I will refer to the parameters by their
+Python API name; for the parameters to the Gstreamer element see either::
+
+    gst-inspect stbt-templatematch
+
+or use the rule that (PY) `parameter_name` becomes (GST) `parameterName`.
 
 .. image:: stbt-templatematch-graphic.png
     :width: 640
@@ -51,14 +56,30 @@ Template Matching Overview
 Firstly, lets outline the process of how stb-tester looks for and finds a match.
 Stbt utilises `OpenCV image processing`_ functions; the most key of which is
 the `matchTemplate`_ function, which creates a "heat map" from numerous
-comparisons of the template to the source image. From this heat map, we can
-assess the potential of whether the template can be found in the source image,
-and if that results in a high chance of finding the match we proceed onto the
-next step where we confirm whether the template is where we think it is.
+comparisons of the template to the source image. The heat map consists of
+floating point values, interpreted as grayscale pixels. The magnitude of a
+pixel's value gives the indicative strength of match of the template at that
+pixel's Cartesian coordinates (i.e. (x, y)) on the source frame. From this heat
+map, we can assess the potential of whether the template can be found in the
+source image, and if that results in a high chance of finding the match we
+proceed onto the next step where we confirm whether the template is where we
+think it is.
 
 We refer to the process of making the heat map and determining the likelihood
 of find a match the "first pass" and confirming whether we have a match the
-"second pass".
+"second pass". Most of the sub-processes of which the two passes comprise
+produce an intermediate image. These images are not saved to disk usually,
+however they can be kept by setting the `debugDirectory` parameter when using
+the Gstreamer element, or passing two `-v` `(verbose) flags`_ to `stbt run`, in
+which case the directory is automatically called `stbt-debug`. Note that if an
+existing debug directory is present, it is not deleted and a new one created,
+but rather any existing images are overwritten. This can mean that, for example,
+you can run a test using "absdiff-normed" confirm method, which creates the
+`stbt-debug` directory, then change it to use "absdiff" confirm method, which
+overwrites all the images in `stbt-debug` *except* the `\*_gray_normalized.png`
+images, which will still be present in the directory from the first test even
+after the second one finishes. This is also true of subsequent matches in the
+same test which use different confirm methods.
 
 
 .. figure:: test-source.png
@@ -72,6 +93,7 @@ of find a match the "first pass" and confirming whether we have a match the
 
 .. _OpenCV image processing: http://docs.opencv.org/modules/imgproc/doc/imgproc.html
 .. _matchTemplate: http://docs.opencv.org/modules/imgproc/doc/object_detection.html
+.. _(verbose) flags: http://stb-tester.com/stbt.html#global-options
 
 First Pass Matching and Associated Parameters
 =============================================
@@ -80,15 +102,13 @@ As explained previously, the purpose of the first pass is to assess the best
 potential location within the source image to find the template. There are 6
 template matching methods available within the OpenCV framework, however, we
 limit this to the 3 methods which normalize the results (with the Python API,
-though not with Gstreamer). This is because the normalisation provides a context
+though not with Gstreamer). This is because the normalization provides a context
 and an absolute strength of result, as the pixels all have a value within the
 range [0.0..1.0f]. There are no real advantages to using the non-normalized
 methods.
 
 The method is set to method 1 by default, aka, CV_TM_SQDIFF_NORMED. This can
-be overwritten by setting the `matchMethod` parameter when using the
-GStreamer element directly or by setting `match_method` within the stbt Python
-API.
+be overwritten by setting `match_method` within the stbt Python API.
 
 Here are the results from using the 3 normalized match methods to try and match
 a template of the banner from the source frame:
@@ -131,9 +151,8 @@ withing the source image. Mathematically, this equates to
 R[w,h] = ((S[w] - T[w] + 1), (S[h] - T[h] + 1))
 where R, S, T are Result, Source, Template images respectively,
 and w, h are width and height. As such, comparing a template and source of
-equal width and height results in a heat map of 1 pixel. When using double
-verboseness, the heat map is named `source_matchtemplate.png` in the
-`stbt-debug` directory.
+equal width and height results in a heat map of 1 pixel. The heat map is named
+`source_matchtemplate.png` in the `stbt-debug` directory.
 
 Once the heat map is produced, the map is searched for the minimum pixel value
 (SQDIFF) or maximum pixel value (CCORR, CCOEFF). This is then compared to a
@@ -142,12 +161,11 @@ pass of the template match if performed, else the template matching cycle
 begins anew (possibly with a new source frame when using video).
 
 The threshold value is set by default to 0.8, but can be overwritten by setting
-the `matchThreshold` parameter (GStreamer) or `match_threshold` (API). Note:
-a threshold of 0 (zero) will pass even the most dissimilar of matches, whilst
-a threshold of 1 will likely never pass anything, due in part to discrepancies
-with `floating point arithmetic`_. For example, the highest first pass result
-obtained from the above matches was 0.9992421... despite the template being a
-cropped version of the source image.
+the `match_threshold` parameter. Note: a threshold of 0 (zero) will pass even
+the most dissimilar of matches, whilst a threshold of 1 will likely never pass
+anything, due in part to discrepancies with `floating point arithmetic`_. For
+example, the highest first pass result obtained from the above matches was
+0.9992421... despite the template being a cropped version of the source image.
 
 To summarise:
 
@@ -165,7 +183,7 @@ There are currently 2 different confirmation methods available, plus a third
 option which lets you forgo the confirmation stage and assume the match as
 positive ("none"). The other 2 methods are known as "adbsiff" and
 "normed-absdiff", of which "normed-absdiff" is the default. To overwrite
-this, set the `confirmMethod` (GStreamer) or `confirm_method` (API) parameter.
+this, set the `confirm_method` parameter.
 
 The "absdiff" and "normed-absdiff" methods are identical except for the addition
 of one step in "normed-absdiff". They use the coordinates of the strongest match
@@ -361,6 +379,14 @@ The final step is to count the number of white pixels which remain. There must
 be no white pixels remaining for the match to be deemed positive. Our above
 example, even with two erode passes, does not meet this criteria, though it
 would if we increased it to three erode passes.
+
+To summarise:
+
++ Confirm method: which confirm method to use.
++ Confirm threshold: the leniancy for taking noise and slight variation into
+  account, where 0.0 is no leniancy and 1.0 is complete leniancy.
++ Erode passes: how many times to erode the `absdiff_threshold.png` image.
+
 
 Confirm Threshold VS Erode Passes
 =================================
