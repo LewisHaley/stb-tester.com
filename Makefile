@@ -29,8 +29,7 @@ deploy: index.html stbt.html $(ARTICLES) \
   rotated-sun-threshold-erode.png rotated-sun-source-roi-gray-normalized.png \
   rotated-sun-source-roi-gray.png rotated-sun-source-roi.png \
   rotated-sun-template-gray-normalized.png rotated-sun-template-gray.png \
-  rotated-sun-template.png stbt-templatematch-graphic.png  test-source.png \
-  thick-border-bunny-template.png
+  rotated-sun-template.png stbt-templatematch-graphic.png  test-source.png
 	mkdir static
 	cp $^ static
 	trap 'rm -rf static' EXIT; \
