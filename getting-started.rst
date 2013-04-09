@@ -371,14 +371,13 @@ questions, let us know! You'll find us on the `mailing list`_.
 
   .. [#devel-package-names]
      RedHat-based Linux distributions (RHEL, Fedora):
-       **gstreamer-devel**, **gstreamer-plugins-base-devel**,
-       **gstreamer-python**, **opencv-devel**, and **python-docutils**.
+       **gstreamer-devel gstreamer-plugins-base-devel
+       gstreamer-python opencv-devel python-docutils**
      Debian-based Linux distributions (Ubuntu):
-       **libgstreamer0.10-dev**, **libgstreamer-plugins-base0.10-dev**,
-       **python-gst0.10**, **libcv-dev**, **libhighgui-dev**, and
-       **python-docutils**.
+       **libgstreamer0.10-dev libgstreamer-plugins-base0.10-dev
+       python-gst0.10 libcv-dev libhighgui-dev python-docutils**
      OS X with `macports`_:
-       **py27-gst-python**, **opencv**, and **py27-docutils**.
+       **py27-gst-python opencv py27-docutils**
      OS X with `homebrew`_:
        Install **gst-python** and **opencv** via homebrew, and **docutils**
        via your `python package manager`_.
