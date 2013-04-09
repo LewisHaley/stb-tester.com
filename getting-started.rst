@@ -375,7 +375,7 @@ questions, let us know! You'll find us on the `mailing list`_.
        gstreamer-python opencv-devel python-docutils**
      Debian-based Linux distributions (Ubuntu):
        **libgstreamer0.10-dev libgstreamer-plugins-base0.10-dev
-       python-gst0.10 libcv-dev libhighgui-dev python-docutils**
+       python-gst0.10 libopencv-dev python-docutils**
      OS X with `macports`_:
        **py27-gst-python opencv py27-docutils**
      OS X with `homebrew`_:
