@@ -100,6 +100,7 @@ To build stb-tester you will need to install the following packages:
 documentation). Then::
 
     git clone git://github.com/drothlis/stb-tester.git
+    cd stb-tester
     make prefix=$HOME
     make prefix=$HOME install
 
