@@ -97,7 +97,8 @@ Install stb-tester from source
 To build stb-tester you will need to install the following packages:
 [#devel-package-names]_ **gstreamer-devel**, **gstreamer-plugins-base-devel**,
 **gstreamer-python**, **opencv-devel**, **python-docutils** (to build the
-documentation), and **python-nose** (to run the unit tests). Then::
+documentation), and **python-nose**, **python-pep8**, and **pylint** (to run
+the unit tests). Then::
 
     git clone git://github.com/drothlis/stb-tester.git
     cd stb-tester
@@ -373,15 +374,19 @@ questions, let us know! You'll find us on the `mailing list`_.
   .. [#devel-package-names]
      RedHat-based Linux distributions (RHEL, Fedora):
        **gstreamer-devel gstreamer-plugins-base-devel
-       gstreamer-python opencv-devel python-docutils python-nose**
+       gstreamer-python opencv-devel python-docutils
+       python-nose python-pep8 pylint**
      Debian-based Linux distributions (Ubuntu):
        **libgstreamer0.10-dev libgstreamer-plugins-base0.10-dev
-       python-gst0.10 libopencv-dev python-docutils python-nose**
+       python-gst0.10 libopencv-dev python-docutils
+       python-nose pep8 pylint**
      OS X with `macports`_:
-       **py27-gst-python opencv py27-docutils py27-nose**
+       **py27-gst-python opencv py27-docutils
+       py27-nose py27-pep8 py27-pylint**
      OS X with `homebrew`_:
        Install **gst-python** and **opencv** via homebrew;
-       install **docutils** and **nose** via your `python package manager`_.
+       install **docutils**, **nose**, **pep8** and **pylint**
+       via your `python package manager`_.
 
   .. [#fn-rpmfusion] On Fedora and RHEL you can get the gstreamer-plugins-bad
      and gstreamer-ffmpeg packages from `rpmfusion`_.
