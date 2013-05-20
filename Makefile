@@ -2,7 +2,7 @@ description := A video-capture record/playback testing system
 
 ARTICLES := release-notes.html introduction.html getting-started.html
 ARTICLES += find-player.html jenkins.html hardware.html
-ARTICLES += match-parameters.html
+ARTICLES += match-parameters.html multi-lirc.html
 
 SHELL := bash
 

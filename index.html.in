@@ -52,6 +52,7 @@
       scripts</a></li>
   <li><a href="match-parameters.html">Image-matching parameters</a></li>
   <li><a href="hardware.html">Video-capture hardware</a></li>
+  <li><a href="multi-lirc.html">Using multiple LIRC infra-red transceivers</a></li>
 </ul>
 
 

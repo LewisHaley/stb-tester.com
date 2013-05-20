@@ -583,4 +583,22 @@
     </summary>
   </entry>
 
+  <entry>
+    <title>Using multiple LIRC infra-red transceivers with stb-tester</title>
+    <link rel="alternate" href="http://stb-tester.com/multi-lirc.html" />
+    <id>http://stb-tester.com/multi-lirc.html</id>
+    <updated>2013-05-20T17:06:00Z</updated>
+    <author>
+      <name>Máté Szendrő</name>
+    </author>
+    <summary type="html">
+      <![CDATA[
+        <p>To use multiple <a class="reference external"
+          href="http://www.lirc.org">LIRC</a> infra-red transmitters and/or
+          receivers connected to the same host:</p>
+        <p>...</p>
+      ]]>
+    </summary>
+  </entry>
+
 </feed>
