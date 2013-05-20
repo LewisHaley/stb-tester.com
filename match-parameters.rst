@@ -433,7 +433,7 @@ could lead to a false positive.
 
 <div id="footer">
 <p>
-  This article copyright © 2012 <a href="http://www.youview.com">YouView TV
+  This article copyright © 2013 <a href="http://www.youview.com">YouView TV
   Ltd</a>.<br />
   Licensed under a <a rel="license"
   href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons
