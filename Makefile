@@ -21,27 +21,27 @@ deploy: index.html stbt.html $(ARTICLES) \
   stb-tester+jenkins+setup.svg jenkins+jobs.png jenkins+build+now.png \
   jenkins+xunit+graph.png jenkins+xunit+results.png jenkins+artifacts.png \
   hdpvr-mp4-pipeline.svg hdpvr-fan.jpg \
-  banner-low-threshold-absdiff.png \
-  banner-template.png \
-  bunny-template.png \
-  match-method1.png \
-  match-method3.png \
-  match-method5.png \
-  noisy-source.png \
-  noisy-thick-border-bunny-source.png \
-  rotated-sun-absdiff-normalized.png \
-  rotated-sun-absdiff-threshold-2-erodes.png \
-  rotated-sun-absdiff-threshold-erode.png \
-  rotated-sun-absdiff-threshold.png \
-  rotated-sun-absdiff.png \
-  rotated-sun-source-roi-gray-normalized.png \
-  rotated-sun-source-roi-gray.png \
-  rotated-sun-source-roi.png \
-  rotated-sun-template-gray-normalized.png \
-  rotated-sun-template-gray.png \
-  rotated-sun-template.png \
-  stbt-templatematch-graphic.png \
-  test-source.png \
+  match-parameters-banner-low-threshold-absdiff.png \
+  match-parameters-banner-template.png \
+  match-parameters-bunny-template.png \
+  match-parameters-graphic.png \
+  match-parameters-match-method1.png \
+  match-parameters-match-method3.png \
+  match-parameters-match-method5.png \
+  match-parameters-noisy-source.png \
+  match-parameters-noisy-thick-border-bunny-source.png \
+  match-parameters-rotated-sun-absdiff-normalized.png \
+  match-parameters-rotated-sun-absdiff-threshold-2-erodes.png \
+  match-parameters-rotated-sun-absdiff-threshold-erode.png \
+  match-parameters-rotated-sun-absdiff-threshold.png \
+  match-parameters-rotated-sun-absdiff.png \
+  match-parameters-rotated-sun-source-roi-gray-normalized.png \
+  match-parameters-rotated-sun-source-roi-gray.png \
+  match-parameters-rotated-sun-source-roi.png \
+  match-parameters-rotated-sun-template-gray-normalized.png \
+  match-parameters-rotated-sun-template-gray.png \
+  match-parameters-rotated-sun-template.png \
+  match-parameters-test-source.png \
 
 	mkdir static
 	cp $^ static

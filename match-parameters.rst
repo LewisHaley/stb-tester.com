@@ -46,7 +46,7 @@ by their Python API name; for the parameters to the Gstreamer element see either
 
 or use the rule that (PY) `parameter_name` becomes (GST) `parameterName`.
 
-.. image:: stbt-templatematch-graphic.png
+.. image:: match-parameters-graphic.png
     :width: 640
     :height: 400
     :align: center
@@ -83,7 +83,7 @@ after the second one finishes. This is also true of subsequent matches in the
 same test which use different confirm methods.
 
 
-.. figure:: test-source.png
+.. figure:: match-parameters-test-source.png
     :width: 640
     :height: 400
     :align: center
@@ -124,21 +124,21 @@ a template of the banner from the source frame:
     ====================== =======================
 
 
-.. |temp| image:: banner-template.png
+.. |temp| image:: match-parameters-banner-template.png
     :width: 194
     :height: 123
 
-.. |meth1| image:: match-method1.png
+.. |meth1| image:: match-parameters-match-method1.png
     :width: 447
     :height: 278
     :scale: 70%
 
-.. |meth3| image:: match-method3.png
+.. |meth3| image:: match-parameters-match-method3.png
     :width: 447
     :height: 278
     :scale: 70%
 
-.. |meth5| image:: match-method5.png
+.. |meth5| image:: match-parameters-match-method5.png
     :width: 447
     :height: 278
     :scale: 70%
@@ -211,13 +211,13 @@ and can be found as ``source_roi_gray.png`` and ``template_gray.png`` under
     **Source ROI Gray** **Template Gray**
     =================== =================
 
-.. |rs-roi| image:: rotated-sun-source-roi.png
+.. |rs-roi| image:: match-parameters-rotated-sun-source-roi.png
 
-.. |rs-temp| image:: rotated-sun-template.png
+.. |rs-temp| image:: match-parameters-rotated-sun-template.png
 
-.. |rs-roi-gray| image:: rotated-sun-source-roi-gray.png
+.. |rs-roi-gray| image:: match-parameters-rotated-sun-source-roi-gray.png
 
-.. |rs-temp-gray| image:: rotated-sun-template-gray.png
+.. |rs-temp-gray| image:: match-parameters-rotated-sun-template-gray.png
 
 This is where the methods differ: at this point, when using the ``"normed-absdiff"``
 method, the grayscaled ROI and template are normalized. This stretches the range
@@ -233,9 +233,9 @@ The difference in this example isn't huge, but it is there.
     **Source ROI Gray Normalized** **Template Gray Normalized**
     ============================== ============================
 
-.. |rs-roi-gray-normed| image:: rotated-sun-source-roi-gray-normalized.png
+.. |rs-roi-gray-normed| image:: match-parameters-rotated-sun-source-roi-gray-normalized.png
 
-.. |rs-temp-gray-normed| image:: rotated-sun-template-gray-normalized.png
+.. |rs-temp-gray-normed| image:: match-parameters-rotated-sun-template-gray-normalized.png
 
 The filenames are ``source_roi_gray_normalized.png`` and
 ``template_gray_normalized.png`` respectively, however these images obviously
@@ -258,7 +258,7 @@ looks like.
     |rs-absdiff-normed|     **Absolute Difference**
     ======================= =======================
 
-.. |rs-absdiff-normed| image:: rotated-sun-absdiff-normalized.png
+.. |rs-absdiff-normed| image:: match-parameters-rotated-sun-absdiff-normalized.png
 
 Important to note at this point is that the above image was produced using
 the ``"normed-absdiff"`` confirm method. Here is the equivalent when using ``"absdiff"``.
@@ -269,7 +269,7 @@ the ``"normed-absdiff"`` confirm method. Here is the equivalent when using ``"ab
     |rs-absdiff| **Absolute Difference (source and template *not* normalized)**
     ============ ==============================================================
 
-.. |rs-absdiff| image:: rotated-sun-absdiff.png
+.. |rs-absdiff| image:: match-parameters-rotated-sun-absdiff.png
 
 As before, the effect of the normalize is not huge in this example, however it
 does affect the next step.
@@ -287,7 +287,7 @@ from the same source we are trying to match it too. For example:
     |banner-temp| **Template cropped directly from source**
     ============= =========================================
 
-.. |banner-temp| image:: banner-template.png
+.. |banner-temp| image:: match-parameters-banner-template.png
 
 does *not* match the source with a ``confirm_threshold`` of 0.005 because of the
 slight noise created by passing the source image through gstreamer. This is
@@ -299,7 +299,7 @@ the resultant ``absdiff.png``:
     |banner-low-thresh-absdiff| **Absolute Difference (confirm_threshold = 0.005)**
     =========================== =====================================================
 
-.. |banner-low-thresh-absdiff| image:: banner-low-threshold-absdiff.png
+.. |banner-low-thresh-absdiff| image:: match-parameters-banner-low-threshold-absdiff.png
 
 So let's explain what ``confirm_threshold`` is doing, as this is what controls
 the stage after the absolute difference is performed. Thresholding a grayscale
@@ -341,7 +341,7 @@ original example, using the default settings once again.
     |rs-absdiff-thresh| **Thresholded Absolute Difference**
     =================== ===================================
 
-.. |rs-absdiff-thresh| image:: rotated-sun-absdiff-threshold.png
+.. |rs-absdiff-thresh| image:: match-parameters-rotated-sun-absdiff-threshold.png
 
 The next stage is eroding the thresholded image. What this does is remove a
 certain amount of the white pixels which resulted from the threshold, due
@@ -358,7 +358,7 @@ on our example (``erode_passes`` = 1).
     |rs-absdiff-thresh-erode| **Thresholded Absolute Difference Eroded**
     ========================= ==========================================
 
-.. |rs-absdiff-thresh-erode| image:: rotated-sun-absdiff-threshold-erode.png
+.. |rs-absdiff-thresh-erode| image:: match-parameters-rotated-sun-absdiff-threshold-erode.png
 
 The threshold and the erode might seem to do similar things: they do, however
 the erodes are much more aggressive and less fine-tunable than changing the
@@ -376,7 +376,7 @@ Here's the effect of two erode passes on with our example.
     |rs-absdiff-thresh-2-erode| **Thresholded Absolute Difference Eroded (erode_passes = 2)**
     =========================== ===============================================================
 
-.. |rs-absdiff-thresh-2-erode| image:: rotated-sun-absdiff-threshold-2-erodes.png
+.. |rs-absdiff-thresh-2-erode| image:: match-parameters-rotated-sun-absdiff-threshold-2-erodes.png
 
 The final step is to count the number of white pixels which remain. There must
 be no white pixels remaining for the match to be deemed positive. Our above
@@ -405,9 +405,9 @@ frame which has had noise added to it, and try to match the rabbit.
     **Noisy Source Frame** **Rabbit Template**
     ====================== ===================
 
-.. |noisy-source| image:: noisy-source.png
+.. |noisy-source| image:: match-parameters-noisy-source.png
 
-.. |bunny-template| image:: bunny-template.png
+.. |bunny-template| image:: match-parameters-bunny-template.png
 
 We can account for this noisy and get the match we watch either by increasing
 the confirm threshold from 0.28 to 0.31, or by increasing the number of erode
@@ -420,7 +420,7 @@ a button which when highlighted gets a thicker border, as such
     |noisy-thick-border-bunny-source| **Rabbit "button" highlighted with thicker border**
     ================================= ===================================================
 
-.. |noisy-thick-border-bunny-source| image:: noisy-thick-border-bunny-source.png
+.. |noisy-thick-border-bunny-source| image:: match-parameters-noisy-thick-border-bunny-source.png
 
 This will only match with a confirm threshold of 0.54 - which is safely above
 what is required to pass the noisy frame - so we won't get a false positive.
