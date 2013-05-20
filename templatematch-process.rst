@@ -34,8 +34,9 @@
 
 <!-- Begin reStructuredText content -->
 
-The **stbt-templatematch** gstreamer element and the python function
-**detect_match** and its decendants have been upgraded to allow much greater
+Since stb-tester 0.13, the **stbt-templatematch** gstreamer element and the
+python function **detect_match** and its descendants (**wait_for_match** and
+**press_until_match**) have been upgraded to allow much greater
 customisation to the end user. Each available parameter will uniquely affect the
 result of an attempted match, and here we will attempt to verbally and visually
 demonstrate the available parameters. For clarity I will refer to the parameters
@@ -65,8 +66,8 @@ source image, and if that results in a high chance of finding the match we
 proceed onto the next step where we confirm whether the template is where we
 think it is.
 
-We refer to the process of making the heat map and determining the likelihood
-of find a match the "first pass" and confirming whether we have a match the
+We call the process of making the heat map and determining the likelihood
+of finding a match the "first pass", and confirming whether we have a match the
 "second pass". Most of the sub-processes of which the two passes comprise
 produce an intermediate image. These images are not saved to disk usually,
 however they can be kept by setting the ``debugDirectory`` parameter when using
@@ -98,16 +99,16 @@ same test which use different confirm methods.
 First Pass Matching and Associated Parameters
 =============================================
 
-As explained previously, the purpose of the first pass is to assess the best
+The purpose of the first pass is to assess the best
 potential location within the source image to find the template. There are 6
 template matching methods available within the OpenCV framework, however, we
-limit this to the 3 methods which normalize the results (with the Python API,
-though not with Gstreamer). This is because the normalization provides a context
+limit this to the 3 methods which normalize the results.
+This is because the normalization provides a context
 and an absolute strength of result, as the pixels all have a value within the
 range [0.0..1.0f]. There are no real advantages to using the non-normalized
 methods.
 
-The method is set to method 1 by default, aka, ``CV_TM_SQDIFF_NORMED``. This can
+The method is set to ``sqdiff-normed`` by default. This can
 be overwritten by setting ``match_method`` within the **stbt** Python API.
 
 Here are the results from using the 3 normalized match methods to try and match
@@ -117,9 +118,9 @@ a template of the banner from the source frame:
 
     ====================== =======================
     |temp|                 |meth1|
-    **Template**           **CV_TM_SQDIFF_NORMED**
+    **Template**           **sqdiff-normed**
     |meth3|                |meth5|
-    **CV_TM_CCORR_NORMED** **CV_TM_CCOEFF_NORMED**
+    **ccorr-normed**       **ccoeff-normed**
     ====================== =======================
 
 
@@ -142,9 +143,9 @@ a template of the banner from the source frame:
     :height: 278
     :scale: 70%
 
-Note that for ``CV_TM_SQDIFF_NORMED``, the most likely location for the template
-is indicated by the darkest pixel, whereas for ``CV_TM_CCORR_NORMED`` and
-``CV_TM_CCOEFF_NORMED`` the brightest pixel indicates the most likely position.
+Note that for ``sqdiff-normed``, the most likely location for the template
+is indicated by the darkest pixel, whereas for ``ccorr-normed`` and
+``ccoeff-normed`` the brightest pixel indicates the most likely position.
 
 The heat map contains a pixel for every possible location of the template
 withing the source image. Mathematically, this equates to::
@@ -183,7 +184,7 @@ Second Pass Confirmation and Associated Parameters
 The second pass acts as a confirmation of the match found in the first pass.
 There are currently 2 different confirmation methods available, plus a third
 option which lets you forgo the confirmation stage and assume the match as
-positive ("none"). The other 2 methods are known as "adbsiff" and
+positive ("none"). The other 2 methods are ``"absdiff"`` and
 ``"normed-absdiff"``, of which ``"normed-absdiff"`` is the default. To overwrite
 this, set the ``confirm_method`` parameter.
 
@@ -194,11 +195,11 @@ the same dimensions as the template. This can be found as ``source_roi.png`` und
 **stbt-debug**.
 
 To aid with demonstrating the second pass, I will use the following template,
-which successfully gets through the first pass - which we can take to me it's
+which successfully gets through the first pass - which we can take to mean it's
 at least a *close* match - but fails the second pass, as expected.
 
 Then the both the ROI and a copy of the template are converted to grayscale,
-and can found as ``source_roi_gray.png`` and ``template_gray.png`` under
+and can be found as ``source_roi_gray.png`` and ``template_gray.png`` under
 **stbt-debug** respectively.
 
 .. table:: \
@@ -265,7 +266,7 @@ the ``"normed-absdiff"`` confirm method. Here is the equivalent when using ``"ab
 .. table:: \
 
     ============ ==============================================================
-    |rs-absdiff| **Absolute Difference (source and template *not* noramalized**
+    |rs-absdiff| **Absolute Difference (source and template *not* normalized)**
     ============ ==============================================================
 
 .. |rs-absdiff| image:: rotated-sun-absdiff.png
