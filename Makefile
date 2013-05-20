@@ -45,10 +45,10 @@ stbt.html: stb-tester/README.rst stb-tester/VERSION stbt.html.template
 	rst2html --template=stbt.html.template --initial-header-level=2 \
 	    --title='stbt(1): $(description) -- man page' |\
 	sed -e 's,<a class="reference external" href="file:/">file:/</a>,file:/,' \
-	    -e '/<start python docs>/,/<end python docs>/ \
-	            s,<dt>\([a-z_]*\)(,<dt id="\1">\1(,' \
-	    -e '/<start python docs>/,/<end python docs>/ \
-	            s,<dt>class \([A-Za-z]*\),<dt id="\1">class \1,' \
+	    -e "/<start python docs>/,/<end python docs>/ \
+	            s,<dt>\([a-z_]*\)(,<dt id='\1'>\1(," \
+	    -e "/<start python docs>/,/<end python docs>/ \
+	            s,<dt>class \([A-Za-z]*\),<dt id='\1'>class \1," \
 	> $@
 
 rst_markers := /Begin reStructuredText content/,/End reStructuredText content/
