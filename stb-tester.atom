@@ -584,6 +584,27 @@
   </entry>
 
   <entry>
+    <title>stb-tester image matching parameters</title>
+    <link rel="alternate" href="http://stb-tester.com/match-parameters.html" />
+    <id>http://stb-tester.com/match-parameters.html</id>
+    <updated>2013-05-20T15:08:00Z</updated>
+    <author>
+      <name>Lewis Haley</name>
+    </author>
+    <summary type="html">
+      <![CDATA[
+        <p>Since stb-tester 0.13, the <strong>stbt-templatematch</strong>
+          gstreamer element and the python function
+          <strong>detect_match</strong> and its descendants
+          (<strong>wait_for_match</strong> and
+          <strong>press_until_match</strong>) have been upgraded to allow much
+          greater customisation to the end user.</p>
+        <p>...</p>
+      ]]>
+    </summary>
+  </entry>
+
+  <entry>
     <title>Using multiple LIRC infra-red transceivers with stb-tester</title>
     <link rel="alternate" href="http://stb-tester.com/multi-lirc.html" />
     <id>http://stb-tester.com/multi-lirc.html</id>
