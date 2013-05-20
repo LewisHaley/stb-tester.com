@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Parameters to stbt-templatematch and detect_match derivatives</title>
+  <title>stb-tester image matching parameters</title>
   <link href="stb-tester.css" media="all" rel="stylesheet" type="text/css" />
 
   <script type="text/javascript">
@@ -21,7 +21,7 @@
 <body id="templatematch">
 
 <div id="header">
-  <h1>Stbt-Templatematch</h1>
+  <h1>stb-tester image matching parameters</h1>
   <p id="about">
     By <a href="http://lewishaley.co.uk">Lewis Haley</a>.
     Last updated @UPDATED@.
