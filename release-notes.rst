@@ -40,6 +40,87 @@ in production by several companies so we do try to minimise incompatible
 changes. The release notes always provide an exhaustive list of any changes.
 
 
+0.13 Image-matching algorithm is more configurable; changes to configuration API
+--------------------------------------------------------------------------------
+
+21 May 2013.
+
+Various parameters that affect the image-matching algorithm were
+previously hard-coded but are now configurable by the user. You can
+customise these parameters in individual calls to `wait_for_match`,
+`detect_match`, and `press_for_match`, or you can change the global
+defaults in your `stbt.conf` file. A new variant of the algorithm
+(`confirm_method="normed-absdiff"`) has also been added, though the
+default algorithm remains unchanged. For details see the documentation
+for `MatchParameters` in the
+`"test script format" <http://stb-tester.com/stbt.html#test-script-format>`_
+section of the stbt(1)
+man page. See also http://stb-tester.com/match-parameters.html
+
+The `noise_threshold` parameter to `wait_for_match`, `detect_match`, and
+`press_for_match` is now deprecated. It will be removed in a future
+release. Set the `confirm_threshold` field of `match_parameters`
+instead.
+
+`stbt run` and `stbt record` now support multiple LIRC-based USB
+infra-red emitters and/or receivers. For details see
+http://stb-tester.com/multi-lirc.html
+
+Breaking change to the `stbt.conf` configuration file: If you have any
+of the following entries in the `[run]` or `[record]` section, move them
+to the `[global]` section:
+
+- control
+- source_pipeline
+- sink_pipeline
+- verbose
+
+If you have the following entry in the `[global]` section, move it to
+the `[run]` section:
+
+- script
+
+If you have the following entries in the `[global]` section, move them
+to the `[record]` section:
+
+- output_file
+- control_recorder
+
+This change is unlikely to affect most users; it will only affect you if
+you changed the above configuration entries from their default sections.
+See commit `9283df1f <https://github.com/drothlis/stb-tester/commit/9283df1f>`_
+for the rationale of this change.
+
+Breaking API change to the python `stbt.get_config` function: The
+function signature has changed from:
+
+    stbt.get_config(key, section="global")
+
+to:
+
+    stbt.get_config(section, key)
+
+This will only affect users who have written python libraries or
+command-line tools that use `stbt.get_config` to access the `stbt.conf`
+configuration file. See commit
+`e87299a1 <https://github.com/drothlis/stb-tester/commit/e87299a1>`_ for
+details.
+
+Breaking change to the `stbt config` command-line tool: The command-line
+interface has changed from:
+
+    stbt config [section] key
+
+to:
+
+    stbt config section.key
+
+This will only affect users who have written command-line tools that use
+`stbt config` to access the `stbt.conf` configuration file. See commit
+`f1670cbc <https://github.com/drothlis/stb-tester/commit/f1670cbc>`_ for
+details.
+
+
 0.12 New command-line tools; new `stbt.get_config` function; `wait_for_motion` non-consecutive frames
 -----------------------------------------------------------------------------------------------------
 

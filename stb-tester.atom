@@ -475,6 +475,92 @@
   </entry>
 
   <entry>
+    <title>
+      stb-tester 0.13 release notes: Image-matching algorithm is more
+        configurable; changes to configuration API
+    </title>
+    <link rel="alternate"
+      href="http://stb-tester.com/release-notes.html/release-notes.html#0.13" />
+    <id>http://stb-tester.com/release-notes.html/release-notes.html#0.13</id>
+    <updated>2013-05-21T09:57:00Z</updated>
+    <summary type="html">
+      <![CDATA[
+        <p>Various parameters that affect the image-matching algorithm were
+          previously hard-coded but are now configurable by the user. You can
+          customise these parameters in individual calls to
+          <cite>wait_for_match</cite>, <cite>detect_match</cite>, and
+          <cite>press_for_match</cite>, or you can change the global defaults
+          in your <cite>stbt.conf</cite> file. A new variant of the algorithm
+          (<cite>confirm_method=&quot;normed-absdiff&quot;</cite>) has also
+          been added, though the default algorithm remains unchanged. For
+          details see the documentation for <cite>MatchParameters</cite> in the
+          <a href="http://stb-tester.com/stbt.html#test-script-format">&quot;test
+          script format&quot;</a> section of the stbt(1) man page. See also <a
+          href="http://stb-tester.com/match-parameters.html">http://stb-tester.com/match-parameters.html</a></p>
+        <p>The <cite>noise_threshold</cite> parameter to
+          <cite>wait_for_match</cite>, <cite>detect_match</cite>, and
+          <cite>press_for_match</cite> is now deprecated. It will be removed in
+          a future release. Set the <cite>confirm_threshold</cite> field of
+          <cite>match_parameters</cite> instead.</p>
+        <p><cite>stbt run</cite> and <cite>stbt record</cite> now support
+          multiple LIRC-based USB infra-red emitters and/or receivers. For
+          details see <a
+          href="http://stb-tester.com/multi-lirc.html">http://stb-tester.com/multi-lirc.html</a></p>
+        <p>Breaking change to the <cite>stbt.conf</cite> configuration file: If
+          you have any of the following entries in the <cite>[run]</cite> or
+          <cite>[record]</cite> section, move them to the <cite>[global]</cite>
+          section:</p>
+        <ul>
+          <li>control</li>
+          <li>source_pipeline</li>
+          <li>sink_pipeline</li>
+          <li>verbose</li>
+        </ul>
+        <p>If you have the following entry in the <cite>[global]</cite>
+          section, move it to the <cite>[run]</cite> section:</p>
+        <ul>
+          <li>script</li>
+        </ul>
+        <p>If you have the following entries in the <cite>[global]</cite>
+          section, move them to the <cite>[record]</cite> section:</p>
+        <ul>
+          <li>output_file</li>
+          <li>control_recorder</li>
+        </ul>
+        <p>This change is unlikely to affect most users; it will only affect
+          you if you changed the above configuration entries from their default
+          sections. See commit <a
+          href="https://github.com/drothlis/stb-tester/commit/9283df1f">9283df1f</a>
+          for the rationale of this change.</p>
+        <p>Breaking API change to the python <cite>stbt.get_config</cite>
+          function: The function signature has changed from:</p>
+        <blockquote>
+          stbt.get_config(key, section=&quot;global&quot;)</blockquote>
+        <p>to:</p>
+        <blockquote>
+          stbt.get_config(section, key)</blockquote>
+        <p>This will only affect users who have written python libraries or
+          command-line tools that use <cite>stbt.get_config</cite> to access
+          the <cite>stbt.conf</cite> configuration file. See commit <a
+          href="https://github.com/drothlis/stb-tester/commit/e87299a1">e87299a1</a>
+          for details.</p>
+        <p>Breaking change to the <cite>stbt config</cite> command-line tool:
+          The command-line interface has changed from:</p>
+        <blockquote>
+          stbt config [section] key</blockquote>
+        <p>to:</p>
+        <blockquote>
+          stbt config section.key</blockquote>
+        <p>This will only affect users who have written command-line tools that
+          use <cite>stbt config</cite> to access the <cite>stbt.conf</cite>
+          configuration file. See commit <a
+          href="https://github.com/drothlis/stb-tester/commit/f1670cbc">f1670cbc</a>
+          for details.</p>
+      ]]>
+    </summary>
+  </entry>
+
+  <entry>
     <title>stbt man page</title>
     <link rel="alternate" href="http://stb-tester.com/stbt.html" />
     <id>http://stb-tester.com/stbt.html</id>
