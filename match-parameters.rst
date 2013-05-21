@@ -184,8 +184,8 @@ Second Pass Confirmation and Associated Parameters
 The second pass acts as a confirmation of the match found in the first pass.
 There are currently 2 different confirmation methods available, plus a third
 option which lets you forgo the confirmation stage and assume the match as
-positive ("none"). The other 2 methods are ``"absdiff"`` and
-``"normed-absdiff"``, of which ``"normed-absdiff"`` is the default. To overwrite
+positive ("none"). The other 2 methods are ``"absdiff"`` (the default) and
+``"normed-absdiff"``. To overwrite
 this, set the ``confirm_method`` parameter.
 
 The ``"absdiff"`` and ``"normed-absdiff"`` methods are identical except for the addition
