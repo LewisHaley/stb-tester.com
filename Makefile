@@ -64,7 +64,8 @@ stbt.html: stb-tester/README.rst stb-tester/VERSION stbt.html.template
 	sed -e "s/@VERSION@/$$(cat stb-tester/VERSION)/" \
 	    -e "/^:Manual section:/ d" \
 	    -e "/^:Manual group:/ d" \
-	    -e "s/Copyright (C)/Copyright ©/" |\
+	    -e "s/Copyright (C)/Copyright ©/" \
+	    -e "/^\.\. image:: https:..travis-ci.org/,/:target:/ d" |\
 	rst2html --template=stbt.html.template --initial-header-level=2 \
 	    --title='stbt(1): $(description) -- man page' |\
 	sed -e 's,<a class="reference external" href="file:/">file:/</a>,file:/,' \
