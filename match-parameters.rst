@@ -240,7 +240,7 @@ The difference in this example isn't huge, but it is there.
 The filenames are ``source_roi_gray_normalized.png`` and
 ``template_gray_normalized.png`` respectively, however these images obviously
 will onlu be present when using the ``"normed-absdiff"`` method. (This is a useful
-way of debugging if you aren't getting an exepected match.)
+way of debugging if you aren't getting an expected match.)
 
 The next stage is to take the absolute difference between source and template
 images. Each pixel of both source and template has a value between zero and one,
