@@ -102,7 +102,7 @@ udev configuration
 To auto-launch lircd when a new device is attached, and auto-kill it when the
 device is removed, add the following to ``/etc/udev/rules.d/20-lirc.rules``::
 
-  ACTION=="add", KERNEL=="lirc*", RUN+="/usr/bin/sh -c '/usr/sbin/lircd --device=/dev/$kernel --listen=$((8700 + $number)) --pidfile=/var/run/lirc/$kernel.pid 2>&1 | xargs -rL1 logger'"
+  ACTION=="add", KERNEL=="lirc*", RUN+="/usr/bin/sh -c '/usr/sbin/lircd --device=/dev/$kernel --listen=$((8700 + $number)) --connect=localhost:$((8700 + $number)) --pidfile=/var/run/lirc/$kernel.pid 2>&1 | xargs -rL1 logger'"
   ACTION=="remove", KERNEL=="lirc*", RUN+="/usr/bin/sh -c 'kill $(</var/run/lirc/$kernel.pid) 2>&1 | xargs -rL1 logger'"
 
 Make sure not to break a rule to multiple lines.
