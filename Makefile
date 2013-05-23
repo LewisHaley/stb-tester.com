@@ -21,27 +21,6 @@ deploy: index.html stbt.html $(ARTICLES) \
   stb-tester+jenkins+setup.svg jenkins+jobs.png jenkins+build+now.png \
   jenkins+xunit+graph.png jenkins+xunit+results.png jenkins+artifacts.png \
   hdpvr-mp4-pipeline.svg hdpvr-fan.jpg \
-  match-parameters-banner-low-threshold-absdiff.png \
-  match-parameters-banner-template.png \
-  match-parameters-bunny-template.png \
-  match-parameters-graphic.png \
-  match-parameters-match-method1.png \
-  match-parameters-match-method3.png \
-  match-parameters-match-method5.png \
-  match-parameters-noisy-source.png \
-  match-parameters-noisy-thick-border-bunny-source.png \
-  match-parameters-rotated-sun-absdiff-normalized.png \
-  match-parameters-rotated-sun-absdiff-threshold-2-erodes.png \
-  match-parameters-rotated-sun-absdiff-threshold-erode.png \
-  match-parameters-rotated-sun-absdiff-threshold.png \
-  match-parameters-rotated-sun-absdiff.png \
-  match-parameters-rotated-sun-source-roi-gray-normalized.png \
-  match-parameters-rotated-sun-source-roi-gray.png \
-  match-parameters-rotated-sun-source-roi.png \
-  match-parameters-rotated-sun-template-gray-normalized.png \
-  match-parameters-rotated-sun-template-gray.png \
-  match-parameters-rotated-sun-template.png \
-  match-parameters-test-source.png \
 
 	mkdir static
 	cp $^ static
