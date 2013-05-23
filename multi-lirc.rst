@@ -99,30 +99,96 @@ the same host:
 udev configuration
 ------------------
 
-To auto-launch lircd when a new device is attached, and auto-kill it when the
-device is removed, add the following to ``/etc/udev/rules.d/20-lirc.rules``::
+.. _assigns:
 
-  ACTION=="add", KERNEL=="lirc*", RUN+="/usr/bin/sh -c '/usr/sbin/lircd --device=/dev/$kernel --listen=$((8700 + $number)) --pidfile=/var/run/lirc/$kernel.pid 2>&1 | xargs -rL1 logger'"
-  ACTION=="remove", KERNEL=="lirc*", RUN+="/usr/bin/sh -c 'kill $(</var/run/lirc/$kernel.pid) 2>&1 | xargs -rL1 logger'"
+To auto-launch lircd when a new device is attached, add the following to
+``/etc/udev/rules.d/20-lirc.rules`` [#udev]_::
 
-Make sure not to break a rule to multiple lines.
+  ACTION=="add", KERNEL=="lirc*", RUN+="/usr/bin/sh -c '/usr/sbin/lircd --device=/dev/$kernel --listen=$((8700 + $number)) --connect=localhost:$((8700 + $number)) --pidfile=/var/run/lirc/$kernel.pid 2>&1 | xargs -rL1 logger'"
 
 It starts lircd listener on port (8700 + N) where 'N' is the device
 number as in /dev/lircN. Errors are logged to /var/log/messages.
 
-TODO: udev rules to ensure that the emitter plugged into a particular USB port
-is always assigned the same /dev/lircN device and the same TCP port, even
-across reboots of the PC.
+.. _removes:
+
+To auto-kill lircd when a device is removed, add the following::
+
+  ACTION=="remove", KERNEL=="lirc*", RUN+="/usr/bin/sh -c 'kill $(</var/run/lirc/$kernel.pid) 2>&1 | xargs -rL1 logger'"
+
+Make sure not to break a rule to multiple lines.
+
+To ensure that an emitter plugged into a particular USB port is always
+assigned the same TCP port, even across reboots of the PC, perform the
+following steps.
+
+1. Connect the emitter to a selected USB port.
+
+2. List activity log::
+
+    sudo tail /var/log/messages
+
+   Look for a message similar to the following::
+
+    kernel: [261678.058509] rc32: RedRat3-II Infrared Remote Transceiver (112a:0005)
+    as /devices/pci0000:00/0000:00:1d.7/usb2/2-1/2-1.7/2-1.7:1.0/rc/rc32
+
+   This example uses a RedRat3-II_ infra-red emitter.
+
+3. List the ``udev`` properties of the devce using the path of the device from
+   the activity log::
+
+    udevadm info -a -p \
+        /devices/pci0000:00/0000:00:1d.7/usb2/2-1/2-1.7/2-1.7:1.0/rc/rc33
+
+   Expect something like the following output::
+
+    looking at device '/devices/pci0000:00/0000:00:1d.7/usb2/2-1/2-1.7/2-1.7:1.0/rc/rc33':
+        KERNEL=="rc33"
+        SUBSYSTEM=="rc"
+        DRIVER==""
+        ATTR{protocols}=="[rc-5] nec rc-6 jvc sony sanyo mce_kbd lirc"
+
+    looking at parent device '/devices/pci0000:00/0000:00:1d.7/usb2/2-1/2-1.7/2-1.7:1.0':
+        KERNELS=="2-1.7:1.0"
+        SUBSYSTEMS=="usb"
+        DRIVERS=="redrat3"
+        ...
+
+4. Assign a static port number to the emitter connected to that specific USB
+   port. To identify the USB port, we are using the ``KERNELS`` parameter that
+   matches the ``KERNEL`` parameter of the parent USB controller [#udev]_.
+
+   Add the following to ``/etc/udev/rules.d/20-lirc.rules`` (and don't forget
+   to remove the rule that assigns_ port numbers dynamically)::
+
+    ACTION=="add", KERNEL=="lirc*", KERNELS=="2-1.7:1.0", RUN+="/usr/bin/sh -c '/usr/sbin/lircd --device=/dev/$kernel --listen=8700 --connect=localhost:8700 --pidfile=/var/run/lirc/$kernel.pid 2>&1 | xargs -rL1 logger'"
+
+   This example always starts the listener on port 8700 if the emitter is
+   plugged to USB port ``2-1.7:1.0``. Again, make sure not to break the rule
+   to multiple lines.
+
+   Repeat the steps to set up additional emitters. The rule that removes_
+   devices stays the same.
+
 
 (These instructions were tested with Fedora 17; details may vary for other
 Linux distributions and other operating systems.)
+
+
+.. container:: footnotes
+
+  .. [#udev]
+     See the `udev(7)`_ man page for parameter descriptions and the
+     `udev(8)`_ man page for rules file format description.
 
 
 .. _LIRC: http://www.lirc.org
 .. _irsend(1): http://www.lirc.org/html/irsend.html
 .. _stbt.conf: stbt.html#configuration
 .. _Options: stbt.html#options
-
+.. _RedRat3-II: http://www.redrat.co.uk/products/
+.. _udev(7): http://linux.die.net/man/7/udev
+.. _udev(8): http://linux.die.net/man/8/udev
 
 <!-- End reStructuredText content -->
 
