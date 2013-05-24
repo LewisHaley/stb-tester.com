@@ -115,7 +115,7 @@ BT878
 I know of one organisation successfully using `BT878`_ analogue video decoders
 with stb-tester (though they say they haven't stressed this card as much as we
 have the HD PVR). The signal is a bit noisy but this can be overcome by
-tweaking stb-tester's `noise_threshold`_ parameters.
+tweaking stb-tester's `image-matching parameters`_.
 
 
 Software capture
@@ -138,7 +138,7 @@ For an example see the `DirectFB surface source`_ element.
 .. _gst-launch-start-stop.sh: https://github.com/drothlis/hdpvr-stability-tests
 .. _Blackmagic Intensity Pro: http://www.blackmagicdesign.com/products/intensity/
 .. _BT878: http://www.linuxtv.org/wiki/index.php/Brooktree_Bt878
-.. _noise_threshold: https://github.com/drothlis/stb-tester/commit/b4dcbe39
+.. _image-matching parameters: http://stb-tester.com/match-parameters.html
 .. _DirectFB surface source: https://bugzilla.gnome.org/show_bug.cgi?id=685877
 
 
