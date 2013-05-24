@@ -50,8 +50,8 @@
   <li><a href="find-player.html">Example script: Double carousel navigation</a></li>
   <li><a href="http://www.youtube.com/watch?v=Fdn2LxxM7wA#t=62s">Introduction
     to GStreamer and stb-tester [video]</a></li>
-  <li><a href="jenkins.html">Using Jenkins for test scheduling &amp; reporting</a></li>
   <li><a href="match-parameters.html">Image-matching parameters</a></li>
+  <li><a href="jenkins.html">Using Jenkins for test scheduling &amp; reporting</a></li>
   <li><a href="hardware.html">Video-capture hardware</a></li>
   <li><a href="multi-lirc.html">Using multiple LIRC infra-red transceivers</a></li>
 </ul>
