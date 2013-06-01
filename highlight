@@ -1,5 +1,7 @@
 #!/usr/bin/env perl
 
+# Highlight stbt scripts
+
 while(<>) {
   if (/highlight:: /) {
     # Insert <img> tag with the image that the line of code refers to.

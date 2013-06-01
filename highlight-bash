@@ -1,0 +1,50 @@
+#!/usr/bin/env perl
+
+# Highlight shell snippets inside <pre>...</pre>
+
+while(<>) {
+  $line = $_;
+  if (/^<pre /) {
+    $inpre = 1;
+  }
+  elsif (/^<\/pre>/) {
+    $inpre = 0;
+  }
+  elsif ($inpre) {
+    if (/^\$|&gt;/) {
+      span(qr/^(\$|&gt;)/, "prompt");
+      a("~", "http://www.gnu.org/software/bash/manual/html_node/Tilde-Expansion.html");
+      a("echo", "http://www.gnu.org/software/bash/manual/html_node/Bash-Builtins.html#index-echo");
+      a("bash -c", "http://www.gnu.org/software/bash/manual/html_node/Invoking-Bash.html");
+      a("export", "http://www.gnu.org/software/bash/manual/html_node/Bourne-Shell-Builtins.html#index-export");
+      a("stbt", "http://stb-tester.com/stbt.html");
+      a(qr/ (&gt;|2&gt;)/, "http://www.gnu.org/software/bash/manual/html_node/Redirections.html");
+      a(qr/(?<!\|)\|(?!\|)/, "http://www.gnu.org/software/bash/manual/html_node/Pipelines.html");
+      a("tee", "http://www.gnu.org/software/coreutils/manual/html_node/tee-invocation.html");
+      a("true", "http://www.gnu.org/software/coreutils/manual/html_node/true-invocation.html");
+      a("false", "http://www.gnu.org/software/coreutils/manual/html_node/false-invocation.html");
+      a(qr/\$\?/ ,"http://www.gnu.org/software/bash/manual/html_node/Special-Parameters.html#index-_003f");
+      a("&amp;&amp;", "http://www.gnu.org/software/bash/manual/html_node/Lists.html");
+      a(qr/\|\|/, "http://www.gnu.org/software/bash/manual/html_node/Lists.html");
+      a("date", "http://www.gnu.org/software/coreutils/manual/html_node/date-invocation.html");
+      a("while", "http://www.gnu.org/software/bash/manual/html_node/Looping-Constructs.html#index-while");
+      a("for", "http://www.gnu.org/software/bash/manual/html_node/Looping-Constructs.html#index-for");
+      a("break", "http://www.gnu.org/software/bash/manual/html_node/Bourne-Shell-Builtins.html#index-break");
+    }
+    else {
+      span(qr/.*/, "output");
+    }
+  }
+
+  print $line;
+}
+
+sub span {
+  my($regex, $class) = @_;
+  $line =~ s,$regex,<span class='$class'>$&</span>,g;
+}
+
+sub a {
+  my($regex, $url) = @_;
+  $line =~ s,$regex,<a href='$url'>$&</a>,g;
+}

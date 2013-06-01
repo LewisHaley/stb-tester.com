@@ -708,4 +708,22 @@
     </summary>
   </entry>
 
+  <entry>
+    <title>Using the Unix Shell to run stb-tester scripts</title>
+    <link rel="alternate" href="http://stb-tester.com/shell.html" />
+    <id>http://stb-tester.com/shell.html</id>
+    <updated>2013-06-01T12:55:00Z</updated>
+    <author>
+      <name>David Röthlisberger</name>
+    </author>
+    <summary type="html">
+      <![CDATA[
+        <p>This article will teach you the bare minimum you need to know about
+          the Unix <strong>shell</strong> in order to use <a
+          href="http://stb-tester.com">stb-tester</a> effectively.</p>
+        <p>...</p>
+      ]]>
+    </summary>
+  </entry>
+
 </feed>

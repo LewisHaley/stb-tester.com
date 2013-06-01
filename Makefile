@@ -2,7 +2,7 @@ description := A video-capture record/playback testing system
 
 ARTICLES := release-notes.html introduction.html getting-started.html
 ARTICLES += find-player.html jenkins.html hardware.html
-ARTICLES += match-parameters.html multi-lirc.html
+ARTICLES += match-parameters.html multi-lirc.html shell.html
 
 SHELL := bash
 
@@ -77,6 +77,7 @@ stbt.html: stb-tester/README.rst stb-tester/VERSION stbt.html.template
 
 rst_markers := /Begin reStructuredText content/,/End reStructuredText content/
 release-notes.html: article_postprocess := | sed -e 's,<h2>\([0-9.]*\),<h2 id="\1">\1,'
+shell.html: article_postprocess := | ./highlight-bash
 
 $(ARTICLES): %.html: %.rst
 	cat $< |\
