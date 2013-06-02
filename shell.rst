@@ -116,7 +116,7 @@ Using ``>>`` instead of ``>`` (or ``2>>`` instead of ``2>``) *appends* to the
 file instead of overwriting it.
 
 The *pipe* operator "``|``" connects the stdout of one command to the *standard
-input* (stdin) of another command. For example, the ``tee`` command prints
+input* ("stdin") of another command. For example, the ``tee`` command prints
 everything it reads from its stdin to its stdout *and* to a specified file::
 
   $ stbt run my-test.py 2> my-stderr-log | tee my-stdout.log
@@ -184,7 +184,7 @@ another list of commands succeeds::
   >   echo "mytest.py: OK"
   > done
 
-The above will run the `stbt run`` command; if it succeeds, it will run the
+The above will run the ``stbt run`` command; if it succeeds, it will run the
 ``echo`` command; then it will try the ``stbt run`` command again, and so on
 until it fails.
 
@@ -223,6 +223,7 @@ that *failed*.
 
   $ while true; do
   >   for t in *.py; do
+  >     echo $t
   >     stbt run $t 2>stderr.log || break 2
   >   done
   > done
