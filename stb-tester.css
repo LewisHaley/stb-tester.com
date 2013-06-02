@@ -15,6 +15,8 @@ html, body, div, h1, h2, h3, p, ul { margin: 0; padding: 0; border: 0; }
 #index #content,
 #index #footer  { max-width: 400px; padding: 0; }
 
+#back           { position: absolute; left: 0; top: 0; display: block; }
+
 @media (min-width: 700px) {
   #index        { background: url("stb-tester-350px.svg") top left no-repeat; }
   #index #header,
@@ -59,8 +61,10 @@ sup             { line-height: 0; }
 
 #header p       { font-style: italic; }
 #header #about  { font-size: 10pt; line-height: 1.8; margin: 1.8em 0; }
+#header #back   { font-size: 10pt; line-height: 1; margin: 0; }
 #header #about,
-#header #about a { color: #777; text-decoration: none; }
+#header #about a,
+#header a#back   { color: #777; text-decoration: none; }
 
 #footer         { font-size: 10pt; color: #777; }
 #footer p       { margin: 0; }
@@ -127,16 +131,16 @@ table.footnote  { margin: 1.5em 0; }
 #find-player .highlight-comment,
 #find-player .highlight-docstring { color: #3f7f5f; }
 
-#shell a[href^="http://stb-tester.com"] { font-weight: bold; }
-#shell pre a[href^="http://stb-tester.com"] { font-weight: normal; }
+#shell #content a[href^="http://stb-tester.com"] { font-weight: bold; }
+#shell #content pre a[href^="http://stb-tester.com"] { font-weight: normal; }
 #shell pre .prompt { color: #999; font-weight: bold; }
 #shell pre .output { font-style: italic; }
 #shell pre a { color: inherit; text-decoration: none; }
 #shell pre a:hover { border-bottom: 1px dashed #888; }
 
-#jenkins a[href^="http://stb-tester.com"],
-#jenkins a[href^="http://jenkins-ci.org"] { font-weight: bold; }
-#jenkins .footnotes a[href^="http://jenkins-ci.org"] { font-weight: normal; }
+#jenkins #content a[href^="http://stb-tester.com"],
+#jenkins #content a[href^="http://jenkins-ci.org"] { font-weight: bold; }
+#jenkins #content .footnotes a[href^="http://jenkins-ci.org"] { font-weight: normal; }
 #jenkins li p   { margin: 0; }
 #jenkins li pre { margin-top: 0; margin-bottom: 0; }
 #jenkins .figure pre {

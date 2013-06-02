@@ -22,6 +22,7 @@
 
 <div id="header">
   <h1>stb-tester release notes</h1>
+  <a href="http://stb-tester.com" id="back">[Back to stb-tester.com]</a>
 </div>
 
 <div id="content">

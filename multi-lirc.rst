@@ -27,6 +27,7 @@
     and <a href="http://david.rothlis.net">David Röthlisberger</a>.
     Last updated @UPDATED@.
   </p>
+  <a href="http://stb-tester.com" id="back">[Back to stb-tester.com]</a>
 </div>
 
 <div id="content">
