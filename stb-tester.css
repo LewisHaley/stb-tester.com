@@ -65,6 +65,8 @@ sup             { line-height: 0; }
 #header #about,
 #header #about a,
 #header a#back   { color: #777; text-decoration: none; }
+#header #about a:hover,
+#header a#back:hover { text-decoration: underline; }
 
 #footer         { font-size: 10pt; color: #777; }
 #footer p       { margin: 0; }
