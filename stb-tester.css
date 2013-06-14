@@ -157,3 +157,8 @@ table.footnote  { margin: 1.5em 0; }
                      text-align: left; white-space: nobreak; }
 #hardware tr:nth-child(even) { background: #eee; }
 #hardware tr th { background: #ccc; }
+
+#templatematch .figure {
+                  float: left; text-align: center; margin: 1.5em 1em 0.5em 0; }
+#templatematch .clear { clear: both; }
+#templatematch .clear .figure { margin-top: 0; }
