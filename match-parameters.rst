@@ -66,7 +66,11 @@ want to lose them!).
 
    For demonstration, we shall be searching for this **template** image
    within this **source** image. Below we'll show the debug images created
-   as a result of running the following command::
+   as a result of running the following command:
+
+.. container:: clear
+
+    ::
 
        stbt templatematch -v source.png template.png
 
