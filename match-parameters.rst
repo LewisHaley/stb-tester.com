@@ -35,398 +35,264 @@
 
 <!-- Begin reStructuredText content -->
 
-Since stb-tester 0.13, the **stbt-templatematch** gstreamer element and the
-python function **detect_match** and its descendants (**wait_for_match** and
-**press_until_match**) have been upgraded to allow much greater
-customisation to the end user. Each available parameter will uniquely affect the
-result of an attempted match, and here we will attempt to verbally and visually
-demonstrate the available parameters. For clarity I will refer to the parameters
-by their Python API name; for the parameters to the Gstreamer element see either::
-
-    gst-inspect stbt-templatematch
-
-or use the rule that (PY) `parameter_name` becomes (GST) `parameterName`.
+Since **stb-tester** 0.13, the previously hard-coded parameters for stbt's
+image processing algorithm have been exposed to allow the user to customise
+them either via a global configuration or on a per-match basis (see the
+documentation for `wait_for_match <stbt.html#wait_for_match>`_ and
+`MatchParameters <stbt.html#MatchParameters>`_). This article
+will attempt to explain the effects of the various parameters and why you might
+want to change them.
 
 .. image:: match-parameters-graphic.png
-    :width: 640
-    :height: 400
-    :align: center
-
-Template Matching Overview
-==========================
-
-Firstly, lets outline the process of how stb-tester looks for and finds a match.
-**Stb-tester** utilises `OpenCV image processing`_ functions; the most key of
-which is the `matchTemplate`_ function, which creates a "heat map" from numerous
-comparisons of the template to the source image. The heat map consists of
-floating point values, interpreted as grayscale pixels. The magnitude of a
-pixel's value gives the indicative strength of match of the template at that
-pixel's Cartesian coordinates (i.e. (x, y)) on the source frame. From this heat
-map, we can assess the potential of whether the template can be found in the
-source image, and if that results in a high chance of finding the match we
-proceed onto the next step where we confirm whether the template is where we
-think it is.
-
-We call the process of making the heat map and determining the likelihood
-of finding a match the "first pass", and confirming whether we have a match the
-"second pass". Most of the sub-processes of which the two passes comprise
-produce an intermediate image. These images are not saved to disk usually,
-however they can be kept by setting the ``debugDirectory`` parameter when using
-the Gstreamer element, or passing two ``-v`` `(verbose) flags`_ to ``stbt run``,
-in which case the directory is automatically called **stbt-debug**. Note that if
-an existing debug directory is present, it is not deleted and a new one created,
-but rather any existing images are overwritten. This can mean that, for example,
-you can run a test using "absdiff-normed" confirm method, which creates the
-**stbt-debug** directory, then change it to use ``"absdiff"`` confirm method, which
-overwrites all the images in **stbt-debug** *except* the ``*_gray_normalized.png``
-images, which will still be present in the directory from the first test even
-after the second one finishes. This is also true of subsequent matches in the
-same test which use different confirm methods.
-
-
-.. figure:: match-parameters-test-source.png
-    :width: 640
-    :height: 400
-    :align: center
-    :figwidth: 100%
-
-    To demonstrate the effect of the various parameters, we shall use the
-    following image as a source frame.
-
-.. _OpenCV image processing: http://docs.opencv.org/modules/imgproc/doc/imgproc.html
-.. _matchTemplate: http://docs.opencv.org/modules/imgproc/doc/object_detection.html
-.. _(verbose) flags: http://stb-tester.com/stbt.html#global-options
-
-First Pass Matching and Associated Parameters
-=============================================
-
-The purpose of the first pass is to assess the best
-potential location within the source image to find the template. There are 6
-template matching methods available within the OpenCV framework, however, we
-limit this to the 3 methods which normalize the results.
-This is because the normalization provides a context
-and an absolute strength of result, as the pixels all have a value within the
-range [0.0..1.0f]. There are no real advantages to using the non-normalized
-methods.
-
-The method is set to ``sqdiff-normed`` by default. This can
-be overwritten by setting ``match_method`` within the **stbt** Python API.
-
-Here are the results from using the 3 normalized match methods to try and match
-a template of the banner from the source frame:
-
-.. table:: Template and Results of cvMatchTemplate (70% actual size)
-
-    ====================== =======================
-    |temp|                 |meth1|
-    **Template**           **sqdiff-normed**
-    |meth3|                |meth5|
-    **ccorr-normed**       **ccoeff-normed**
-    ====================== =======================
-
-
-.. |temp| image:: match-parameters-banner-template.png
-    :width: 194
-    :height: 123
-
-.. |meth1| image:: match-parameters-match-method1.png
-    :width: 447
-    :height: 278
-    :scale: 70%
-
-.. |meth3| image:: match-parameters-match-method3.png
-    :width: 447
-    :height: 278
-    :scale: 70%
-
-.. |meth5| image:: match-parameters-match-method5.png
-    :width: 447
-    :height: 278
-    :scale: 70%
-
-Note that for ``sqdiff-normed``, the most likely location for the template
-is indicated by the darkest pixel, whereas for ``ccorr-normed`` and
-``ccoeff-normed`` the brightest pixel indicates the most likely position.
-
-The heat map contains a pixel for every possible location of the template
-withing the source image. Mathematically, this equates to::
 
-    R[w,h] = ((S[w] - T[w] + 1), (S[h] - T[h] + 1))
+To see the intermediate steps of the template matching process, you can run
+stbt in "extra verbose" mode which will save out copies of the intermediate
+images. To do this, use ``stbt run -vv`` or ``stbt templatematch -v``. This
+will create a directory called **stbt-debug**, which in turn contains
+**templatematch** and **motiondetect** directories. The contents of
+**stbt-debug/templatematch** will be the most recent match performed,
+regardless of success or failure (so make copies of the images if you don't
+want to lose them!).
 
-where ``R``, ``S``, ``T`` are Result, Source, Template images respectively,
-and ``w``, ``h`` are width and height. As such, comparing a template and source
-of equal width and height results in a heat map of 1 pixel. The heat map is
-named ``source_matchtemplate.png`` in the **stbt-debug** directory.
+.. container:: clear
 
-Once the heat map is produced, the map is searched for the minimum pixel value
-(``SQDIFF``) or maximum pixel value (``CCORR``, ``CCOEFF``). This is then
-compared to a defined threshold value, and if it exceeds the threshold value
-then the second pass of the template match if performed, else the template
-matching cycle begins anew (possibly with a new source frame when using video).
+   .. figure:: match-parameters-true-source.png
 
-The threshold value is set by default to 0.8, but can be overwritten by setting
-the ``match_threshold`` parameter. Note: a threshold of 0 (zero) will pass even
-the most dissimilar of matches, whilst a threshold of 1 will likely never pass
-anything, due in part to discrepancies with `floating point arithmetic`_. For
-example, the highest first pass result obtained from the above matches was
-0.9992421... despite the template being a cropped version of the source image.
+      source.png
 
-To summarise:
+   .. figure:: match-parameters-template.png
 
-+ **Match method**: which OpenCV template match to use.
-+ **Match threshold**: the certainty of match required to perform confirm step,
-  where 1.0 is absolute certainty and 0.0 is no certainty.
+      template.png
 
-.. _floating point arithmetic: http://docs.python.org/2/tutorial/floatingpoint.html
+   For demonstration, we shall be searching for this **template** image
+   within this **source** image. Below we'll show the debug images created
+   as a result of running the following command:
 
-Second Pass Confirmation and Associated Parameters
-==================================================
+.. container:: clear
 
-The second pass acts as a confirmation of the match found in the first pass.
-There are currently 2 different confirmation methods available, plus a third
-option which lets you forgo the confirmation stage and assume the match as
-positive ("none"). The other 2 methods are ``"absdiff"`` (the default) and
-``"normed-absdiff"``. To overwrite
-this, set the ``confirm_method`` parameter.
+    ::
 
-The ``"absdiff"`` and ``"normed-absdiff"`` methods are identical except for the addition
-of one step in ``"normed-absdiff"``. They use the coordinates of the strongest match
-found in the first pass to create a Region Of Interest (ROI) image cropped to
-the same dimensions as the template. This can be found as ``source_roi.png`` under
-**stbt-debug**.
+       stbt templatematch -v source.png template.png
 
-To aid with demonstrating the second pass, I will use the following template,
-which successfully gets through the first pass - which we can take to mean it's
-at least a *close* match - but fails the second pass, as expected.
+.. container:: clear
 
-Then the both the ROI and a copy of the template are converted to grayscale,
-and can be found as ``source_roi_gray.png`` and ``template_gray.png`` under
-**stbt-debug** respectively.
+   .. figure:: match-parameters-true-source_matchtemplate.png
 
-.. table:: \
+      source_matchtemplate.png
 
-    =================== =================
-    |rs-roi|            |rs-temp|
-    **Source ROI**      **Template**
-    |rs-roi-gray|       |rs-temp-gray|
-    **Source ROI Gray** **Template Gray**
-    =================== =================
+   **source_matchtemplate.png** is the result of running OpenCV's
+   ``matchTemplate`` function with the template and source images as inputs.
+   Each pixel it contains indicates the relative strength-of-match of the
+   template against the source image at that pixel's given position, where
+   the pixel's coordinates are the coordinates of the template's top left
+   corner on the source image. Using ``match_method="sqdiff-normed"``
+   (the default) will give an image where the best match is represented by
+   the darkest pixel; for ``"ccorr-normed"`` and ``"ccoeff-normed"``, the
+   brightest pixel is the best match. The value of the best matching pixel
+   must be greater than the ``match_threshold`` value for the matching
+   process to proceed further. By default this is ``0.8``. Note that if
+   ``match_method="sqdiff-normed"``, then the best value is ``1 -
+   <pixel_value>``. As such, the greater the ``match_threshold``, the greater
+   certainty we have of the match at that location. Note that, in practice, a
+   perfect match of ``1.0`` is never found because of how the ``matchTemplate``
+   function works.
 
-.. |rs-roi| image:: match-parameters-rotated-sun-source-roi.png
+.. container:: clear
 
-.. |rs-temp| image:: match-parameters-rotated-sun-template.png
+   .. figure:: match-parameters-true-source_roi.png
 
-.. |rs-roi-gray| image:: match-parameters-rotated-sun-source-roi-gray.png
+      source_roi.png
 
-.. |rs-temp-gray| image:: match-parameters-rotated-sun-template-gray.png
+   .. figure:: match-parameters-true-source_roi_gray.png
 
-This is where the methods differ: at this point, when using the ``"normed-absdiff"``
-method, the grayscaled ROI and template are normalized. This stretches the range
-of brightness values of each image to cover the entire [0.0..1.0f] range
-available.
+      source_roi_gray.png
 
-The difference in this example isn't huge, but it is there.
+   .. figure:: match-parameters-template_gray.png
 
-.. table:: \
+      template_gray.png
 
-    ============================== ============================
-    |rs-roi-gray-normed|           |rs-temp-gray-normed|
-    **Source ROI Gray Normalized** **Template Gray Normalized**
-    ============================== ============================
+   Although the previous step gives us a *fairly* good idea of whether we
+   have found a match, it is not 100% reliable because sometimes it can
+   report a strong match value between a template and source which *should
+   not* match. Because of this, we do a second "confirmation" match of the
+   template, but this time only against the area of the image which the
+   previous step thinks is where the match is located. This is called the
+   *region of interest*, or *ROI*. This second pass uses grayscaled
+   versions of the template and source-roi images. Note that these and all
+   subsequent images are only created if the match gets through the first
+   pass.
 
-.. |rs-roi-gray-normed| image:: match-parameters-rotated-sun-source-roi-gray-normalized.png
+.. container:: clear
 
-.. |rs-temp-gray-normed| image:: match-parameters-rotated-sun-template-gray-normalized.png
+   .. figure:: match-parameters-true-absdiff.png
 
-The filenames are ``source_roi_gray_normalized.png`` and
-``template_gray_normalized.png`` respectively, however these images obviously
-will onlu be present when using the ``"normed-absdiff"`` method. (This is a useful
-way of debugging if you aren't getting an expected match.)
+      asbdiff.png
 
-The next stage is to take the absolute difference between source and template
-images. Each pixel of both source and template has a value between zero and one,
-so when the absolute difference is performed, the greater the difference between
-two corresponding pixels' values then the greater the value of the resulting
-pixel. In other words, a big difference creates a pixel closer to white, and
-vice versa.
+   A match between the grayscaled template and source-roi is determined by
+   calculating the *absolute difference* between their corresponding pixels.
+   In the resultant image, the brighter the pixel, the greater the difference
+   between the template and source at that point. There are 3
+   ``confirm_methods``: ``"none"``, ``"absdiff"`` and ``"normed-absdiff"``.
+   ``"absdiff"`` is default. ``"none"`` means, don't perform the confirmation
+   step, just return a positive match result. An example of using
+   ``"normed-absdiff"`` is given later in this article.
 
-Here's what the absolute difference (``absdiff.png``) of our current example
-looks like.
+.. container:: clear
 
-.. table:: \
+   .. figure:: match-parameters-true-absdiff_threshold.png
 
-    ======================= =======================
-    |rs-absdiff-normed|     **Absolute Difference**
-    ======================= =======================
+      absdiff_threshold.png
 
-.. |rs-absdiff-normed| image:: match-parameters-rotated-sun-absdiff-normalized.png
+   The "absdiff" image is thresholded, which means that all pixels below a
+   certain value become black, and the rest become white. The
+   ``confirm_threshold`` parameter controls the dividing point for the
+   threshold operation. A smaller value means there is less leniency for
+   difference (e.g. noise, gamma variation, antialiased text) whilst a
+   greater value means that more difference is ignored. A value of 1.0 will
+   return a positive match everytime.
 
-Important to note at this point is that the above image was produced using
-the ``"normed-absdiff"`` confirm method. Here is the equivalent when using ``"absdiff"``.
+.. container:: clear
 
-.. table:: \
+   .. figure:: match-parameters-true-absdiff_threshold_erode.png
 
-    ============ ==============================================================
-    |rs-absdiff| **Absolute Difference (source and template *not* normalized)**
-    ============ ==============================================================
-
-.. |rs-absdiff| image:: match-parameters-rotated-sun-absdiff.png
+      absdiff_threshold_erode.png
 
-As before, the effect of the normalize is not huge in this example, however it
-does affect the next step.
+   At the very end of the matching process, we analyse the resulting black
+   and white binary image for any white pixels. If we find *any* white
+   pixels, then a negative match is reported. Before this though, we perform
+   an erode pass over the image. This removes the outer layer of white pixels
+   from any area of the image where there is a white pixel. (Imagine a 3x3
+   square of white pixels. The erode pass removes the outer layer, leaving
+   the one remaining central white pixel.) The ``erode_passes`` parameter
+   controls the number of times the erode pass is performed. By default, this
+   value is 1 to account for incidental noise that is often present. Note
+   that increasing the number of ``erode_passes`` is a lot more destructive
+   than increasing the ``confirm_threshold``. Ideally this value should be
+   zero. Note that this example matches well enough that there are no white
+   pixels remaining to be eroded; please see the next examples.
 
-If we could guarantee that our video stream would always be free of noise and
-other impefections, we could at this point say, "If the absolute difference
-produces an image that is completely black, then we have a match, and if it's
-not completely black then we don't have a match." However, we cannot usually
-guarantee this, even if if we are trying to match a template which was cropped
-from the same source we are trying to match it too. For example:
 
-.. table:: \
+False positives
+---------------
 
-    ============= =========================================
-    |banner-temp| **Template cropped directly from source**
-    ============= =========================================
+.. container:: clear
 
-.. |banner-temp| image:: match-parameters-banner-template.png
+   .. figure:: match-parameters-false-source.png
 
-does *not* match the source with a ``confirm_threshold`` of 0.005 because of the
-slight noise created by passing the source image through gstreamer. This is
-the resultant ``absdiff.png``:
+      source.png
 
-.. table:: \
+   .. figure:: match-parameters-template.png
 
-    =========================== =====================================================
-    |banner-low-thresh-absdiff| **Absolute Difference (confirm_threshold = 0.005)**
-    =========================== =====================================================
+      template.png
 
-.. |banner-low-thresh-absdiff| image:: match-parameters-banner-low-threshold-absdiff.png
+   Here are the debug images from a different source where we expect *no
+   match*, but where we in fact get a *false positive match*.
 
-So let's explain what ``confirm_threshold`` is doing, as this is what controls
-the stage after the absolute difference is performed. Thresholding a grayscale
-image results in an image that is purely black and white (no intermediates).
-All pixels which have a value below the given threshold become black, whilst all
-those above become white. As such, increasing the ``confirm_threshold`` makes the
-match less sensitive to noise and other differences between source and template;
-while decreasing it, as with the example above, makes the match more sensitive
-to noise.
+.. container:: clear
 
-There are two more important things to note about the confirm threshold. Unlike
-the match threshold in the first pass, the confirm threshold will likely have
-to be configured differently depending on which confirm method is being used.
-``"normed-absdiff"`` has the advantage of stretching the luminance range, and
-therefore accentuate any differences between source and template when they are
-absolute differenced. This has the effect of meaning that there will likely be
-a greater luminance range in ``absdiff.png``, which means a greater confirm
-threshold will be needed than the same match using ``"absdiff"`` in order for all
-the should-matches to still pass successfully.
+   .. figure:: match-parameters-false-source_matchtemplate.png
 
-The second import thing to note is that although the ``confirm_threshold`` is
-specified as a floating point number - and therefore can be though of as the
-equivalent, that is to say, a confirm threshold of 0.5 means "match with an
-accuracy of 50% leeway - because the grayscale image has a depth of 8 bits, the
-pixel values fall in the range [0..255u], and so the floating point confirm
-threshold value must be transformed to an 8 bit unsigned value. Basically all
-this means is that there is an accuracy limit on the confirm threshold value
-due to rounding. The minimum variance between two confirm threshold values is
-1/255, or 0.003921569. Consequently, there is not  much advantage to being more
-accurate than +/- 0.005, although feel free to do the conversion to calculate
-the exact values if you want.
+      source_matchtemplate.png
 
-Here is the thresholded absolute difference (``absdiff_threshold.png``) from our
-original example, using the default settings once again.
+   The darkest spot in **source_matchtemplate.png** indicates a likely match
+   in the center-left area of the source image. Note that the
+   ``first_pass_result`` (see the documentation for `MatchResult
+   <stbt.html#MatchResult>`_) is 0.83 for this match, which is just above the
+   default ``match_threshold`` of 0.80, whereas the previous example gave a
+   strong ``first_pass_result`` of 0.95.
 
-.. table:: \
+.. container:: clear
 
-    =================== ===================================
-    |rs-absdiff-thresh| **Thresholded Absolute Difference**
-    =================== ===================================
+   .. figure:: match-parameters-false-source_roi.png
 
-.. |rs-absdiff-thresh| image:: match-parameters-rotated-sun-absdiff-threshold.png
+      source_roi.png
 
-The next stage is eroding the thresholded image. What this does is remove a
-certain amount of the white pixels which resulted from the threshold, due
-to noise, etc. Only white pixels which have an immediately adjacent black pixel
-are eroded (made black). The parameter ``erode_passes`` dictates the number of
-times to perform the erode step, with 0 (zero) effectively meaning don't do
-the erode pass. Only the final image after all the erodes are performed is
-stored as ``absdiff_threshold_erode.png``. Here's the result of the erode step
-on our example (``erode_passes`` = 1).
+   .. figure:: match-parameters-false-source_roi_gray.png
 
-.. table:: \
+      source_roi_gray.png
 
-    ========================= ==========================================
-    |rs-absdiff-thresh-erode| **Thresholded Absolute Difference Eroded**
-    ========================= ==========================================
+   .. figure:: match-parameters-template_gray.png
 
-.. |rs-absdiff-thresh-erode| image:: match-parameters-rotated-sun-absdiff-threshold-erode.png
+      template_gray.png
 
-The threshold and the erode might seem to do similar things: they do, however
-the erodes are much more aggressive and less fine-tunable than changing the
-threshold. A good practice is to change the ``confirm_threshold`` to account for
-incidental noise and small variations, and to use more than one erode pass
-if you are trying to match a template which is *known* to be different to the
-source. See the `Confirm Threshold VS Erode Passes`_ section. Another
-example of this could be if you are trying to match a generic template to a
-button where you want to ignore the text label on the button.
-Here's the effect of two erode passes on with our example.
+.. container:: clear
 
-.. table:: \
+   .. figure:: match-parameters-false-absdiff.png
 
-    =========================== ===============================================================
-    |rs-absdiff-thresh-2-erode| **Thresholded Absolute Difference Eroded (erode_passes = 2)**
-    =========================== ===============================================================
+      absdiff.png
 
-.. |rs-absdiff-thresh-2-erode| image:: match-parameters-rotated-sun-absdiff-threshold-2-erodes.png
+   The absolute difference indicates there is a fair amount of difference
+   between template and source, but...
 
-The final step is to count the number of white pixels which remain. There must
-be no white pixels remaining for the match to be deemed positive. Our above
-example, even with two erode passes, does not meet this criteria, though it
-would if we increased it to three erode passes.
+.. container:: clear
 
-To summarise:
+   .. figure:: match-parameters-false-absdiff_threshold.png
 
-+ **Confirm method**: which confirm method to use.
-+ **Confirm threshold**: the leniancy for taking noise and slight variation into
-  account, where 0.0 is no leniancy and 1.0 is complete leniancy.
-+ **Erode passes**: how many times to erode the ``absdiff_threshold.png`` image.
+      absdiff_threshold.png
 
+   ...once thresholded we see that none of the pixels exceeded the
+   ``confirm_threshold`` value...
 
-Confirm Threshold VS Erode Passes
-=================================
+.. container:: clear
 
-Let's see an example of where an increased number of ``erode_passes`` can be too
-strong and lead to a false positive match. We'll use a version of our source
-frame which has had noise added to it, and try to match the rabbit.
+   .. figure:: match-parameters-false-absdiff_threshold_erode.png
 
-.. table:: \
+      absdiff_threshold_erode.png
 
-    ====================== ===================
-    |noisy-source|         |bunny-template|
-    **Noisy Source Frame** **Rabbit Template**
-    ====================== ===================
+   ...and once again, despite the obvious difference between template and
+   source to the human eye, the erode step has nothing to do, and this match
+   goes on to return a (false) positive result.
 
-.. |noisy-source| image:: match-parameters-noisy-source.png
+The "normed-absdiff" confirm method
+-----------------------------------
 
-.. |bunny-template| image:: match-parameters-bunny-template.png
+Here is the same match, but this time running the command as::
 
-We can account for this noisy and get the match we watch either by increasing
-the confirm threshold from 0.28 to 0.31, or by increasing the number of erode
-passes from 1 to 2. However, imagine our source frame is a UI, and the rabbit is
-a button which when highlighted gets a thicker border, as such
+    stbt templatematch -v source.png template.png \
+        confirm_method=normed-absdiff
 
-.. table:: \
+.. container:: clear
 
-    ================================= ===================================================
-    |noisy-thick-border-bunny-source| **Rabbit "button" highlighted with thicker border**
-    ================================= ===================================================
+   .. figure:: match-parameters-normed-absdiff-source_roi_gray_normalized.png
 
-.. |noisy-thick-border-bunny-source| image:: match-parameters-noisy-thick-border-bunny-source.png
+      source_roi_gray_normalized.png
 
-This will only match with a confirm threshold of 0.54 - which is safely above
-what is required to pass the noisy frame - so we won't get a false positive.
-But it *will* match with 2 erode passes - the same as the noisy frame - which
-could lead to a false positive.
+   .. figure:: match-parameters-normed-absdiff-template_gray_normalized.png
+
+      template_gray_normalized.png
+
+   When using "normed-absdiff", the template and the
+   source image are normalized prior to the absolute difference being
+   calculated. This helps to exaggerate differences when the template and
+   source images have small, similar ranges of pixel brightness, as the
+   ranges are transformed to occupy the maximum range of [0..255].
+
+.. container:: clear
+
+   .. figure:: match-parameters-normed-absdiff-absdiff.png
+
+      absdiff.png
+
+   This time, we see a significant amount of difference arise from the
+   absolute difference operation...
+
+.. container:: clear
+
+   .. figure:: match-parameters-normed-absdiff-absdiff_threshold.png
+
+      absdiff_threshold.png
+
+   ... and after being thresholded, there *are* pixels which exceeded the
+   ``confirm_threshold`` value, and so there are white artifacts remaining...
+
+.. container:: clear
+
+   .. figure:: match-parameters-normed-absdiff-absdiff_threshold_erode.png
+
+      absdiff_threshold_erode.png
+
+   ... which even after being eroded, persist, meaning that the result is
+   accurately reported as a negative match.
 
 <!-- End reStructuredText content -->
 

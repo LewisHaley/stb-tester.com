@@ -21,27 +21,28 @@ deploy: index.html stbt.html $(ARTICLES) \
   stb-tester+jenkins+setup.svg jenkins+jobs.png jenkins+build+now.png \
   jenkins+xunit+graph.png jenkins+xunit+results.png jenkins+artifacts.png \
   hdpvr-mp4-pipeline.svg hdpvr-fan.jpg \
-  match-parameters-banner-low-threshold-absdiff.png \
-  match-parameters-banner-template.png \
-  match-parameters-bunny-template.png \
   match-parameters-graphic.png \
-  match-parameters-match-method1.png \
-  match-parameters-match-method3.png \
-  match-parameters-match-method5.png \
-  match-parameters-noisy-source.png \
-  match-parameters-noisy-thick-border-bunny-source.png \
-  match-parameters-rotated-sun-absdiff-normalized.png \
-  match-parameters-rotated-sun-absdiff-threshold-2-erodes.png \
-  match-parameters-rotated-sun-absdiff-threshold-erode.png \
-  match-parameters-rotated-sun-absdiff-threshold.png \
-  match-parameters-rotated-sun-absdiff.png \
-  match-parameters-rotated-sun-source-roi-gray-normalized.png \
-  match-parameters-rotated-sun-source-roi-gray.png \
-  match-parameters-rotated-sun-source-roi.png \
-  match-parameters-rotated-sun-template-gray-normalized.png \
-  match-parameters-rotated-sun-template-gray.png \
-  match-parameters-rotated-sun-template.png \
-  match-parameters-test-source.png \
+  match-parameters-false-absdiff.png \
+  match-parameters-false-absdiff_threshold.png \
+  match-parameters-false-absdiff_threshold_erode.png \
+  match-parameters-false-source.png \
+  match-parameters-false-source_matchtemplate.png \
+  match-parameters-false-source_roi.png \
+  match-parameters-false-source_roi_gray.png \
+  match-parameters-normed-absdiff-absdiff.png \
+  match-parameters-normed-absdiff-absdiff_threshold.png \
+  match-parameters-normed-absdiff-absdiff_threshold_erode.png \
+  match-parameters-normed-absdiff-source_roi_gray_normalized.png \
+  match-parameters-normed-absdiff-template_gray_normalized.png \
+  match-parameters-template.png \
+  match-parameters-template_gray.png \
+  match-parameters-true-absdiff.png \
+  match-parameters-true-absdiff_threshold.png \
+  match-parameters-true-absdiff_threshold_erode.png \
+  match-parameters-true-source.png \
+  match-parameters-true-source_matchtemplate.png  \
+  match-parameters-true-source_roi.png \
+  match-parameters-true-source_roi_gray.png \
 
 	mkdir static
 	cp $^ static
