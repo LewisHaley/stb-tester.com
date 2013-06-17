@@ -159,6 +159,6 @@ table.footnote  { margin: 1.5em 0; }
 #hardware tr th { background: #ccc; }
 
 #templatematch .figure {
-                  float: right; text-align: right; margin: 1.5em 1em 0.5em 0; }
-#templatematch .clear { clear: both; text-align: left }
+                  float: right; text-align: right; margin: 1.5em 0 0.5em 1em; }
+#templatematch .clear { clear: both; }
 #templatematch .clear .figure { margin-top: 0.5em; }
