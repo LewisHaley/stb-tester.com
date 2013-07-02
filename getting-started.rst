@@ -340,6 +340,9 @@ Then set ``stbt``'s ``--control`` to **lirc::control_name**, where
 record``) also takes a similar lirc configuration string. (See
 `"Options" in the stbt(1) man page`_ for details.)
 
+``stbt`` also supports the RedRat `irNetBox`_, a network-controlled infrared
+emitter (again, see the documentation for ``--control``).
+
 For non infra-red control methods, add your own receiver and emitter
 code to stb-tester. Currently you'd have to edit ``stbt.py`` directly,
 but contact us first and we'll work out some kind of pluggable API.
@@ -405,6 +408,7 @@ questions, let us know! You'll find us on the `mailing list`_.
 .. _"Test script format" in the stbt(1) man page: stbt.html#test-script-format
 .. _"Configuration" in the stbt(1) man page: stbt.html#configuration
 .. _"Options" in the stbt(1) man page: stbt.html#options
+.. _irNetBox: http://www.redrat.co.uk/products/irnetbox.html
 .. _Hauppauge HD PVR: http://www.hauppauge.com/site/products/data_hdpvr.html
 .. _open-source driver: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=tree;f=drivers/media/video/hdpvr
 .. _LIRC: http://www.lirc.org
