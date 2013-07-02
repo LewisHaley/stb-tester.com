@@ -95,6 +95,10 @@ Register the repository with your package manager by downloading the file
 Install stb-tester from source
 ------------------------------
 
+*Note that these instructions apply to the "0.13" tag in the stb-tester source
+code repository; the current (unreleased) master branch doesn't have the
+GStreamer "stbt-templatematch" element.*
+
 To build stb-tester you will need to install the following packages:
 [#devel-package-names]_ **gstreamer-devel**, **gstreamer-plugins-base-devel**,
 **gstreamer-python**, **opencv-devel**, **python-docutils** (to build the
