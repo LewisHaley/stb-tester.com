@@ -347,6 +347,16 @@ For non infra-red control methods, add your own receiver and emitter
 code to stb-tester. Currently you'd have to edit ``stbt.py`` directly,
 but contact us first and we'll work out some kind of pluggable API.
 
+Wiring diagram
+--------------
+
+The following diagram shows a setup that uses the Hauppauge HD PVR for video
+capture, a USB infrared emitter for controlling the system under test, and
+a USB infrared receiver for recording tests.
+
+.. image:: stb-tester+setup.svg
+
+
 Get in touch
 ------------
 
