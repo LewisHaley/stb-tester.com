@@ -12,7 +12,7 @@ deploy: index.html stbt.html $(ARTICLES) \
   stb-tester.css stb-tester-350px.svg stb-tester-160px.svg \
   stb-tester.atom atom.png \
   video-introduction-thumbnail.jpg \
-  videotestsrc.png videotestsrc-templatematch.png \
+  videotestsrc.png videotestsrc-templatematch.png stb-tester+setup.svg \
   find-player-4oD-selected.png find-player-4oD-unselected.png \
   find-player-Demand5-selected.png find-player-Demand5-unselected.png \
   find-player-any-player-selected.png \
