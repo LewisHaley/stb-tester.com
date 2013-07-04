@@ -347,6 +347,15 @@ For non infra-red control methods, add your own receiver and emitter
 code to stb-tester. Currently you'd have to edit ``stbt.py`` directly,
 but contact us first and we'll work out some kind of pluggable API.
 
+stbt screenshot
+---------------
+
+Once you start writing more complex scripts and reusing elements from previous
+scripts, you might find that ``stbt record`` is too tedious. We often prefer to
+write the test scripts manually, and capture screenshots using ``stbt
+screenshot``. See ``stbt screenshot --help`` for details, and see ``stbt
+--help`` for additional ``stbt`` sub-commands.
+
 Wiring diagram
 --------------
 
