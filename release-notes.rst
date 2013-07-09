@@ -71,21 +71,21 @@ Breaking change to the `stbt.conf` configuration file: If you have any
 of the following entries in the `[run]` or `[record]` section, move them
 to the `[global]` section:
 
-- control
-- source_pipeline
-- sink_pipeline
-- verbose
+ - control
+ - source_pipeline
+ - sink_pipeline
+ - verbose
 
 If you have the following entry in the `[global]` section, move it to
 the `[run]` section:
 
-- script
+ - script
 
 If you have the following entries in the `[global]` section, move them
 to the `[record]` section:
 
-- output_file
-- control_recorder
+ - output_file
+ - control_recorder
 
 This change is unlikely to affect most users; it will only affect you if
 you changed the above configuration entries from their default sections.
@@ -129,10 +129,10 @@ details.
 
 New command-line tools:
 
-* stbt config: Print configuration value.
-* stbt screenshot: Capture a single screenshot.
-* stbt templatematch: Compare two images.
-* stbt tv: View live video on screen.
+ * stbt config: Print configuration value.
+ * stbt screenshot: Capture a single screenshot.
+ * stbt templatematch: Compare two images.
+ * stbt tv: View live video on screen.
 
 Use `stbt <command> --help` for usage details, and see the git commit
 messages (e.g. `git log stbt-screenshot`) for the motivations behind
@@ -384,12 +384,12 @@ Fix `make install` with Ubuntu's shell (dash).
 
 Other non-user-visible and trivial changes since 0.5:
 
-* stbt-templatematch bus message's parameter `result` is renamed to
-  `match` and is now a boolean.
-* `make check` returns the correct exit status for failing self-tests.
-* The bash-completion script completes the `--help` flag.
-* Fix "unknown property debugDirectory" warning from
-  `stbt-templatematch` element.
+ * stbt-templatematch bus message's parameter `result` is renamed to
+   `match` and is now a boolean.
+ * `make check` returns the correct exit status for failing self-tests.
+ * The bash-completion script completes the `--help` flag.
+ * Fix "unknown property debugDirectory" warning from
+   `stbt-templatematch` element.
 
 
 0.5 `make install` installs stbt{-run,-record,.py} into $libexecdir
@@ -419,13 +419,13 @@ can detect small but significant changes against large template images.
 
 Other changes since 0.3:
 
-* Bash-completion script for stbt.
-* stbt no longer reads configuration from $PWD/stbt.conf.
-* extra/jenkins-stbt-run is a shell script that illustrates how to use
-  Jenkins (a continuous-integration system with a web interface) to
-  schedule stbt tests and report on their results. See commit message
-  `d5e7983 <https://github.com/drothlis/stb-tester/commit/d5e7983>`_
-  for instructions.
+ * Bash-completion script for stbt.
+ * stbt no longer reads configuration from $PWD/stbt.conf.
+ * extra/jenkins-stbt-run is a shell script that illustrates how to use
+   Jenkins (a continuous-integration system with a web interface) to
+   schedule stbt tests and report on their results. See commit message
+   `d5e7983 <https://github.com/drothlis/stb-tester/commit/d5e7983>`_
+   for instructions.
 
 
 0.3 Fixes `stbt run` freezing on loss of input video.
@@ -439,12 +439,12 @@ test script.
 
 Other changes since 0.2:
 
-* Fix VirtualRemote recorder.
-* Clearer error messages on VirtualRemote failure to connect.
-* Added `certainty` optional argument to `press_until_match`
-  (`wait_for_match` already takes `certainty`).
-* `man stbt` documents the optional arguments to `wait_for_match` and
-  `press_until_match`.
+ * Fix VirtualRemote recorder.
+ * Clearer error messages on VirtualRemote failure to connect.
+ * Added `certainty` optional argument to `press_until_match`
+   (`wait_for_match` already takes `certainty`).
+ * `man stbt` documents the optional arguments to `wait_for_match` and
+   `press_until_match`.
 
 0.2 Adds configurability, IR blaster support.
 ---------------------------------------------
@@ -453,11 +453,11 @@ Other changes since 0.2:
 
 Major changes since 0.1.1:
 
-* The source & sink gstreamer pipelines, the input & output remote control,
-  and the input & output script filename, are all configurable.
-* Support for LIRC-based infrared emitter & receiver hardware.
-* Handle gstreamer errors.
-* Automated self-tests.
+ * The source & sink gstreamer pipelines, the input & output remote control,
+   and the input & output script filename, are all configurable.
+ * Support for LIRC-based infrared emitter & receiver hardware.
+ * Handle gstreamer errors.
+ * Automated self-tests.
 
 0.1.1 Initial internal release, with packaging fixes.
 -----------------------------------------------------
