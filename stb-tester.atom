@@ -561,6 +561,95 @@
   </entry>
 
   <entry>
+    <title>
+      stb-tester 0.14 release notes: Arbitrary image processing in user scripts; `stbt control`; `--save-video`; miscellaneous improvements
+    </title>
+    <link rel="alternate"
+      href="http://stb-tester.com/release-notes.html/release-notes.html#0.14" />
+    <id>http://stb-tester.com/release-notes.html/release-notes.html#0.14</id>
+    <updated>2013-07-09T10:14:00Z</updated>
+    <summary type="html">
+      <![CDATA[
+        <p><cite>stbt.frames</cite> allows a user's script to iterate over raw
+          video frames in the OpenCV format (i.e. a numpy array). This allows a
+          user's script to perform arbitrary image processing using the OpenCV
+          python bindings. For an example see the self-test <a
+          href="https://github.com/drothlis/stb-tester/blob/0.14/tests/test-stbt-py.sh#L96"
+          >&quot;test_using_frames_to_measure_black_screen&quot;</a>. Note that
+          <cite>detect_match</cite>, <cite>wait_for_match</cite>,
+          <cite>detect_motion</cite>, etc. are now implemented on top of
+          <cite>frames</cite>. <cite>get_frame</cite> and
+          <cite>save_frame</cite> also return/operate on the OpenCV format.</p>
+        <p><cite>stbt control</cite> is a new command-line tool to send remote
+          control commands programmatically (from a script) or interactively
+          (with the PC keyboard). The interactive mode requires a keymap file
+          specifying the keyboard keys that correspond to each remote-control
+          button. See <cite>stbt control --help</cite> for details.</p>
+        <p><cite>stbt run</cite> accepts <cite>--save-video</cite> on the
+          command line (or <cite>[run] save_video</cite> in the config file) to
+          record a video to disk. The video's format is WebM, which is playable
+          in web browsers that support the HTML5 video standard.</p>
+        <p><cite>stbt run</cite> has always restarted the GStreamer source
+          pipeline when video loss is detected, to work around the behaviour of
+          the Hauppauge HD PVR video-capture device. Now this behaviour is
+          configurable; if you use the Hauppauge HD PVR you should set
+          <cite>restart_source = True</cite> in the <cite>[global]</cite>
+          section of your stbt config file.</p>
+        <p>Minor user-visible fixes:</p>
+        <ul>
+          <li>The default value for <cite>wait_for_motion</cite>
+            <cite>consecutive_frames</cite> has changed from <cite>10</cite> to
+            <cite>&quot;10/20&quot;</cite>, as promised in the 0.12 release
+            notes. This shouldn't affect most users.</li>
+          <li>The <cite>wait_for_motion</cite> visualisation has improved: It
+            now highlights in red the parts of the screen where motion was
+            detected, instead of flashing the entire screen red when motion was
+            detected.</li>
+          <li><cite>wait_for_match</cite> (and <cite>detect_match</cite>,
+            <cite>wait_for_motion</cite>, etc.) raise <cite>stbt.NoVideo</cite>
+            instead of <cite>stbt.MatchTimeout</cite> (etc.) when there is no
+            video available from the video-capture device.</li>
+          <li><p>The GLib main loop, and the source-restarting functionality,
+            operate continuously, not just inside <cite>wait_for_match</cite>
+            (etc). User scripts that expect momentary video loss (e.g. scripts
+            that reboot the system-under-test) can now be written as:</p>
+            <pre class="literal-block">
+              wait_for_match(&quot;splash.png&quot;, timeout_secs=30)
+            </pre>
+            <p>instead of:</p>
+            <pre class="literal-block">
+              time.sleep(30)
+              wait_for_match(&quot;splash.png&quot;)
+            </pre>
+          </li>
+          <li><cite>stbt record</cite> now has the same recover-from-video-loss
+            capability that <cite>stbt run</cite> has.</li>
+          <li><cite>stbt.get_config</cite> works from scripts run with
+            <cite>python</cite> (not just from scripts run with <cite>stbt
+            run</cite>).</li>
+          <li><cite>stbt.get_config</cite> accepts an optional
+            <cite>default</cite> parameter, to return the specified default
+            value instead of raising <cite>ConfigurationError</cite> if the
+            specified <cite>section</cite> or <cite>key</cite> are not found in
+            the config file.</li>
+        </ul>
+        <p>Major changes under the covers (not visible to end users):</p>
+        <ul>
+          <li>The image processing algorithms are implemented in
+            <cite>stbt.py</cite> using the OpenCV python bindings. Performance
+            isn't significantly affected. This simplifies the code
+            substantially; the <cite>stbt-templatematch</cite> and
+            <cite>stbt-motiondetect</cite> GStreamer elements are no longer
+            necessary.</li>
+          <li><cite>make check</cite> runs the self-tests in parallel if you
+            have GNU <cite>parallel</cite> installed (On Fedora: yum install
+            parallel).</li>
+        </ul>
+      ]]>
+    </summary>
+  </entry>
+
+  <entry>
     <title>stbt man page</title>
     <link rel="alternate" href="http://stb-tester.com/stbt.html" />
     <id>http://stb-tester.com/stbt.html</id>

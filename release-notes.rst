@@ -41,6 +41,84 @@ in production by several companies so we do try to minimise incompatible
 changes. The release notes always provide an exhaustive list of any changes.
 
 
+0.14 Arbitrary image processing in user scripts; `stbt control`; `--save-video`; miscellaneous improvements
+-----------------------------------------------------------------------------------------------------------
+
+9 July 2013.
+
+`stbt.frames` allows a user's script to iterate over raw video frames in
+the OpenCV format (i.e. a numpy array). This allows a user's script to
+perform arbitrary image processing using the OpenCV python bindings. For
+an example see the self-test `"test_using_frames_to_measure_black_screen"
+<https://github.com/drothlis/stb-tester/blob/0.14/tests/test-stbt-py.sh#L96>`_.
+Note that `detect_match`, `wait_for_match`, `detect_motion`, etc. are
+now implemented on top of `frames`.
+`get_frame` and `save_frame` also return/operate on the OpenCV format.
+
+`stbt control` is a new command-line tool to send remote control
+commands programmatically (from a script) or interactively (with the PC
+keyboard). The interactive mode requires a keymap file specifying the
+keyboard keys that correspond to each remote-control button. See
+`stbt control --help` for details.
+
+`stbt run` accepts `--save-video` on the command line (or `[run]
+save_video` in the config file) to record a video to disk. The video's
+format is WebM, which is playable in web browsers that support the HTML5
+video standard.
+
+`stbt run` has always restarted the GStreamer source pipeline when video
+loss is detected, to work around the behaviour of the Hauppauge HD PVR
+video-capture device. Now this behaviour is configurable; if you use the
+Hauppauge HD PVR you should set `restart_source = True` in the
+`[global]` section of your stbt config file.
+
+Minor user-visible fixes:
+
+ - The default value for `wait_for_motion` `consecutive_frames` has
+   changed from `10` to `"10/20"`, as promised in the 0.12 release notes.
+   This shouldn't affect most users.
+
+ - The `wait_for_motion` visualisation has improved: It now highlights in
+   red the parts of the screen where motion was detected, instead of
+   flashing the entire screen red when motion was detected.
+
+ - `wait_for_match` (and `detect_match`, `wait_for_motion`, etc.) raise
+   `stbt.NoVideo` instead of `stbt.MatchTimeout` (etc.) when there is no
+   video available from the video-capture device.
+
+ - The GLib main loop, and the source-restarting functionality, operate
+   continuously, not just inside `wait_for_match` (etc). User scripts
+   that expect momentary video loss (e.g. scripts that reboot the
+   system-under-test) can now be written as::
+
+       wait_for_match("splash.png", timeout_secs=30)
+
+   instead of::
+
+       time.sleep(30)
+       wait_for_match("splash.png")
+
+ - `stbt record` now has the same recover-from-video-loss capability that
+   `stbt run` has.
+
+ - `stbt.get_config` works from scripts run with `python` (not just from
+   scripts run with `stbt run`).
+
+ - `stbt.get_config` accepts an optional `default` parameter, to return
+   the specified default value instead of raising `ConfigurationError` if
+   the specified `section` or `key` are not found in the config file.
+
+Major changes under the covers (not visible to end users):
+
+ - The image processing algorithms are implemented in `stbt.py` using the
+   OpenCV python bindings. Performance isn't significantly affected. This
+   simplifies the code substantially; the `stbt-templatematch` and
+   `stbt-motiondetect` GStreamer elements are no longer necessary.
+
+ - `make check` runs the self-tests in parallel if you have GNU
+   `parallel` installed (On Fedora: yum install parallel).
+
+
 0.13 Image-matching algorithm is more configurable; changes to configuration API
 --------------------------------------------------------------------------------
 
