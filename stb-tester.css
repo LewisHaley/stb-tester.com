@@ -101,6 +101,7 @@ pre             { margin: 1.5em 0 1.5em 2em; }
 .footnotes      { font-size: 10pt; line-height: 1.5; }
 table.footnote  { margin: 1.5em 0; }
 .footnotes p    { margin: 0 0 1em; }
+.footnotes dl   { margin-top: 0; }
 .footnotes pre  { margin: 1em 0 1em 2em; }
 
 .fullwidth-figure p,
