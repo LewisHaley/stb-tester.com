@@ -44,7 +44,7 @@ GStreamer primer
 
 `stb-tester`_ is built on top of `GStreamer`_, a library of media-handling
 components. So first of all install the **gstreamer** and
-**gstreamer-plugins-base** packages. [#package-names]_
+**gstreamer-plugins-base** packages. [#gst-package-names]_
 stb-tester requires GStreamer **0.10** — the newer 1.0 is not backwards
 compatible. [#fedora18]_
 
@@ -71,7 +71,7 @@ computer. Or **filesink** to save the data to disk.
 
 GStreamer elements can be configured by setting their **properties**::
 
-    gst-launch videotestsrc pattern=1 ! ximagesink
+    gst-launch videotestsrc pattern=snow ! ximagesink
 
 Use **gst-inspect** to list an element's properties::
 
@@ -84,25 +84,22 @@ messages for the entire pipeline or individual elements. See the
 Install stb-tester from pre-built packages
 ------------------------------------------
 
-stb-tester RPMs for Fedora 16 and 17 are hosted by the OpenSUSE Build Service
+stb-tester RPMs for Fedora 17, 18 and 19 are hosted by the OpenSUSE Build Service
 at http://download.opensuse.org/repositories/home:/stb-tester/
 
 Register the repository with your package manager by downloading the file
 ``home:stb-tester.repo`` to ``/etc/yum.repos.d/`` [#stb-tester.repo]_ and then
 ``sudo yum install stb-tester``.
 
-
 Install stb-tester from source
 ------------------------------
 
-*Note that these instructions apply to the "0.13" tag in the stb-tester source
-code repository; the current (unreleased) master branch doesn't have the
-GStreamer "stbt-templatematch" element.*
-
-To build stb-tester you will need to install the following packages:
-[#devel-package-names]_ **gstreamer-devel**, **gstreamer-plugins-base-devel**,
-**gstreamer-python**, **opencv-devel**, **python-docutils** (to build the
-documentation), and **python-nose**, **python-pep8**, and **pylint** (to run
+To build and run stb-tester you will need to install the following packages:
+[#package-names]_ **gstreamer**, **gstreamer-plugins-base**,
+**gstreamer-plugins-good**, **gstreamer-plugins-bad-free**,
+**gstreamer-python**, **opencv**, **opencv-python**;
+**python-docutils** (to build the documentation),
+and **python-nose**, **python-pep8**, and **pylint** (to run
 the unit tests). Then::
 
     git clone git://github.com/drothlis/stb-tester.git
@@ -110,85 +107,17 @@ the unit tests). Then::
     make prefix=$HOME
     make prefix=$HOME install
 
-This will install the ``stbt`` command-line program to ``$HOME/bin``, and the
-``libgst-stb-tester.so`` GStreamer plugin to ``$HOME/.gstreamer-0.10/plugins``,
-which is on GStreamer's search path.
-
-To test that stb-tester's GStreamer plugin has been installed correctly::
-
-    gst-launch videotestsrc \
-        ! stbt-templatematch template=stb-tester/tests/videotestsrc-bw.png \
-        ! ffmpegcolorspace ! ximagesink
-
 .. image:: videotestsrc-templatematch.png
    :width: 267px
    :height: 224px
 
-You should see a red border around the area matched by the
-**stbt-templatematch** element.
+This will install the ``stbt`` command-line program to ``$HOME/bin``;
+add ``$HOME/bin`` to your command search path (the ``PATH`` environment variable)
+or invoke ``stbt`` as ``$HOME/bin/stbt``.
 
-You can also run **make check** which will launch several pipelines like the
-above and verify they work by listening for certain messages on the GStreamer
-bus.
-
-GStreamer primer: Caps
-----------------------
-
-Each GStreamer element supports one or more specific media formats on its
-**source** (output) and **sink** (input) pads. GStreamer calls this the
-element's **capabilities** or "**caps**".
-
-**gst-inspect** will list an element's caps::
-
-    gst-inspect stbt-templatematch
-
-.. container:: figure
-
-  ::
-
-    Pad Templates:
-      SINK template: 'sink'
-        Availability: Always
-        Capabilities:
-          video/x-raw-rgb
-                        bpp: 24
-                      depth: 24
-                 endianness: 4321
-                   red_mask: 255
-                 green_mask: 65280
-                  blue_mask: 16711680
-                      width: [ 1, 2147483647 ]
-                     height: [ 1, 2147483647 ]
-                  framerate: [ 0/1, 2147483647/1 ]
-      SRC template: 'src'
-        Availability: Always
-        Capabilities:
-          video/x-raw-rgb
-                        bpp: 24
-                      depth: 24
-                 endianness: 4321
-                   red_mask: 255
-                 green_mask: 65280
-                  blue_mask: 16711680
-                      width: [ 1, 2147483647 ]
-                     height: [ 1, 2147483647 ]
-                  framerate: [ 0/1, 2147483647/1 ]</code>
-
-  stbt-templatematch caps
-
-
-stbt-templatematch's **sink** pad only accepts one format, **video/x-raw-rgb**
-with specific red, green and blue masks that correspond to BGR channel order.
-(In other words, RGB and BGR are both called "video/x-raw-rgb" but with
-different channel masks.)
-
-videotestsrc's **source** pad can emit many different formats, including the
-BGR expected by stbt-templatematch, so these two elements can be connected
-together. When the pipeline starts they will negotiate the best format to use.
-
-ximagesink, however, does not accept BGR on its source pad, so we inserted the
-**ffmpegcolorspace** element to convert each video frame to a format understood
-by ximagesink. Have a look at ffmpegcolorspace's caps with ``gst-inspect``.
+You can also run **make check** which will run several test scripts against the
+videotestsrc GStreamer element you saw earlier. In many of these tests you will
+see a red border drawn when stb-tester finds a match.
 
 stbt record
 -----------
@@ -228,9 +157,9 @@ expected by the **control**) into the terminal.
 a special **test** control that will change the videotestsrc's pattern
 property.
 
-Now type ``15`` into the terminal (and press return) and notice that the video
-pattern has changed. Now type ``10``, and ``1``, and finish with Control-D or
-Control-C.
+Now type ``gamut`` into the terminal (and press return) and notice that the
+video pattern has changed. Now type ``checkers-8``, and ``snow``, and finish
+with Control-D or Control-C.
 
 The test script
 ---------------
@@ -240,18 +169,18 @@ image editor to crop the first two screenshots to what you want your test
 script to match. When capturing from a real set-top box, this is most likely to
 be a GUI element like a button or a logo.
 
-The third screenshot (if you typed ``1`` into standard input as per the
+The third screenshot (if you typed ``snow`` into standard input as per the
 instructions in the previous section) will be random noise so whatever area you
 crop is unlikely to be found as an exact match when you re-run the test case;
 delete this screenshot.
 
 Edit the test script to::
 
-    press('15')
-    wait_for_match('0000-15-complete.png')
-    press('10')
-    wait_for_match('0001-10-complete.png')
-    press('1')
+    press('gamut')
+    wait_for_match('0000-gamut-complete.png')
+    press('checkers-8')
+    wait_for_match('0001-checkers-8-complete.png')
+    press('snow')
     wait_for_motion()
 
 **press** takes a string that must be understood by the control you specify on
@@ -310,7 +239,8 @@ Video-for-Linux drivers. The Hauppauge HD PVR has an `open-source driver`_
 already present in recent versions of the Linux kernel.
 
 The HD PVR produces MPEG-TS containing H.264, hence the remainder of the
-pipeline. The ``video/x-h264`` caps is there to throw away the audio component
+pipeline. The ``video/x-h264`` capabilities (or "caps") [#caps]_
+is there to throw away the audio component
 of the stream (without it, decodebin2 would still figure out that the stream is
 in H.264 format by negotiating with the mpegtsdemux element). stb-tester
 doesn't currently support audio, but it is on the roadmap.
@@ -337,7 +267,7 @@ Then set ``stbt``'s ``--control`` to **lirc::control_name**, where
 *control_name* is the name specified in your ``lircd.conf``.
 
 ``--control-recorder`` (used for recording test cases with ``stbt
-record``) also takes a similar lirc configuration string. (See
+record``) takes a similar configuration string. (See
 `"Options" in the stbt(1) man page`_ for details.)
 
 ``stbt`` also supports the RedRat `irNetBox`_, a network-controlled infrared
@@ -375,13 +305,13 @@ questions, let us know! You'll find us on the `mailing list`_.
 
 .. container:: footnotes
 
-  .. [#package-names]
+  .. [#gst-package-names]
      RedHat-based Linux distributions (RHEL, Fedora):
        sudo yum install **gstreamer gstreamer-plugins-base**
      Debian-based Linux distributions (Ubuntu):
        sudo apt-get install **gstreamer0.10-tools gstreamer0.10-plugins-base**
      OS X (use `macports`_ or `homebrew`_):
-       sudo port install **gstreamer gst-plugins-base**
+       sudo port install **gstreamer010 gstreamer010-gst-plugins-base**
 
   .. [#fedora18] On Fedora 18, for example, GStreamer 0.10 packages are called
      "gstreamer", "gstreamer-plugins-base", etc., while GStreamer 1.0 packages
@@ -392,28 +322,34 @@ questions, let us know! You'll find us on the `mailing list`_.
      ximagesink.
 
   .. [#stb-tester.repo] For example,
-     for Fedora 17::
+     for Fedora 19::
 
          sudo wget -O /etc/yum.repos.d/stb-tester.repo \
          http://download.opensuse.org/repositories/home:/\
-         stb-tester/Fedora_17/home:stb-tester.repo
+         stb-tester/Fedora_19/home:stb-tester.repo
 
-  .. [#devel-package-names]
+  .. [#package-names]
      RedHat-based Linux distributions (RHEL, Fedora):
-       **gstreamer-devel gstreamer-plugins-base-devel
-       gstreamer-python opencv-devel python-docutils
-       python-nose python-pep8 pylint**
+       **gstreamer gstreamer-plugins-base
+       gstreamer-plugins-good gstreamer-plugins-bad-free
+       gstreamer-python opencv opencv-python
+       python-docutils python-nose python-pep8 pylint**
      Debian-based Linux distributions (Ubuntu):
-       **libgstreamer0.10-dev libgstreamer-plugins-base0.10-dev
-       python-gst0.10 libopencv-dev python-docutils
-       python-nose pep8 pylint**
+       **gstreamer0.10-tools gstreamer0.10-plugins-base
+       gstreamer0.10-plugins-good gstreamer0.10-plugins-bad
+       python-gst0.10 python-opencv python-numpy
+       python-docutils python-nose pep8 pylint**
      OS X with `macports`_:
-       **py27-gst-python opencv py27-docutils
-       py27-nose py27-pep8 py27-pylint**
+       **gstreamer010 gstreamer010-gst-plugins-base
+       gstreamer010-gst-plugins-good gstreamer010-gst-plugins-bad
+       py27-gst-python opencv +python27
+       py27-docutils py27-nose py27-pep8 py27-pylint**
      OS X with `homebrew`_:
-       Install **gst-python** and **opencv** via homebrew;
-       install **docutils**, **nose**, **pep8** and **pylint**
-       via your `python package manager`_.
+       Homebrew no longer has packages for GStreamer 0.10.
+
+  .. [#caps] See `"Media Formats and Pad Capabilities"
+     <http://docs.gstreamer.com/display/GstSDK/Basic+tutorial+6%3A+Media+formats+and+Pad+Capabilities>`_
+     in the GStreamer SDK tutorial.
 
   .. [#fn-rpmfusion] On Fedora and RHEL you can get the gstreamer-plugins-bad
      and gstreamer-ffmpeg packages from `rpmfusion`_.
