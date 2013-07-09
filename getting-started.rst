@@ -362,7 +362,6 @@ questions, let us know! You'll find us on the `mailing list`_.
 .. _irsend: http://www.lirc.org/html/irsend.html
 .. _mailing list: http://groups.google.com/group/stb-tester
 .. _XQuartz: http://xquartz.macosforge.org
-.. _python package manager: http://pypi.python.org/pypi/pip/
 .. _rpmfusion: http://rpmfusion.org
 
 
