@@ -84,12 +84,9 @@ messages for the entire pipeline or individual elements. See the
 Install stb-tester from pre-built packages
 ------------------------------------------
 
-stb-tester RPMs for Fedora 17, 18 and 19 are hosted by the OpenSUSE Build Service
-at http://download.opensuse.org/repositories/home:/stb-tester/
-
-Register the repository with your package manager by downloading the file
-``home:stb-tester.repo`` to ``/etc/yum.repos.d/`` [#stb-tester.repo]_ and then
-``sudo yum install stb-tester``.
+stb-tester RPMs for Fedora 17, 18 and 19 are hosted by the OpenSUSE Build Service.
+Follow the `installation instructions
+<http://software.opensuse.org/download.html?project=home%3Astb-tester&package=stb-tester>`_.
 
 Install stb-tester from source
 ------------------------------
@@ -320,13 +317,6 @@ questions, let us know! You'll find us on the `mailing list`_.
   .. [#x11] If your OS X system doesn't have X11 install `XQuartz`_, or use
      glimagesink (from the gst-plugins-gl macports package) instead of
      ximagesink.
-
-  .. [#stb-tester.repo] For example,
-     for Fedora 19::
-
-         sudo wget -O /etc/yum.repos.d/stb-tester.repo \
-         http://download.opensuse.org/repositories/home:/\
-         stb-tester/Fedora_19/home:stb-tester.repo
 
   .. [#package-names]
      RedHat-based Linux distributions (RHEL, Fedora):
