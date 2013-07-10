@@ -78,8 +78,7 @@ framebuffer source element [#fbsrc]_ installed on the system under test).
 Even the TV signal into the set-top box can be controlled via the GStreamer
 pipeline: We are writing a `GStreamer element for DekTec DVB modulators`_.
 
-stb-tester's image matching is handled by a GStreamer `templatematch` element
-that is a thin wrapper around the `OpenCV`_ computer vision library.
+stb-tester's image matching uses the `OpenCV`_ computer vision library.
 
 stb-tester's image matching isn't quite real-time: on our hardware it manages
 5-6 frames per second. stb-tester uses a GStreamer `queue` element that can be
@@ -145,10 +144,9 @@ stb-tester was initially developed at `YouView TV`_, and is released under the
 
 .. container:: footnotes
 
-  .. [#small] As of release 0.9: 1500 lines of python code, and a GStreamer
-     plugin totalling 1400 lines of C code. stb-tester is essentially an
-     integration exercise: `GStreamer`_, `OpenCV`_, `LIRC`_ and Video4Linux do
-     all the work.
+  .. [#small] 1400 lines of python code as of release 0.14. stb-tester is
+     essentially an integration exercise: `GStreamer`_, `OpenCV`_, `LIRC`_ and
+     Video4Linux do all the work.
 
   .. [#fbsrc] GStreamer already has a `DirectFB`_ sink element; we have written
      a `DirectFB source`_.
