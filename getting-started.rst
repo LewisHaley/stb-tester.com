@@ -255,10 +255,10 @@ Using a real control
 To control the set-top box under test via infra-red signals, you will need a
 USB infra-red emitter supported by `LIRC`_, such as the `RedRat3`_.
 
-Install the **lirc** package, start the **lircd** daemon, record a
+Install the **lirc** package, start the **lircd** daemon, and record a
 **lircd.conf** config file for your particular remote control with `irrecord`_
 (you will need an infra-red receiver; the RedRat3 is both emitter and
-receiver), and test the emitter with `irsend`_.
+receiver). Test the emitter with `irsend`_, and the receiver with `irw`_.
 
 Then set ``stbt``'s ``--control`` to **lirc::control_name**, where
 *control_name* is the name specified in your ``lircd.conf``.
@@ -360,6 +360,7 @@ questions, let us know! You'll find us on the `mailing list`_.
 .. _RedRat3: http://www.redrat.co.uk/products/index.html
 .. _irrecord: http://www.lirc.org/html/irrecord.html
 .. _irsend: http://www.lirc.org/html/irsend.html
+.. _irw: http://www.lirc.org/html/irw.html
 .. _mailing list: http://groups.google.com/group/stb-tester
 .. _XQuartz: http://xquartz.macosforge.org
 .. _rpmfusion: http://rpmfusion.org
