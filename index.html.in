@@ -51,6 +51,7 @@
   <li><a href="http://www.youtube.com/watch?v=Fdn2LxxM7wA#t=62s">Introduction
     to GStreamer and stb-tester [video]</a></li>
   <li><a href="match-parameters.html">Image-matching parameters</a></li>
+  <li><a href="runner.html">extra/runner: Bulk test running &amp; reporting</a></li>
   <li><a href="shell.html">Using the Unix Shell to run tests</a></li>
   <li><a href="jenkins.html">Using Jenkins for test scheduling &amp; reporting</a></li>
   <li><a href="hardware.html">Video-capture hardware</a></li>

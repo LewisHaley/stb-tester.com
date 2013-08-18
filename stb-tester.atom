@@ -815,4 +815,25 @@
     </summary>
   </entry>
 
+  <entry>
+    <title>
+      stb-tester/extra/runner: Scripts for bulk test running &amp; reporting
+    </title>
+    <link rel="alternate" href="http://stb-tester.com/runner.html" />
+    <id>http://stb-tester.com/runner.html</id>
+    <updated>2013-08-18T14:32:00Z</updated>
+    <author>
+      <name>David Röthlisberger</name>
+    </author>
+    <summary type="html">
+      <![CDATA[
+        <p><a href="https://github.com/drothlis/stb-tester/tree/master/extra/runner">extra/runner</a>
+          in the stb-tester source repository contains a shell script that will
+          run a set of test scripts with <tt>stbt run</tt>, automatically
+          triage known failure reasons, and generate an html report.</p>
+        <p>...</p>
+      ]]>
+    </summary>
+  </entry>
+
 </feed>

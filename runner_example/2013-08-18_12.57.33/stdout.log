@@ -1,0 +1,1 @@
+[2013-08-18 12:57:45.801359 +0000]  FAIL: /home/vagrant/stb-tester.com/runner_example/test.py: MotionTimeout: Didn't find motion within 10 seconds.

@@ -1,0 +1,96 @@
+[2013-08-18 12:59:38.765234 +0000]  stbt-run: Arguments:
+[2013-08-18 12:59:38.765372 +0000]  control: test
+[2013-08-18 12:59:38.765393 +0000]  args: []
+[2013-08-18 12:59:38.765408 +0000]  verbose: 1
+[2013-08-18 12:59:38.765422 +0000]  script: /home/vagrant/stb-tester.com/runner_example/test.py
+[2013-08-18 12:59:38.765436 +0000]  source_pipeline: videotestsrc is-live=true
+[2013-08-18 12:59:38.765451 +0000]  sink_pipeline: ximagesink sync=false
+[2013-08-18 12:59:38.765465 +0000]  save_video: video.webm
+[2013-08-18 12:59:38.790316 +0000]  stbt-run: Saving video to 'video.webm'
+[2013-08-18 12:59:38.822315 +0000]  stbt-run: source pipeline: videotestsrc is-live=true ! queue leaky=downstream name=q ! ffmpegcolorspace ! appsink name=appsink max-buffers=1 drop=true sync=false emit-signals=true caps=video/x-raw-rgb,bpp=24,depth=24,endianness=4321,red_mask=0xFF,green_mask=0xFF00,blue_mask=0xFF0000
+[2013-08-18 12:59:38.822397 +0000]  stbt-run: sink pipeline: appsrc name=appsrc ! tee name=t t. ! queue leaky=downstream ! ffmpegcolorspace ! vp8enc speed=7 ! webmmux ! filesink location=video.webm t. ! queue leaky=downstream ! ffmpegcolorspace ! ximagesink sync=false
+[2013-08-18 12:59:38.869128 +0000]  stbt-run: Searching for /home/vagrant/stb-tester.com/runner_example/videotestsrc-redblue.png
+[2013-08-18 12:59:38.889065 +0000]  stbt-run: Match found: MatchResult(timestamp=40323343L, match=True, position=Position(x=228, y=0), first_pass_result=0.9999998662721765)
+[2013-08-18 12:59:38.927389 +0000]  stbt-run: Match found: MatchResult(timestamp=73656676L, match=True, position=Position(x=228, y=0), first_pass_result=0.9999998662721765)
+[2013-08-18 12:59:38.952803 +0000]  stbt-run: Match found: MatchResult(timestamp=106990010L, match=True, position=Position(x=228, y=0), first_pass_result=0.999999732544353)
+[2013-08-18 12:59:38.990874 +0000]  stbt-run: Match found: MatchResult(timestamp=140323343L, match=True, position=Position(x=228, y=0), first_pass_result=1.0)
+[2013-08-18 12:59:39.017753 +0000]  stbt-run: Match found: MatchResult(timestamp=173656676L, match=True, position=Position(x=228, y=0), first_pass_result=1.0)
+[2013-08-18 12:59:39.053844 +0000]  stbt-run: Match found: MatchResult(timestamp=206990010L, match=True, position=Position(x=228, y=0), first_pass_result=1.0)
+[2013-08-18 12:59:39.088662 +0000]  stbt-run: Match found: MatchResult(timestamp=240323343L, match=True, position=Position(x=228, y=0), first_pass_result=1.0)
+[2013-08-18 12:59:39.123589 +0000]  stbt-run: Match found: MatchResult(timestamp=273656676L, match=True, position=Position(x=228, y=0), first_pass_result=0.9999998662721765)
+[2013-08-18 12:59:39.151020 +0000]  stbt-run: Match found: MatchResult(timestamp=306990010L, match=True, position=Position(x=228, y=0), first_pass_result=1.0)
+[2013-08-18 12:59:39.187767 +0000]  stbt-run: Match found: MatchResult(timestamp=340323343L, match=True, position=Position(x=228, y=0), first_pass_result=1.0)
+[2013-08-18 12:59:39.217537 +0000]  stbt-run: Match found: MatchResult(timestamp=373656676L, match=True, position=Position(x=228, y=0), first_pass_result=1.0)
+[2013-08-18 12:59:39.251985 +0000]  stbt-run: Match found: MatchResult(timestamp=406990010L, match=True, position=Position(x=228, y=0), first_pass_result=1.0)
+[2013-08-18 12:59:39.291086 +0000]  stbt-run: Match found: MatchResult(timestamp=440323343L, match=True, position=Position(x=228, y=0), first_pass_result=1.0)
+[2013-08-18 12:59:39.318925 +0000]  stbt-run: Match found: MatchResult(timestamp=473656676L, match=True, position=Position(x=228, y=0), first_pass_result=1.0)
+[2013-08-18 12:59:39.355190 +0000]  stbt-run: Match found: MatchResult(timestamp=506990010L, match=True, position=Position(x=228, y=0), first_pass_result=1.0)
+[2013-08-18 12:59:39.383393 +0000]  stbt-run: Match found: MatchResult(timestamp=540323343L, match=True, position=Position(x=228, y=0), first_pass_result=1.0)
+[2013-08-18 12:59:39.420633 +0000]  stbt-run: Match found: MatchResult(timestamp=573656676L, match=True, position=Position(x=228, y=0), first_pass_result=0.9999998662721765)
+[2013-08-18 12:59:39.450613 +0000]  stbt-run: Match found: MatchResult(timestamp=606990010L, match=True, position=Position(x=228, y=0), first_pass_result=0.999999732544353)
+[2013-08-18 12:59:39.488473 +0000]  stbt-run: Match found: MatchResult(timestamp=640323343L, match=True, position=Position(x=228, y=0), first_pass_result=1.0)
+[2013-08-18 12:59:39.517346 +0000]  stbt-run: Match found: MatchResult(timestamp=673656676L, match=True, position=Position(x=228, y=0), first_pass_result=1.0)
+[2013-08-18 12:59:39.553912 +0000]  stbt-run: Match found: MatchResult(timestamp=706990010L, match=True, position=Position(x=228, y=0), first_pass_result=0.9999998662721765)
+[2013-08-18 12:59:39.590516 +0000]  stbt-run: Match found: MatchResult(timestamp=740323343L, match=True, position=Position(x=228, y=0), first_pass_result=0.9999998662721765)
+[2013-08-18 12:59:39.617909 +0000]  stbt-run: Match found: MatchResult(timestamp=773656676L, match=True, position=Position(x=228, y=0), first_pass_result=1.0)
+[2013-08-18 12:59:39.655430 +0000]  stbt-run: Match found: MatchResult(timestamp=806990010L, match=True, position=Position(x=228, y=0), first_pass_result=1.0)
+[2013-08-18 12:59:39.655543 +0000]  stbt-run: Matched videotestsrc-redblue.png
+[2013-08-18 12:59:39.658407 +0000]  stbt-run: Pressed checkers-8
+[2013-08-18 12:59:39.659638 +0000]  stbt-run: Searching for /home/vagrant/stb-tester.com/runner_example/videotestsrc-checkers-8.png
+[2013-08-18 12:59:39.689804 +0000]  stbt-run: Weak match found: MatchResult(timestamp=840323343L, match=False, position=Position(x=45, y=0), first_pass_result=0.2928934097290039)
+[2013-08-18 12:59:39.723309 +0000]  stbt-run: Match found: MatchResult(timestamp=873656676L, match=True, position=Position(x=0, y=0), first_pass_result=1.0000001201460975)
+[2013-08-18 12:59:39.756680 +0000]  stbt-run: Match found: MatchResult(timestamp=906990010L, match=True, position=Position(x=0, y=0), first_pass_result=1.0000001201460975)
+[2013-08-18 12:59:39.791326 +0000]  stbt-run: Match found: MatchResult(timestamp=940323343L, match=True, position=Position(x=0, y=0), first_pass_result=1.0000001201460975)
+[2013-08-18 12:59:39.823617 +0000]  stbt-run: Match found: MatchResult(timestamp=973656676L, match=True, position=Position(x=0, y=0), first_pass_result=1.0000001201460975)
+[2013-08-18 12:59:39.855980 +0000]  stbt-run: Match found: MatchResult(timestamp=1006990010L, match=True, position=Position(x=0, y=0), first_pass_result=1.0000001201460975)
+[2013-08-18 12:59:39.889604 +0000]  stbt-run: Match found: MatchResult(timestamp=1040323343L, match=True, position=Position(x=0, y=0), first_pass_result=1.0000001201460975)
+[2013-08-18 12:59:39.922363 +0000]  stbt-run: Match found: MatchResult(timestamp=1073656676L, match=True, position=Position(x=0, y=0), first_pass_result=1.0000001201460975)
+[2013-08-18 12:59:39.956317 +0000]  stbt-run: Match found: MatchResult(timestamp=1106990010L, match=True, position=Position(x=0, y=0), first_pass_result=1.0000001201460975)
+[2013-08-18 12:59:39.990108 +0000]  stbt-run: Match found: MatchResult(timestamp=1140323343L, match=True, position=Position(x=0, y=0), first_pass_result=1.0000001201460975)
+[2013-08-18 12:59:40.023580 +0000]  stbt-run: Match found: MatchResult(timestamp=1173656676L, match=True, position=Position(x=0, y=0), first_pass_result=1.0000001201460975)
+[2013-08-18 12:59:40.057307 +0000]  stbt-run: Match found: MatchResult(timestamp=1206990010L, match=True, position=Position(x=0, y=0), first_pass_result=1.0000001201460975)
+[2013-08-18 12:59:40.089584 +0000]  stbt-run: Match found: MatchResult(timestamp=1240323343L, match=True, position=Position(x=0, y=0), first_pass_result=1.0000001201460975)
+[2013-08-18 12:59:40.123514 +0000]  stbt-run: Match found: MatchResult(timestamp=1273656676L, match=True, position=Position(x=0, y=0), first_pass_result=1.0000001201460975)
+[2013-08-18 12:59:40.158199 +0000]  stbt-run: Match found: MatchResult(timestamp=1306990010L, match=True, position=Position(x=0, y=0), first_pass_result=1.0000001201460975)
+[2013-08-18 12:59:40.188495 +0000]  stbt-run: Match found: MatchResult(timestamp=1340323343L, match=True, position=Position(x=0, y=0), first_pass_result=1.0000001201460975)
+[2013-08-18 12:59:40.229056 +0000]  stbt-run: Match found: MatchResult(timestamp=1373656676L, match=True, position=Position(x=0, y=0), first_pass_result=1.0000001201460975)
+[2013-08-18 12:59:40.259224 +0000]  stbt-run: Match found: MatchResult(timestamp=1406990010L, match=True, position=Position(x=0, y=0), first_pass_result=1.0000001201460975)
+[2013-08-18 12:59:40.290584 +0000]  stbt-run: Match found: MatchResult(timestamp=1440323343L, match=True, position=Position(x=0, y=0), first_pass_result=1.0000001201460975)
+[2013-08-18 12:59:40.322208 +0000]  stbt-run: Match found: MatchResult(timestamp=1473656676L, match=True, position=Position(x=0, y=0), first_pass_result=1.0000001201460975)
+[2013-08-18 12:59:40.354865 +0000]  stbt-run: Match found: MatchResult(timestamp=1506990010L, match=True, position=Position(x=0, y=0), first_pass_result=1.0000001201460975)
+[2013-08-18 12:59:40.395881 +0000]  stbt-run: Match found: MatchResult(timestamp=1540323343L, match=True, position=Position(x=0, y=0), first_pass_result=1.0000001201460975)
+[2013-08-18 12:59:40.422696 +0000]  stbt-run: Match found: MatchResult(timestamp=1573656676L, match=True, position=Position(x=0, y=0), first_pass_result=1.0000001201460975)
+[2013-08-18 12:59:40.462430 +0000]  stbt-run: Match found: MatchResult(timestamp=1606990010L, match=True, position=Position(x=0, y=0), first_pass_result=1.0000001201460975)
+[2013-08-18 12:59:40.490429 +0000]  stbt-run: Match found: MatchResult(timestamp=1640323343L, match=True, position=Position(x=0, y=0), first_pass_result=1.0000001201460975)
+[2013-08-18 12:59:40.490551 +0000]  stbt-run: Matched videotestsrc-checkers-8.png
+[2013-08-18 12:59:40.493161 +0000]  stbt-run: Pressed ball
+[2013-08-18 12:59:40.493318 +0000]  stbt-run: Waiting for 24 out of 24 frames with motion
+[2013-08-18 12:59:40.493384 +0000]  stbt-run: Searching for motion
+[2013-08-18 12:59:40.541562 +0000]  stbt-run: Motion found: MotionResult(timestamp=1706990010L, motion=True)
+[2013-08-18 12:59:40.583545 +0000]  stbt-run: Motion found: MotionResult(timestamp=1740323343L, motion=True)
+[2013-08-18 12:59:40.607535 +0000]  stbt-run: Motion found: MotionResult(timestamp=1773656676L, motion=True)
+[2013-08-18 12:59:40.648333 +0000]  stbt-run: Motion found: MotionResult(timestamp=1806990010L, motion=True)
+[2013-08-18 12:59:40.672452 +0000]  stbt-run: Motion found: MotionResult(timestamp=1840323343L, motion=True)
+[2013-08-18 12:59:40.713168 +0000]  stbt-run: Motion found: MotionResult(timestamp=1873656676L, motion=True)
+[2013-08-18 12:59:40.757362 +0000]  stbt-run: Motion found: MotionResult(timestamp=1906990010L, motion=True)
+[2013-08-18 12:59:40.774075 +0000]  stbt-run: Motion found: MotionResult(timestamp=1940323343L, motion=True)
+[2013-08-18 12:59:40.814541 +0000]  stbt-run: Motion found: MotionResult(timestamp=1973656676L, motion=True)
+[2013-08-18 12:59:40.839431 +0000]  stbt-run: Motion found: MotionResult(timestamp=2006990010L, motion=True)
+[2013-08-18 12:59:40.882323 +0000]  stbt-run: Motion found: MotionResult(timestamp=2040323343L, motion=True)
+[2013-08-18 12:59:40.907322 +0000]  stbt-run: Motion found: MotionResult(timestamp=2073656676L, motion=True)
+[2013-08-18 12:59:40.947930 +0000]  stbt-run: Motion found: MotionResult(timestamp=2106990010L, motion=True)
+[2013-08-18 12:59:40.976442 +0000]  stbt-run: Motion found: MotionResult(timestamp=2140323343L, motion=True)
+[2013-08-18 12:59:41.017342 +0000]  stbt-run: Motion found: MotionResult(timestamp=2173656676L, motion=True)
+[2013-08-18 12:59:41.041448 +0000]  stbt-run: Motion found: MotionResult(timestamp=2206990010L, motion=True)
+[2013-08-18 12:59:41.081106 +0000]  stbt-run: Motion found: MotionResult(timestamp=2240323343L, motion=True)
+[2013-08-18 12:59:41.105841 +0000]  stbt-run: Motion found: MotionResult(timestamp=2273656676L, motion=True)
+[2013-08-18 12:59:41.147317 +0000]  stbt-run: Motion found: MotionResult(timestamp=2306990010L, motion=True)
+[2013-08-18 12:59:41.172269 +0000]  stbt-run: Motion found: MotionResult(timestamp=2340323343L, motion=True)
+[2013-08-18 12:59:41.214347 +0000]  stbt-run: Motion found: MotionResult(timestamp=2373656676L, motion=True)
+[2013-08-18 12:59:41.238895 +0000]  stbt-run: Motion found: MotionResult(timestamp=2406990010L, motion=True)
+[2013-08-18 12:59:41.278881 +0000]  stbt-run: Motion found: MotionResult(timestamp=2440323343L, motion=True)
+[2013-08-18 12:59:41.321273 +0000]  stbt-run: Motion found: MotionResult(timestamp=2473656676L, motion=True)
+[2013-08-18 12:59:41.321401 +0000]  stbt-run: Motion detected.
+[2013-08-18 12:59:41.323943 +0000]  stbt-run: teardown: Sending eos
+[2013-08-18 12:59:41.381125 +0000]  stbt-run: Got EOS
+[2013-08-18 12:59:41.399303 +0000]  stbt-run: teardown: Exiting (GLib mainloop ok)
