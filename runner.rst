@@ -51,21 +51,21 @@ the user interrupted it with Control-C.
 
 Features:
 
-* Clicking on a row shows detailed logs for that test run.
-* The up/down arrow keys select the previous/next test run.
-* A screenshot is taken if the test failed.
-* A video of each test run is captured. The video's format is HTML5 compatible,
-  so it is playable in most modern browsers (it doesn't work in Safari but
-  Firefox, Chrome and VLC all play it).
-* The runner script detects why the test failed and logs this failure reason
-  in the "exit status" column of the report. If the runner can be *sure* that
-  the failure wasn't caused by a defect in the system under test, the row is
-  coloured yellow instead of red.
-* Users can provide their own custom classification scripts via hooks specified
-  in the stbt configuration file.
-* Running the optional ``server`` script allows interactive manual editing of
-  the "failure reason" and "notes" fields. This isn't enabled in the example
-  report above.
+ * Clicking on a row shows detailed logs for that test run.
+ * The up/down arrow keys select the previous/next test run.
+ * A screenshot is taken if the test failed.
+ * A video of each test run is captured. The video's format is HTML5 compatible,
+   so it is playable in most modern browsers (it doesn't work in Safari but
+   Firefox, Chrome and VLC all play it).
+ * The runner script detects why the test failed and logs this failure reason
+   in the "exit status" column of the report. If the runner can be *sure* that
+   the failure wasn't caused by a defect in the system under test, the row is
+   coloured yellow instead of red.
+ * Users can provide their own custom classification scripts via hooks specified
+   in the stbt configuration file.
+ * Running the optional ``server`` script allows interactive manual editing of
+   the "failure reason" and "notes" fields. This isn't enabled in the example
+   report above.
 
 For details see the README file under `extra/runner`_ in the stb-tester source
 repository. These scripts aren't installed by ``make install`` or by the
