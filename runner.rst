@@ -42,12 +42,12 @@ known failure reasons, and generate an html report.
 .. image:: runner-report.png
    :target: runner_example/index.html
 
-The above report shows the result of running a simple stb-tester script that
-uses GStreamer's ``videotestsrc`` as the video input. The first time the test
-was run (the red row in the report) it failed due to a bug in the test script.
+The above report shows the result of running a simple stb-tester test script
+that uses GStreamer's ``videotestsrc`` as the video input. The first time the
+test was run (the red row in the report) it failed due to a bug in the test.
 The next run passed because the test had been fixed (note the change in the
-"commit" column, showing the revision of the test script). The last run failed
-because the user interrupted it with Control-C.
+"commit" column, showing the revision of the test). The last run failed because
+the user interrupted it with Control-C.
 
 Features:
 
@@ -57,8 +57,8 @@ Features:
 * A video of each test run is captured. The video's format is HTML5 compatible,
   so it is playable in most modern browsers (it doesn't work in Safari but
   Firefox, Chrome and VLC all play it).
-* The runner script detects why the script failed and logs this failure reason
-  in the "exit status" column of the report. If the script can be *sure* that
+* The runner script detects why the test failed and logs this failure reason
+  in the "exit status" column of the report. If the runner can be *sure* that
   the failure wasn't caused by a defect in the system under test, the row is
   coloured yellow instead of red.
 * Users can provide their own custom classification scripts via hooks specified
