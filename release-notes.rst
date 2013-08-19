@@ -41,6 +41,69 @@ in production by several companies so we do try to minimise incompatible
 changes. The release notes always provide an exhaustive list of any changes.
 
 
+0.15 `stbt power`; `stbt control` can be used with `stbt record`; test scripts can take command-line arguments; `stbt.press` shows key pressed in output video
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+`stbt power` is a new command-line tool to switch on and off a
+network-controllable power supply. See `stbt power --help` for details.
+`stbt power` currently supports the following devices:
+
+ * IP Power 9258, a family of devices sold under various brand names, for
+   example `Aviosys <http://www.aviosys.com/9258st.html>`_.
+ * The KWX product line from `PDUeX
+   <http://www.pdu-expert.eu/index.php/en/component/k2/itemlist/category/1>`_.
+
+`stbt control`, the interactive keyboard-based remote control input, can now be
+used as input for `stbt record`. Use `--control-recorder=stbt-control`. See the
+stbt(1) man page and `stbt control --help` for details.
+
+`stbt run` now passes excess command-line arguments on to the test script. This
+allows you to run the same script with different arguments when you need to run
+multiple permutations of a test case.
+
+`stbt.press` now draws the name of the pressed key on the output video. This
+makes it a lot easier to understand what is happening when watching a test run,
+and more importantly, when triaging a failed test from its recorded video.
+
+The `restart_source` behaviour of `stbt run` and `stbt record` now works
+correctly with the Hauppauge HDPVR video-capture device. (This was broken since
+0.14.)
+
+Minor user-visible fixes:
+
+ * `stbt.frames()` doesn't deadlock if called again when the iterator returned
+   from a previous call is still alive.
+ * `stbt run` and `stbt record` now honour `global.verbose` in the configuration
+   file.
+ * `stbt run` standard output includes the exception typename when a test script
+   fails due to an unhandled exception.
+ * `stbt record` fails immediately if no video is available (instead of failing
+   after the second keypress of input).
+ * `stbt control` now allows mapping the Escape key to a remote-control button.
+ * `stbt control` displays a readable error message when the terminal is too
+   small.
+ * `stbt control` doesn't fail when you send keypresses too quickly.
+ * `stbt tv` works correctly in a VirtualBox VM.
+ * `stbt screenshot` takes an optional `filename` argument (overriding the
+   default of `screenshot.png`).
+ * `stbt screenshot` and `stbt templatematch` don't save a video if
+   `run.save_video` is set in the user's configuration file.
+
+Additionally, the following scripts are available from the source repository:
+
+ * `extra/vm <https://github.com/drothlis/stb-tester/tree/master/extra/vm>`_
+   contains scripts to set up a virtual machine with Ubuntu and stb-tester
+   installed. These scripts use `vagrant <http://www.vagrantup.com>`_, a tool
+   for automatically provisioning virtual machines. See `extra/vm/README.rst
+   <https://github.com/drothlis/stb-tester/blob/master/extra/vm/README.rst>`_
+   for instructions.
+ * `extra/runner
+   <https://github.com/drothlis/stb-tester/tree/master/extra/runner>`_ contains
+   scripts that will run a set of stb-tester test scripts and generate an html
+   report. See `"extra/runner: Bulk test running & reporting"
+   <http://stb-tester.com/runner.html>`_.
+
+
 0.14 Arbitrary image processing in user scripts; `stbt control`; `--save-video`; miscellaneous improvements
 -----------------------------------------------------------------------------------------------------------
 

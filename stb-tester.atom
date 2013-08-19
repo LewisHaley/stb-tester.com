@@ -650,6 +650,93 @@
   </entry>
 
   <entry>
+    <title>
+      stb-tester 0.15 release notes: `stbt power`; `stbt control` can be used
+      with `stbt record`; test scripts can take command-line arguments;
+      `stbt.press` shows key pressed inoutput video
+    </title>
+    <link rel="alternate"
+      href="http://stb-tester.com/release-notes.html/release-notes.html#0.15" />
+    <id>http://stb-tester.com/release-notes.html/release-notes.html#0.15</id>
+    <updated>2013-08-19T14:40:00Z</updated>
+    <summary type="html">
+      <![CDATA[
+        <p><cite>stbt power</cite> is a new command-line tool to switch on and
+          off a network-controllable power supply. See <cite>stbt power
+          --help</cite> for details. <cite>stbt power</cite> currently supports
+          the following devices:</p>
+        <ul>
+          <li>IP Power 9258, a family of devices sold under various brand
+            names, for example <a
+            href="http://www.aviosys.com/9258st.html">Aviosys</a>.</li>
+          <li>The KWX product line from <a
+            href="http://www.pdu-expert.eu/index.php/en/component/k2/itemlist/category/1"
+            >PDUeX</a>.</li>
+        </ul>
+        <p><cite>stbt control</cite>, the interactive keyboard-based remote
+          control input, can now be used as input for <cite>stbt record</cite>.
+          Use <cite>--control-recorder=stbt-control</cite>. See the
+          stbt(1) man page and <cite>stbt control --help</cite> for details.</p>
+        <p><cite>stbt run</cite> now passes excess command-line arguments on to
+          the test script. This allows you to run the same script with
+          different arguments when you need to run multiple permutations of a
+          test case.</p>
+        <p><cite>stbt.press</cite> now draws the name of the pressed key on the
+          output video. This makes it a lot easier to understand what is
+          happening when watching a test run, and more importantly, when
+          triaging a failed test from its recorded video.</p>
+        <p>The <cite>restart_source</cite> behaviour of <cite>stbt run</cite>
+          and <cite>stbt record</cite> now works correctly with the Hauppauge
+          HDPVR video-capture device. (This was broken since 0.14.)</p>
+        <p>Minor user-visible fixes:</p>
+        <ul>
+          <li><cite>stbt.frames()</cite> doesn't deadlock if called again when
+            the iterator returned from a previous call is still alive.</li>
+          <li><cite>stbt run</cite> and <cite>stbt record</cite> now honour
+            <cite>global.verbose</cite> in the configuration file.</li>
+          <li><cite>stbt run</cite> standard output includes the exception
+            typename when a test script fails due to an unhandled
+            exception.</li>
+          <li><cite>stbt record</cite> fails immediately if no video is
+            available (instead of failing after the second keypress of
+            input).</li>
+          <li><cite>stbt control</cite> now allows mapping the Escape key to a
+            remote-control button.</li>
+          <li><cite>stbt control</cite> displays a readable error message when
+            the terminal is too small.</li>
+          <li><cite>stbt control</cite> doesn't fail when you send keypresses
+            too quickly.</li>
+          <li><cite>stbt tv</cite> works correctly in a VirtualBox VM.</li>
+          <li><cite>stbt screenshot</cite> takes an optional
+            <cite>filename</cite> argument (overriding the default of
+            <cite>screenshot.png</cite>).</li>
+          <li><cite>stbt screenshot</cite> and <cite>stbt templatematch</cite>
+            don't save a video if <cite>run.save_video</cite> is set in the
+            user's configuration file.</li>
+        </ul>
+        <p>Additionally, the following scripts are available from the source
+          repository:</p>
+        <ul>
+          <li><a
+            href="https://github.com/drothlis/stb-tester/tree/master/extra/vm">extra/vm</a>
+            contains scripts to set up a virtual machine with Ubuntu and
+            stb-tester installed. These scripts use <a
+            href="http://www.vagrantup.com">vagrant</a>, a tool for
+            automatically provisioning virtual machines. See <a
+            href="https://github.com/drothlis/stb-tester/blob/master/extra/vm/README.rst">extra/vm/README.rst</a>
+            for instructions.</li>
+          <li><a
+            href="https://github.com/drothlis/stb-tester/tree/master/extra/runner">extra/runner</a>
+            contains scripts that will run a set of stb-tester test scripts and
+            generate an html report. See <a
+            href="http://stb-tester.com/runner.html">&quot;extra/runner: Bulk
+            test running &amp; reporting&quot;</a>.</li>
+        </ul>
+      ]]>
+    </summary>
+  </entry>
+
+  <entry>
     <title>stbt man page</title>
     <link rel="alternate" href="http://stb-tester.com/stbt.html" />
     <id>http://stb-tester.com/stbt.html</id>
