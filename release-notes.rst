@@ -192,7 +192,7 @@ Major changes under the covers (not visible to end users):
 Various parameters that affect the image-matching algorithm were
 previously hard-coded but are now configurable by the user. You can
 customise these parameters in individual calls to `wait_for_match`,
-`detect_match`, and `press_for_match`, or you can change the global
+`detect_match`, and `press_until_match`, or you can change the global
 defaults in your `stbt.conf` file. A new variant of the algorithm
 (`confirm_method="normed-absdiff"`) has also been added, though the
 default algorithm remains unchanged. For details see the documentation
@@ -202,7 +202,7 @@ section of the stbt(1)
 man page. See also http://stb-tester.com/match-parameters.html
 
 The `noise_threshold` parameter to `wait_for_match`, `detect_match`, and
-`press_for_match` is now deprecated. It will be removed in a future
+`press_until_match` is now deprecated. It will be removed in a future
 release. Set the `confirm_threshold` field of `match_parameters`
 instead.
 
