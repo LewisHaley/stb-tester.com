@@ -49,7 +49,7 @@ To see the intermediate steps of the template matching process, you can run
 stbt in "extra verbose" mode which will save out copies of the intermediate
 images. To do this, use ``stbt run -vv`` or ``stbt templatematch -v``. This
 will create a directory called **stbt-debug**, which in turn contains
-**templatematch** and **motiondetect** directories. The contents of
+**detect_match** and **detect_motion** directories. The contents of
 **stbt-debug/templatematch** will be the most recent match performed,
 regardless of success or failure (so make copies of the images if you don't
 want to lose them!).
