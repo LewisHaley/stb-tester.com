@@ -44,6 +44,8 @@ changes. The release notes always provide an exhaustive list of any changes.
 0.15 `stbt power`; `stbt control` can be used with `stbt record`; test scripts can take command-line arguments; `stbt.press` shows key pressed in output video
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+19 August 2013.
+
 `stbt power` is a new command-line tool to switch on and off a
 network-controllable power supply. See `stbt power --help` for details.
 `stbt power` currently supports the following devices:
@@ -266,7 +268,7 @@ details.
 0.12 New command-line tools; new `stbt.get_config` function; `wait_for_motion` non-consecutive frames
 -----------------------------------------------------------------------------------------------------
 
-14 Mar 2013.
+14 March 2013.
 
 New command-line tools:
 
@@ -294,7 +296,7 @@ In a future release we will probably make "10/20" the default.
 0.11 Support for RedRat irNetBox-II; improved robustness after video loss; improved exception output
 ----------------------------------------------------------------------------------------------------
 
-27 Feb 2013.
+27 February 2013.
 
 The RedRat irNetBox is a rack-mountable network-controlled infrared
 emitter. This release adds support for the irNetBox model II; previously
@@ -322,7 +324,7 @@ non-`MatchTimeout` exceptions.
 0.10.1 Fix irNetBox connection retry
 ------------------------------------
 
-14 Feb 2013.
+14 February 2013.
 
 Release 0.10 was supposed to fix the irNetBox connection retry on Linux,
 but in fact broke it for everyone. This release fixes that, and also
@@ -333,7 +335,7 @@ happen again.
 0.10 Fix irNetBox connection retry on Linux; other minor fixes
 --------------------------------------------------------------
 
-11 Feb 2013.
+11 February 2013.
 
 The irNetBox device only allows one TCP connection at a time, so when
 multiple stbt tests are using the same irNetBox simultaneously, clashes
@@ -359,7 +361,7 @@ Other minor fixes:
 0.9 Support for RedRat irNetBox; `wait_for_motion` more tolerant to noise
 -------------------------------------------------------------------------
 
-7 Jan 2013.
+7 January 2013.
 
 The `RedRat irNetBox-III <http://www.redrat.co.uk/products/irnetbox.html>`_ is
 a rack-mountable network-controlled infrared emitter with 16 separate outputs
@@ -396,7 +398,7 @@ Other minor changes:
 0.8 Bugfixes; `wait_for_match` returns the `MatchResult`; adds `get_frame`, `save_frame`, `debug`
 -------------------------------------------------------------------------------------------------
 
-21 Nov 2012.
+21 November 2012.
 
 `wait_for_match` and `press_until_match` now return the `MatchResult` object
 for successful matches, and `wait_for_motion` returns the `MotionResult`. See
